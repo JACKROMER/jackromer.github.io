@@ -8,18 +8,20 @@
   <link rel="dns-prefetch" href="https://jackromer.github.io">
   <title>Thread-pool-多线程并发 | Hexo</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="[TOC] 概述多线程简介 多线程适合多种开发语言的开发">
-<meta name="keywords" content="Java,pool,synchronized">
+  <meta name="description" content="多线程简介 多线程适合多种开发语言的开发, 这是一种思想，基于的是操作系统底层的CPU调度">
+<meta name="keywords" content="并发,pool,synchronized">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Thread-pool-多线程并发">
 <meta property="og:url" content="https://jackromer.github.io/2018/10/29/Thread-pool-多线程并发/index.html">
 <meta property="og:site_name" content="Hexo">
-<meta property="og:description" content="[TOC] 概述多线程简介 多线程适合多种开发语言的开发">
+<meta property="og:description" content="多线程简介 多线程适合多种开发语言的开发, 这是一种思想，基于的是操作系统底层的CPU调度">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2018-10-29T10:56:06.311Z">
+<meta property="og:image" content="https://jackromer.github.io/images/thread.png">
+<meta property="og:updated_time" content="2018-10-30T10:13:02.754Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Thread-pool-多线程并发">
-<meta name="twitter:description" content="[TOC] 概述多线程简介 多线程适合多种开发语言的开发">
+<meta name="twitter:description" content="多线程简介 多线程适合多种开发语言的开发, 这是一种思想，基于的是操作系统底层的CPU调度">
+<meta name="twitter:image" content="https://jackromer.github.io/images/thread.png">
   
     <link rel="alternative" href="/atom.xml" title="Hexo" type="application/atom+xml">
   
@@ -68,31 +70,29 @@
 	        
 				<li><a href="/tags">tags</a></li>
 	        
-				<li><a href="/404.html">commonweal</a></li>
-	        
-				<li><a href="/something new">something</a></li>
+				<li><a href="/404">commonweal</a></li>
 	        
 			</ul>
 		</nav>
 		<nav class="header-smart-menu">
     		
     			
-    			<a q-on="click: openSlider(e, 'innerArchive')" href="javascript:void(0)">所有文章</a>
+    			<a q-on="click: openSlider(e, 'innerArchive')" href="javascript:void(0)">all articles</a>
     			
             
     			
-    			<a q-on="click: openSlider(e, 'friends')" href="javascript:void(0)">友链</a>
+    			<a q-on="click: openSlider(e, 'friends')" href="javascript:void(0)">friends</a>
     			
             
     			
-    			<a q-on="click: openSlider(e, 'aboutme')" href="javascript:void(0)">关于我</a>
+    			<a q-on="click: openSlider(e, 'aboutme')" href="javascript:void(0)">about me</a>
     			
             
 		</nav>
 		<nav class="header-nav">
 			<div class="social">
 				
-					<a class="github" target="_blank" href="https://jackromer.github.io" title="github"><i class="icon-github"></i></a>
+					<a class="github" target="_blank" href="https://github.com/JACKROMER" title="github"><i class="icon-github"></i></a>
 		        
 					<a class="weibo" target="_blank" href="#" title="weibo"><i class="icon-weibo"></i></a>
 		        
@@ -138,14 +138,12 @@
 			
 				
 			
-				
-			
 			
 			
 			<nav class="header-nav">
 				<div class="social">
 					
-						<a class="github" target="_blank" href="https://jackromer.github.io" title="github"><i class="icon-github"></i></a>
+						<a class="github" target="_blank" href="https://github.com/JACKROMER" title="github"><i class="icon-github"></i></a>
 			        
 						<a class="weibo" target="_blank" href="#" title="weibo"><i class="icon-weibo"></i></a>
 			        
@@ -162,19 +160,17 @@
 				<ul style="width: 70%">
 				
 				
-					<li style="width: 14.285714285714286%"><a href="/">home</a></li>
+					<li style="width: 16.666666666666668%"><a href="/">home</a></li>
 		        
-					<li style="width: 14.285714285714286%"><a href="/archives">archives</a></li>
+					<li style="width: 16.666666666666668%"><a href="/archives">archives</a></li>
 		        
-					<li style="width: 14.285714285714286%"><a href="/about">about</a></li>
+					<li style="width: 16.666666666666668%"><a href="/about">about</a></li>
 		        
-					<li style="width: 14.285714285714286%"><a href="/categories">categories</a></li>
+					<li style="width: 16.666666666666668%"><a href="/categories">categories</a></li>
 		        
-					<li style="width: 14.285714285714286%"><a href="/tags">tags</a></li>
+					<li style="width: 16.666666666666668%"><a href="/tags">tags</a></li>
 		        
-					<li style="width: 14.285714285714286%"><a href="/404.html">commonweal</a></li>
-		        
-					<li style="width: 14.285714285714286%"><a href="/something new">something</a></li>
+					<li style="width: 16.666666666666668%"><a href="/404">commonweal</a></li>
 		        
 				</ul>
 			</nav>
@@ -209,28 +205,77 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>[TOC]</p>
-<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><h3 id="多线程简介"><a href="#多线程简介" class="headerlink" title="多线程简介"></a>多线程简介</h3><blockquote>
-<p>多线程适合多种开发语言的开发<br><a id="more"></a></p>
+        <h3 id="多线程简介"><a href="#多线程简介" class="headerlink" title="多线程简介"></a>多线程简介</h3><blockquote>
+<p>多线程适合多种开发语言的开发, 这是一种思想，基于的是操作系统底层的CPU调度<br><a id="more"></a></p>
 </blockquote>
 <h3 id="进程-线程"><a href="#进程-线程" class="headerlink" title="进程\线程"></a>进程\线程</h3><ol>
 <li>进程<blockquote>
-<p>1 进程 是指在系统中正在运行的一个应用程序。<br>2 每个进程之间是独立的，每个进程均运行在其专用的且受保护的内存空间内。</p>
+<p>1 进程 是指在系统中正在运行的一个应用程序, 每一个进程都有一个PID， 当进程占用太多资源或者卡死的时候，CPU会强杀掉进程。<br>2 每个进程之间是独立的，每个进程均运行在其专用的且受保护的内存空间内。</p>
 </blockquote>
 </li>
-<li>线程<br>2.1 个进程由多个线程组成(1个进程至少要有1个线程)。<br>2.2 线程是进程的基本执行单元，一个进程的所有任务都在线程中执行。</li>
+<li>线程<blockquote>
+<p>2.1 个进程由多个线程组成(1个进程至少要有1个线程)。<br>2.2 线程是进程的基本执行单元，一个进程的所有任务都在线程中执行。</p>
+</blockquote>
+</li>
 </ol>
 <h3 id="多线程"><a href="#多线程" class="headerlink" title="多线程"></a>多线程</h3><ol>
-<li>多线程<br> 1个进程中可以开启多个线程，多个线程可以同时执行不同的任务, 多线程可以提高程序的执行效率。</li>
-<li>多线程原理<br>对于单核CPU来说，同一时间，CPU只能处理1个线程，只有1个线程正在执行。<br>多线程同时执行的本质：是CPU快速的在多个线程之间的切换。<br>CPU调度线程的时间足够快，就造成了多线程的“同时”执行。<br>如果线程数非常多，CPU会在n个线程之间切换，消耗大量的CPU资源，每个线程被调度的次数会降低，线程的执行效率降低。</li>
+<li>多线程<blockquote>
+<p>1个进程中可以开启多个线程，多个线程可以同时执行不同的任务, 多线程一般情况下可以提高程序的执行效率。</p>
+</blockquote>
+</li>
+<li>多线程原理<blockquote>
+<p>对于单核CPU来说，同一时间，CPU只能处理1个线程，只有1个线程正在执行，现在大部分CPU都是4核8线程。<br>多线程同时执行的本质：是CPU快速的在多个线程之间的切换，这个时间非常的短在毫秒级别，以至于用户无法察觉。<br>CPU调度线程的时间足够快，就造成了多线程的“同时”执行。<br>如果线程数非常多，CPU会在n个线程之间切换，消耗大量的CPU资源，每个线程被调度的次数会降低，线程的执行效率降低。</p>
+</blockquote>
+</li>
+<li>多线程的优点<blockquote>
+<p>能适当提高程序的执行效率，但是在业务简单时，单线程会比多线程更快。<br>能适当提高资源的利用率(CPU、内存)。<br>线程上的任务执行完成后，线程会自动销毁。</p>
+</blockquote>
+</li>
+<li>多线程的缺点<blockquote>
+<p>开启线程需要占用一定的内存空间(默认情况下，每一个线程都占用512KB)，如果开启大量的线程，会占用大量的内存空间，降低程序的性能。<br>线程越多，CPU在调用线程上的开销就越大。<br>程序设计更加复杂，比如线程间的通信、多线程的数据共享。</p>
+</blockquote>
+</li>
+<li>主线程<blockquote>
+<p>一个程序运行后，默认会开启1个线程，称为“主线程”或“UI线程”，java中的main方法就是一个程序的主线程，如果这个方法体中的业务逻辑存在while循环、线程池<br>、websorcket等阻塞程序的，那么会使main方法阻塞，程序则不会退出，这也是程序正常运行不退出的原因；一些简单类的main方法会退出是因为并没有阻塞main方法。<br>主线程一般用来刷新UI界面，处理UI事件。<br>主线程使用注意：别将耗时的操作放到主线程中，因为耗时操作会卡住主线程，严重影响UI的流畅度，给用户一种卡的坏体验。</p>
+</blockquote>
+</li>
 </ol>
-<h3 id="线程池"><a href="#线程池" class="headerlink" title="线程池"></a>线程池</h3><ol>
-<li><p>线程池简介</p>
+<h3 id="同步和异步"><a href="#同步和异步" class="headerlink" title="同步和异步"></a>同步和异步</h3><ol>
+<li>同步执行<blockquote>
+<p>写程序的时候都是从上到下，从左到右，代码执行顺序也是从上到下从右到左。<br>1个线程执行多个任务，也是依次执行a-&gt;b-&gt;c。<br>1个线程同一时间执行1个任务。</p>
+</blockquote>
+</li>
+<li>异步执行<blockquote>
+<p>多个线程可以同时执行多个任务。<br>多个线程执行多个任务可以同时执行a，b，c。</p>
+</blockquote>
+</li>
+</ol>
+<h3 id="Java-多线程的实现的三种方式"><a href="#Java-多线程的实现的三种方式" class="headerlink" title="Java 多线程的实现的三种方式"></a>Java 多线程的实现的三种方式</h3><ol>
+<li><p>继承thread方式</p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">public <span class="class"><span class="keyword">class</span> <span class="title">newThread</span> <span class="keyword">extends</span> <span class="title">Thread</span></span>&#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    public void run() &#123;</span><br><span class="line">        <span class="comment">//do something</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>实现runable接口方式</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">NewThread</span> <span class="keyword">implements</span> <span class="title">Runnable</span></span>&#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="comment">//do something</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>继承thread其实也是实现runable接口的方式实现的<br><img src="/images/thread.png" alt=""></p>
+</li>
+<li><p>单线程和多线程演示</p>
+<figure class="highlight axapta"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">NewThread</span> <span class="keyword">extends</span> <span class="title">Thread</span> </span>&#123;</span><br><span class="line">	<span class="keyword">private</span> String threadName;</span><br><span class="line">	<span class="keyword">private</span> <span class="keyword">int</span> <span class="keyword">count</span> = <span class="number">0</span>;</span><br><span class="line">	<span class="keyword">private</span> Object obj;<span class="comment">//obj 是任何类型的可将此对象传入线程中使用</span></span><br><span class="line">	</span><br><span class="line">	<span class="keyword">public</span> NewThread(String threadName, <span class="keyword">int</span> <span class="keyword">count</span>, Object obj) &#123;</span><br><span class="line">		<span class="keyword">this</span>.threadName = threadName;</span><br><span class="line">		<span class="keyword">this</span>.<span class="keyword">count</span> = <span class="keyword">count</span>;</span><br><span class="line">		<span class="keyword">this</span>.obj   = obj;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	@Override</span><br><span class="line">	<span class="keyword">public</span> <span class="keyword">void</span> run()&#123;</span><br><span class="line">		<span class="keyword">while</span>(<span class="keyword">count</span> &lt; <span class="number">100</span>) &#123;</span><br><span class="line">			<span class="keyword">try</span> &#123;</span><br><span class="line">				<span class="keyword">count</span> ++;</span><br><span class="line">				Thread.sleep(<span class="number">1000</span>);</span><br><span class="line">				System.out.println(threadName + <span class="string">"&gt;count&gt;"</span> + <span class="keyword">count</span> +<span class="string">"object is "</span> + obj);</span><br><span class="line">			&#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</span><br><span class="line">				e.printStackTrace();</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	<span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> main(String[] args) &#123;</span><br><span class="line">		NewThread thread1 = <span class="keyword">new</span> NewThread(<span class="string">"thread1"</span>, <span class="number">0</span>, <span class="keyword">null</span>);</span><br><span class="line">		thread1.run();</span><br><span class="line">		NewThread thread2 = <span class="keyword">new</span> NewThread(<span class="string">"thread2"</span>, <span class="number">5</span>, <span class="string">"hello"</span>);</span><br><span class="line">		thread2.run();</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <blockquote>
+<p>thread1、thread2都是单独的一个线程,都是由CPU调度执行</p>
+</blockquote>
+</li>
+</ol>
+<hr>
+<h3 id="线程池"><a href="#线程池" class="headerlink" title="线程池"></a>线程池</h3><ol>
+<li>线程池简介<blockquote>
 <p>一盏灯， 一片昏黄； <strong>一简书</strong>， 一杯淡茶。 守着那一份淡定， 品读属于自己的寂寞。 保持淡定， 才能欣赏到最美丽的风景！ 保持淡定， 人生从此不再寂寞。</p>
 </blockquote>
 </li>
-<li><p>线程池分类比较</p>
+<li><p>如何初始化一个线程池</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">NewPool</span> </span>&#123;</span><br><span class="line">	<span class="keyword">final</span> <span class="keyword">static</span> <span class="keyword">int</span> corePoolSize = <span class="number">5</span>;</span><br><span class="line">    <span class="keyword">final</span> <span class="keyword">static</span> <span class="keyword">int</span> maximumPoolSize = <span class="number">5</span>;</span><br><span class="line">    <span class="keyword">final</span> <span class="keyword">static</span> BlockingQueue&lt;Runnable&gt; workQueue = <span class="keyword">new</span> LinkedBlockingQueue&lt;Runnable&gt;(<span class="number">1000</span>);</span><br><span class="line">	<span class="keyword">private</span> <span class="keyword">static</span> ExecutorService pool = <span class="keyword">null</span>;</span><br><span class="line">	</span><br><span class="line">	<span class="comment">//初始化线程池</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">initPool</span><span class="params">()</span> <span class="keyword">throws</span> InterruptedException </span>&#123;</span><br><span class="line">        pool = <span class="keyword">new</span> ThreadPoolExecutor(corePoolSize, maximumPoolSize, <span class="number">0L</span>, TimeUnit.MILLISECONDS, workQueue);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    </span><br><span class="line">    <span class="comment">//当有新的数据时调用poolAddThread(String,int,Object obj)处理传入的数据，例如如obj, object就相当于数据</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">poolAddThread</span><span class="params">(String threadName, <span class="keyword">int</span> count, Object obj)</span> </span>&#123;</span><br><span class="line">    	NewThread thread = <span class="keyword">new</span> NewThread(threadName, count, obj);</span><br><span class="line">    	pool.submit(thread);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> InterruptedException </span>&#123;</span><br><span class="line">		initPool();</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>线程池分类及比较</p>
 </li>
 </ol>
 <table>
@@ -259,9 +304,7 @@
 </tr>
 </tbody>
 </table>
-<hr>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">public void execute(Tuple input, BasicOutputCollector basicOutputCollector) &#123; </span><br><span class="line">       try &#123;</span><br><span class="line">           PayloadDataStruct payloadDataStruct = (PayloadDataStruct)input.getValue(0);</span><br><span class="line">           if (payloadDataStruct == null) &#123;</span><br><span class="line">               return;</span><br><span class="line">           &#125;</span><br><span class="line"></span><br><span class="line">           String kafkaSinkTopic = boltConfig.get(payloadDataStruct.getProtocolType());</span><br><span class="line">           if (kafkaSinkTopic == null || kafkaSinkTopic.isEmpty()) &#123;</span><br><span class="line">               return;</span><br><span class="line">           &#125;</span><br><span class="line"></span><br><span class="line">           basicOutputCollector.emit(new Values(kafkaSinkTopic, null, payloadDataStruct.serialize()));</span><br><span class="line">       &#125; catch (Exception ec) &#123;</span><br><span class="line">           logger.error(&quot;Emit PayloadDataStruct Failed.&quot;, ec);</span><br><span class="line">       &#125;</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
-<p></p>
+
       
 
       
@@ -274,17 +317,17 @@
             <span class="tooltip-content">
               <span class="tooltip-text">
                 <span class="tooltip-inner">
-                  <p class="reward-p"><i class="icon icon-quo-left"></i>点滴记录, 共同成长！<i class="icon icon-quo-right"></i></p>
+                  <p class="reward-p"><i class="icon icon-quo-left"></i>老板儿，吃土了...！<i class="icon icon-quo-right"></i></p>
                   <div class="reward-box">
                     
                     <div class="reward-box-item">
-                      <img class="reward-img" src="/images/mine.jpg">
+                      <img class="reward-img" src="/images/alipay.png">
                       <span class="reward-type">支付宝</span>
                     </div>
                     
                     
                     <div class="reward-box-item">
-                      <img class="reward-img" src="/images/mine.jpg">
+                      <img class="reward-img" src="/images/weixin.png">
                       <span class="reward-type">微信</span>
                     </div>
                     
@@ -305,7 +348,7 @@
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">Java</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">并发</a>
         		</li>
       		 
         		<li class="article-tag-list-item">
@@ -325,47 +368,11 @@
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="/categories/Diary//" class="article-tag-list-link color1">Diary</a>
+        			<a href="/categories/Java//" class="article-tag-list-link color5">Java</a>
         		</li>
       		 
         		<li class="article-tag-list-item">
-        			<a href="/categories/Diary/Life//" class="article-tag-list-link color5">Life</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/Diary/Life/JAVA//" class="article-tag-list-link color5">JAVA</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/Diary/Life/JAVA/Mysql//" class="article-tag-list-link color1">Mysql</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/Diary/Life/JAVA/Mysql/Python//" class="article-tag-list-link color2">Python</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/Diary/Life/JAVA/Mysql/Python/MQTT//" class="article-tag-list-link color5">MQTT</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/Diary/Life/JAVA/Mysql/Python/MQTT/Strom//" class="article-tag-list-link color1">Strom</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/Diary/Life/JAVA/Mysql/Python/MQTT/Strom/Kafka//" class="article-tag-list-link color1">Kafka</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/Diary/Life/JAVA/Mysql/Python/MQTT/Strom/Kafka/Spring//" class="article-tag-list-link color2">Spring</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/Diary/Life/JAVA/Mysql/Python/MQTT/Strom/Kafka/Spring/Spring-MVC//" class="article-tag-list-link color1">Spring-MVC</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/Diary/Life/JAVA/Mysql/Python/MQTT/Strom/Kafka/Spring/Spring-MVC/Spring-Cloud//" class="article-tag-list-link color3">Spring-Cloud</a>
+        			<a href="/categories/Java/Thread//" class="article-tag-list-link color2">Thread</a>
         		</li>
       		
 		</ul>
@@ -468,6 +475,17 @@
   
   
   
+  <div id="cloud-tie-wrapper" class="cloud-tie-wrapper"></div>
+<script>
+  var cloudTieConfig = {
+    url: "https://jackromer.github.io/2018/10/29/Thread-pool-多线程并发/", 
+    sourceId: "Thread-pool-多线程并发",
+    productKey: "true",
+    target: "cloud-tie-wrapper"
+  };
+</script>
+<script src="//img1.cache.netease.com/f2e/tie/yun/sdk/loader.js"></script>
+  
 
   
 
@@ -558,15 +576,15 @@ MathJax.Hub.Queue(function() {
     
     
       
-      <li style="width: 33.333333333333336%" q-on="click: openSlider(e, 'innerArchive')"><a href="javascript:void(0)" q-class="active:innerArchive">所有文章</a></li>
+      <li style="width: 33.333333333333336%" q-on="click: openSlider(e, 'innerArchive')"><a href="javascript:void(0)" q-class="active:innerArchive">all articles</a></li>
       
         
       
-      <li style="width: 33.333333333333336%" q-on="click: openSlider(e, 'friends')"><a href="javascript:void(0)" q-class="active:friends">友链</a></li>
+      <li style="width: 33.333333333333336%" q-on="click: openSlider(e, 'friends')"><a href="javascript:void(0)" q-class="active:friends">friends</a></li>
       
         
       
-      <li style="width: 33.333333333333336%" q-on="click: openSlider(e, 'aboutme')"><a href="javascript:void(0)" q-class="active:aboutme">关于我</a></li>
+      <li style="width: 33.333333333333336%" q-on="click: openSlider(e, 'aboutme')"><a href="javascript:void(0)" q-class="active:aboutme">about me</a></li>
       
         
     </ul>
@@ -587,7 +605,23 @@ MathJax.Hub.Queue(function() {
           <ul class="article-tag-list" q-show="showTags">
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">Java</a>
+                <a href="javascript:void(0)" class="js-tag color4">Nio</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">Netty</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">transaction</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">spring</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">并发</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -647,27 +681,27 @@ MathJax.Hub.Queue(function() {
         <ul class="search-ul">
           
             <li class="search-li">
-              <a href="https://lancerding.github.io" target="_blank" class="search-title"><i class="icon-quo-left icon"></i>dinggong one</a>
+              <a href="https://lancerding.github.io" target="_blank" class="search-title"><i class="icon-quo-left icon"></i>ding-Gong-One &gt;</a>
             </li>
           
             <li class="search-li">
-              <a href="https://lancerding.github.io" target="_blank" class="search-title"><i class="icon-quo-left icon"></i>dinggong two</a>
+              <a href="https://lancerding.github.io" target="_blank" class="search-title"><i class="icon-quo-left icon"></i>ding-Gong-two &gt;</a>
             </li>
           
             <li class="search-li">
-              <a href="https://lancerding.github.io" target="_blank" class="search-title"><i class="icon-quo-left icon"></i>dinggong three</a>
+              <a href="https://lancerding.github.io" target="_blank" class="search-title"><i class="icon-quo-left icon"></i>ding-Gong-thr &gt;</a>
             </li>
           
             <li class="search-li">
-              <a href="https://lancerding.github.io" target="_blank" class="search-title"><i class="icon-quo-left icon"></i>dinggong four</a>
+              <a href="https://lancerding.github.io" target="_blank" class="search-title"><i class="icon-quo-left icon"></i>ding-Gong-for &gt;</a>
             </li>
           
             <li class="search-li">
-              <a href="https://lancerding.github.io" target="_blank" class="search-title"><i class="icon-quo-left icon"></i>dinggong five</a>
+              <a href="https://lancerding.github.io" target="_blank" class="search-title"><i class="icon-quo-left icon"></i>ding-Gong-fiv &gt;</a>
             </li>
           
             <li class="search-li">
-              <a href="https://lancerding.github.io" target="_blank" class="search-title"><i class="icon-quo-left icon"></i>dinggong six</a>
+              <a href="https://lancerding.github.io" target="_blank" class="search-title"><i class="icon-quo-left icon"></i>ding-Gong-six &gt;</a>
             </li>
           
         </ul>
@@ -678,7 +712,7 @@ MathJax.Hub.Queue(function() {
     
     	<section class="tools-section tools-section-me" q-show="aboutme">
   	  	
-  	  		<div class="aboutme-wrap" id="js-aboutme">Opps...&lt;br&gt;&lt;br&gt;Just Do a little Things I Can &lt;br&gt;&lt;br&gt;Thanks !</div>
+  	  		<div class="aboutme-wrap" id="js-aboutme">Opps...&lt;br&gt;&lt;br&gt;Just do a little thing I can do !&lt;br&gt;&lt;br&gt;Thanks !</div>
   	  	
     	</section>
     
