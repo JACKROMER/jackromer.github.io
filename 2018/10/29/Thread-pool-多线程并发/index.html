@@ -8,18 +8,18 @@
   <link rel="dns-prefetch" href="https://jackromer.github.io">
   <title>Thread-pool-多线程并发 | Hexo</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="[TOC] 概述多线程简介 多线程适合多种开发语言的开发  进程\线程 进程 1 进程 是指在系统中正在运行的一个应用程序。2 每个进程之间是独立的，每个进程均运行在其专用的且受保护的内存空间内。   线程2.1 个进程由多个线程组成(1个进程至少要有1个线程)。2.2 线程是进程的基本执行单元，一个进程的所有任务都在线程中执行。  多线程 多线程 1个进程中可以开启多个线程，多个线程可以同时执行">
+  <meta name="description" content="[TOC] 概述多线程简介 多线程适合多种开发语言的开发">
 <meta name="keywords" content="Java,pool,synchronized">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Thread-pool-多线程并发">
 <meta property="og:url" content="https://jackromer.github.io/2018/10/29/Thread-pool-多线程并发/index.html">
 <meta property="og:site_name" content="Hexo">
-<meta property="og:description" content="[TOC] 概述多线程简介 多线程适合多种开发语言的开发  进程\线程 进程 1 进程 是指在系统中正在运行的一个应用程序。2 每个进程之间是独立的，每个进程均运行在其专用的且受保护的内存空间内。   线程2.1 个进程由多个线程组成(1个进程至少要有1个线程)。2.2 线程是进程的基本执行单元，一个进程的所有任务都在线程中执行。  多线程 多线程 1个进程中可以开启多个线程，多个线程可以同时执行">
+<meta property="og:description" content="[TOC] 概述多线程简介 多线程适合多种开发语言的开发">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2018-10-29T10:51:04.026Z">
+<meta property="og:updated_time" content="2018-10-29T10:56:06.311Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Thread-pool-多线程并发">
-<meta name="twitter:description" content="[TOC] 概述多线程简介 多线程适合多种开发语言的开发  进程\线程 进程 1 进程 是指在系统中正在运行的一个应用程序。2 每个进程之间是独立的，每个进程均运行在其专用的且受保护的内存空间内。   线程2.1 个进程由多个线程组成(1个进程至少要有1个线程)。2.2 线程是进程的基本执行单元，一个进程的所有任务都在线程中执行。  多线程 多线程 1个进程中可以开启多个线程，多个线程可以同时执行">
+<meta name="twitter:description" content="[TOC] 概述多线程简介 多线程适合多种开发语言的开发">
   
     <link rel="alternative" href="/atom.xml" title="Hexo" type="application/atom+xml">
   
@@ -211,7 +211,7 @@
       
         <p>[TOC]</p>
 <h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><h3 id="多线程简介"><a href="#多线程简介" class="headerlink" title="多线程简介"></a>多线程简介</h3><blockquote>
-<p>多线程适合多种开发语言的开发</p>
+<p>多线程适合多种开发语言的开发<br><a id="more"></a></p>
 </blockquote>
 <h3 id="进程-线程"><a href="#进程-线程" class="headerlink" title="进程\线程"></a>进程\线程</h3><ol>
 <li>进程<blockquote>
@@ -261,6 +261,7 @@
 </table>
 <hr>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">public void execute(Tuple input, BasicOutputCollector basicOutputCollector) &#123; </span><br><span class="line">       try &#123;</span><br><span class="line">           PayloadDataStruct payloadDataStruct = (PayloadDataStruct)input.getValue(0);</span><br><span class="line">           if (payloadDataStruct == null) &#123;</span><br><span class="line">               return;</span><br><span class="line">           &#125;</span><br><span class="line"></span><br><span class="line">           String kafkaSinkTopic = boltConfig.get(payloadDataStruct.getProtocolType());</span><br><span class="line">           if (kafkaSinkTopic == null || kafkaSinkTopic.isEmpty()) &#123;</span><br><span class="line">               return;</span><br><span class="line">           &#125;</span><br><span class="line"></span><br><span class="line">           basicOutputCollector.emit(new Values(kafkaSinkTopic, null, payloadDataStruct.serialize()));</span><br><span class="line">       &#125; catch (Exception ec) &#123;</span><br><span class="line">           logger.error(&quot;Emit PayloadDataStruct Failed.&quot;, ec);</span><br><span class="line">       &#125;</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
+<p></p>
       
 
       
@@ -433,20 +434,15 @@
   
 <nav id="article-nav">
   
-    <a href="/2018/10/29/yoxi/" id="article-nav-newer" class="article-nav-link-wrap">
+    <a href="/2018/10/29/Spring-transactional-事务/" id="article-nav-newer" class="article-nav-link-wrap">
       <i class="icon-circle-left"></i>
       <div class="article-nav-title">
         
-          yoxi
+          Spring-transactional-事务
         
       </div>
     </a>
   
-  
-    <a href="/2018/10/29/测试用/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">测试用</div>
-      <i class="icon-circle-right"></i>
-    </a>
   
 </nav>
 
@@ -589,30 +585,6 @@ MathJax.Hub.Queue(function() {
             <input type="checkbox" q-on="click:toggleTag(e)" q-attr="checked:showTags">
           </label>
           <ul class="article-tag-list" q-show="showTags">
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">java</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">Netty-Nio</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">spring</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">transactionnal 事务处理</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">并发</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">多线程-线程池</a>
-              </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">Java</a>
