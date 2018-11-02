@@ -1,141 +1,415 @@
-<!DOCTYPE html>
-<html lang="en">
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head>
+    
 
-<!-- Head tag -->
 <head><meta name="generator" content="Hexo 3.8.0">
-
     <meta charset="utf-8">
+    <meta name="keywords" content="Thread-pool-多线程并发, Jack Romer welcome ...">
+    <meta name="description" content="多线程简介
+多线程适合多种开发语言的开发, 这是一种思想，基于的是操作系统底层的CPU调度.  此篇介绍线程、多线程、和线程池的使用和机制。
+
+进程\线程
+进程
+1 进程 是指在系统中正在运行的一个应用程序, 每一个进程都有一个PID， 当">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="renderer" content="webkit|ie-stand|ie-comp">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <title>Thread-pool-多线程并发 | Jack Romer welcome ...</title>
+    <link rel="icon" type="image/png" href="/images/mine.jpg">
 
-    <!--Description-->
-    
-        <meta name="description" content="Jack Romer&#39;s blog">
-    
+    <link rel="stylesheet" type="text/css" href="/libs/awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/materialize/css/materialize.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/aos/aos.css">
+    <link rel="stylesheet" type="text/css" href="/libs/animate/animate.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/lightGallery/css/lightgallery.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/matery.css">
+    <link rel="stylesheet" type="text/css" href="/css/my.css">
 
-    <!--Author-->
-    
-        <meta name="author" content="Jack Romer">
-    
-
-    <!--Open Graph Title-->
-    
-        <meta property="og:title" content="Thread-pool-多线程并发">
-    
-
-    <!--Open Graph Description-->
-    
-        <meta property="og:description" content="Jack Romer&#39;s blog">
-    
-
-    <!--Open Graph Site Name-->
-    <meta property="og:site_name" content="Jack Romer welcome ...">
-
-    <!--Type page-->
-    
-        <meta property="og:type" content="article">
-    
-
-    <!--Page Cover-->
-    
-
-    <meta name="twitter:card" content="summary">
-    
-
-    <!-- Title -->
-    
-    <title>Thread-pool-多线程并发 - Jack Romer welcome ...</title>
-
-    <!-- Tachyons Core CSS -->
-    <link rel="stylesheet" href="//unpkg.com/tachyons/css/tachyons.min.css">
-
-    <!-- Custom Fonts -->
-    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
-
-    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
-    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-    <!--[if lt IE 9]>
-        <script src="//oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-        <script src="//oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
-    <![endif]-->
-
-    <!-- Custom CSS -->
-    <link rel="stylesheet" href="/css/style.css">
-
-    <!-- Google Analytics -->
-    
-
+    <script src="/libs/jquery/jquery-2.2.0.min.js"></script>
+<link rel="stylesheet" href="/css/prism-tomorrow.css" type="text/css"></head>
 
 </head>
 
-
 <body>
 
-<!-- Main Content -->
-<!-- Banner -->
-<!-- Banner -->
-<div class="w-100 bg-1 ph5-ns ph3 text-light">
+<header class="navbar-fixed">
+    <nav id="headNav" class="bg-color nav-transparent">
+        <div id="navContainer" class="container">
+            <div class="nav-wrapper">
+                <div class="brand-logo">
+                    <a href="/" class="waves-effect waves-light">
+                        
+                        <img src="/images/mine.jpg" class="logo-img hide-on-small-only">
+                        
+                        <span class="logo-span">Jack Romer welcome ...</span>
+                    </a>
+                </div>
+                <a href="#" data-activates="mobile-nav" class="button-collapse"><i class="fa fa-navicon"></i></a>
+<ul class="right">
     
-    <nav class="db dt-l w-100 mw8 center border-box pv3">
-        <a class="db dtc-l v-mid link dim w-100 w-25-l tc tl-l mb2 mb0-l white" href="/" title="Jack Romer welcome ...">
-            <img src="/images/mine.jpg" class="dib h3" alt="Jack Romer welcome ...">
+    <li class="hide-on-med-and-down">
+        <a href="/" class="waves-effect waves-light">
+            
+            <i class="fa fa-home"></i>
+            
+            <span>主页</span>
         </a>
-        <div class="db dtc-l v-mid w-100 w-75-l tc tr-l">
+    </li>
+    
+    <li class="hide-on-med-and-down">
+        <a href="/tags" class="waves-effect waves-light">
             
-                <a class="link dim f6 f5-l dib mr3 mr4-l white" href="/" title="主页">
-                    主页
-                </a>
+            <i class="fa fa-tags"></i>
             
-                <a class="link dim f6 f5-l dib mr3 mr4-l white" href="/archives" title="归档">
-                    归档
-                </a>
+            <span>标签</span>
+        </a>
+    </li>
+    
+    <li class="hide-on-med-and-down">
+        <a href="/categories" class="waves-effect waves-light">
             
-                <a class="link dim f6 f5-l dib mr3 mr4-l white" href="/tags" title="标签">
-                    标签
-                </a>
+            <i class="fa fa-bookmark"></i>
             
-                <a class="link dim f6 f5-l dib mr3 mr4-l white" href="/categories" title="分类">
-                    分类
-                </a>
+            <span>分类</span>
+        </a>
+    </li>
+    
+    <li class="hide-on-med-and-down">
+        <a href="/archives" class="waves-effect waves-light">
             
-                <a class="link dim f6 f5-l dib mr3 mr4-l white" href="/about" title="关于我">
-                    关于我
-                </a>
+            <i class="fa fa-archive"></i>
             
-        </div>
-    </nav>
+            <span>归档</span>
+        </a>
+    </li>
+    
+    <li class="hide-on-med-and-down">
+        <a href="/about" class="waves-effect waves-light">
+            
+            <i class="fa fa-user-circle-o"></i>
+            
+            <span>关于</span>
+        </a>
+    </li>
+    
+    <li>
+        <a id="toggleSearch" class="waves-effect waves-light">
+            <i id="searchIcon" class="mdi-action-search"></i>
+        </a>
+    </li>
 
-    <!-- Title -->
-    <div class="w-100 mw8 center vh-40 dt">
-        <div class="dtc v-mid white">
-            <h1 class="f1-l f2-m tc tc-m tl-ns">Thread-pool-多线程并发</h1>
-            <p class="f4 fw3 pab-100px tc tc-m tl-ns">2018-10-29</p>
+</ul>
+
+<div class="side-nav" id="mobile-nav">
+
+    <div class="mobile-head bg-color">
+        
+        <img src="/images/mine.jpg" class="logo-img circle responsive-img">
+        
+        <div class="logo-name">Jack Romer welcome ...</div>
+        <div class="logo-desc">
+            
+            Jack Romer&#39;s blog
+            
         </div>
     </div>
 
-    <!-- Icon -->
-    <div class="relative w-100 mw8 center white dn dn-m db-ns">
-        <i class="header-icon fa fa-file-text-o"></i>
+    <ul class="menu-list mobile-menu-list">
+        
+        <li>
+            <a href="/" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-home"></i>
+                
+                主页
+            </a>
+        </li>
+        
+        <li>
+            <a href="/tags" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-tags"></i>
+                
+                标签
+            </a>
+        </li>
+        
+        <li>
+            <a href="/categories" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-bookmark"></i>
+                
+                分类
+            </a>
+        </li>
+        
+        <li>
+            <a href="/archives" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-archive"></i>
+                
+                归档
+            </a>
+        </li>
+        
+        <li>
+            <a href="/about" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-user-circle-o"></i>
+                
+                关于
+            </a>
+        </li>
+        
+        
+        <li><div class="divider"></div></li>
+        <li>
+            <a href="https://github.com/JACKROMER" class="waves-effect waves-light" target="_blank">
+                <i class="fa fa-github-square fa-fw"></i>Fork Me
+            </a>
+        </li>
+        
+    </ul>
+
+    <div class="social-link"><a href="https://github.com/JACKROMER" class="tooltipped" target="_blank" data-tooltip="访问我的GitHub" data-position="top" data-delay="50">
+    <i class="fa fa-github"></i>
+</a>
+<a href="mailto:jackromer@163.com" class="tooltipped" target="_blank" data-tooltip="邮件联系我" data-position="top" data-delay="50">
+    <i class="fa fa-envelope-open"></i>
+</a>
+<a href="#!" class="tooltipped" data-tooltip="QQ联系我: 943655387" data-position="top" data-delay="50">
+    <i class="fa fa-qq"></i>
+</a>
+
+<a href="/atom.xml" class="tooltipped" target="_blank" data-tooltip="RSS 订阅" data-position="top" data-delay="50">
+    <i class="fa fa-rss"></i>
+</a>
+</div>
+</div>
+
+            </div>
+        </div>
+
+        
+        <style>
+    .nav-transparent .github-corner {
+        display: none !important;
+    }
+
+    .github-corner {
+        position: absolute;
+        z-index: 10;
+        top: 0;
+        right: 0;
+        border: 0;
+        transform: scale(1.1);
+    }
+
+    .github-corner svg {
+        color: #0f9d58;
+        fill: #fff;
+        height: 64px;
+        width: 64px;
+    }
+
+    .github-corner:hover .octo-arm {
+        animation: a 0.56s ease-in-out;
+    }
+
+    .github-corner .octo-arm {
+        animation: none;
+    }
+
+    @keyframes a {
+        0%,
+        to {
+            transform: rotate(0);
+        }
+        20%,
+        60% {
+            transform: rotate(-25deg);
+        }
+        40%,
+        80% {
+            transform: rotate(10deg);
+        }
+    }
+</style>
+
+<a href="https://github.com/JACKROMER" class="github-corner tooltipped hide-on-med-and-down" target="_blank" data-tooltip="Fork Me" data-position="left" data-delay="50">
+    <svg viewbox="0 0 250 250" aria-hidden="true">
+        <path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"/>
+        <path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"/>
+        <path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"/>
+    </svg>
+</a>
+        
+    </nav>
+</header>
+
+
+
+<div class="bg-cover post-cover" style="background-image: url('/medias/featureimages/5.jpg')">
+    <div class="container">
+        <div class="row">
+            <div class="col s12 m12 l12">
+                <div class="brand">
+                    <div class="description center-align post-title">
+                        Thread-pool-多线程并发
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 
-<!-- Content -->
-<div class="w-100 ph2 ph4-m ph5-l mv5 mv6-l">
-    <div class="content">
-        <div class="mw8 center">
-            <div class="cf">
-                <div class="fl w-100 w-70-l mw7 left fw3 lh-copy pr4-ns pr0-m post-content">
-                    <!-- Tags Vertical -->
-                    
-                        <div class="tags-container-vertical">
-                            <div class="tags-sub-container">
-                                <a class="fw3 ph1 dib" href="/tags/并发/">#并发</a> <a class="fw3 ph1 dib" href="/tags/pool/">#pool</a> <a class="fw3 ph1 dib" href="/tags/synchronized/">#synchronized</a>
-                            </div>
-                        </div>
-                    
 
-                    <!-- Main Post Content -->
-                    <h3 id="多线程简介"><a href="#多线程简介" class="headerlink" title="多线程简介"></a>多线程简介</h3><blockquote>
+
+<main class="post-container content">
+
+    
+    <link rel="stylesheet" href="/libs/tocbot/tocbot.css">
+<style>
+    #articleContent h1,
+    #articleContent h2,
+    #articleContent h3,
+    #articleContent h4,
+    #articleContent h5,
+    #articleContent h6 {
+        padding-top: 76px;
+        margin-top: -76px;
+    }
+
+    #articleContent h1 {
+        line-height: 3.5rem;
+    }
+
+    #articleContent h2 {
+        line-height: 3.2rem;
+    }
+
+    #articleContent h3 {
+        line-height: 2.8rem;
+    }
+
+    #articleContent h4 {
+        line-height: 2.5rem;
+    }
+
+    #articleContent h5 {
+        line-height: 2.2rem;
+    }
+
+    #articleContent h6 {
+        line-height: 1.9rem;
+    }
+
+    #articleContent :focus {
+        outline: none;
+    }
+
+    .toc-fixed {
+        position: fixed;
+        top: 64px;
+    }
+
+    .toc-widget {
+        padding-left: 20px;
+    }
+
+    .toc-widget .toc-title {
+        margin: 35px 0 15px 0;
+        padding-left: 17px;
+        font-size: 1.5rem;
+        font-weight: bold;
+        line-height: 1.5rem;
+    }
+
+    .toc-widget ol {
+        padding: 0;
+        list-style: none;
+    }
+
+    #toc-content ol {
+        padding-left: 10px;
+    }
+
+    #toc-content ol li {
+        padding-left: 10px;
+    }
+
+    #toc-content .toc-link:hover {
+        color: #42b983;
+        font-weight: 700;
+        text-decoration: underline;
+    }
+
+    #toc-content .toc-link::before {
+        background-color: transparent;
+        max-height: 25px;
+    }
+
+    #toc-content .is-active-link {
+        color: #42b983;
+    }
+
+    #toc-content .is-active-link::before {
+        background-color: #42b983;
+    }
+</style>
+<div class="row">
+    <div class="col s12 m12 l9">
+        <!-- 文章内容详情 -->
+<div id="artDetail">
+    <div class="card">
+        <div class="card-content article-info">
+            
+            <div class="article-tag">
+                
+                <a href="/tags/并发/" target="_blank">
+                    <span class="chip bg-color">并发</span>
+                </a>
+                
+                <a href="/tags/pool/" target="_blank">
+                    <span class="chip bg-color">pool</span>
+                </a>
+                
+                <a href="/tags/synchronized/" target="_blank">
+                    <span class="chip bg-color">synchronized</span>
+                </a>
+                
+            </div>
+            
+            <div class="post-info">
+                
+                <span class="post-cate">
+                    <i class="fa fa-bookmark fa-fw icon-category"></i>
+                    
+                    <a href="/categories/Java/" class="post-category" target="_blank">
+                        Java
+                    </a>
+                    
+                    <a href="/categories/Java/Thread/" class="post-category" target="_blank">
+                        Thread
+                    </a>
+                    
+                </span>
+                
+
+                <span class="post-date">
+                    <i class="fa fa-clock-o fa-fw"></i>2018-10-29
+                </span>
+            </div>
+        </div>
+        <hr>
+        <div class="card-content article-card-content">
+            <div id="articleContent">
+                <h3 id="多线程简介"><a href="#多线程简介" class="headerlink" title="多线程简介"></a>多线程简介</h3><blockquote>
 <p>多线程适合多种开发语言的开发, 这是一种思想，基于的是操作系统底层的CPU调度.<br>  此篇介绍线程、多线程、和线程池的使用和机制。<br><a id="more"></a></p>
 </blockquote>
 <h3 id="进程-线程"><a href="#进程-线程" class="headerlink" title="进程\线程"></a>进程\线程</h3><ol>
@@ -214,51 +488,149 @@
 <li><p>Join() 方法</p>
 <blockquote>
 <p>join() 方法定义在 Thread 类中，所以调用者必须是一个线程，join() 方法主要是让调用该方法的 Thread 完成 run() 方法里面的东西后，再执行 join() 方法后面的代码。</p>
-<figure class="highlight lasso"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">Thread</span> t1 = <span class="literal">new</span> <span class="keyword">Thread</span>(计数线程一);  </span><br><span class="line"><span class="keyword">Thread</span> t2 = <span class="literal">new</span> <span class="keyword">Thread</span>(计数线程二);  </span><br><span class="line">t1.start(); </span><br><span class="line">t1.<span class="keyword">join</span>(); <span class="comment">// 等待计数线程一执行完成，再执行计数线程二</span></span><br><span class="line">t2.start();</span><br></pre></td></tr></table></figure>
 </blockquote>
+<pre class=" language-java"><code class="language-java">    Thread t1 <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Thread</span><span class="token punctuation">(</span>计数线程一<span class="token punctuation">)</span><span class="token punctuation">;</span>  
+    Thread t2 <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Thread</span><span class="token punctuation">(</span>计数线程二<span class="token punctuation">)</span><span class="token punctuation">;</span>  
+    t1<span class="token punctuation">.</span><span class="token function">start</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> 
+    t1<span class="token punctuation">.</span><span class="token function">join</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">// 等待计数线程一执行完成，再执行计数线程二</span>
+    t2<span class="token punctuation">.</span><span class="token function">start</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>  
+</code></pre>
 <blockquote>
 <p>启动 t1 后，调用了 join() 方法，直到 t1 的计数任务结束，才轮到 t2 启动，然后 t2 才开始计数任务，两个线程是按着严格的顺序来执行的。<br>  如果 t2 的执行需要依赖于 t1 中的完整数据的时候，这种方法就可以很好的确保两个线程的同步性。</p>
 </blockquote>
 </li>
 <li>Thread.yield() 方法<blockquote>
-<p>Thread.sleep(long time)：线程暂时终止执行（睡眠）一定的时间。<br>  Thread.yield()：线程放弃运行，将CPU的控制权让出。<br>  这两个方法都会将当前运行线程的CPU控制权让出来，但 sleep() 方法在指定的睡眠时间内一定不会再得到运行机会，直到它的睡眠时间完成；<br>  而 yield() 方法让出控制权后，还有可能马上被系统的调度机制选中来运行，比如，执行yield()方法的线程优先级高于其他的线程，那么这个线程即使执行了 yield() 方法也可能不能起到让出CPU<br>  控制权的效果，因为它让出控制权后，进入排队队列，调度机制将&gt;从等待运行的线程队列中选出一个等级最高的线程来运行，那么它又（很可能）被选中来运行。</p>
+<p>Thread.sleep(long time)：线程暂时终止执行（睡眠）一定的时间。<br>  Thread.yield()：线程放弃运行，将CPU的控制权让出。<br>  这两个方法都会将当前运行线程的CPU控制权让出来，但 sleep() 方法在指定的睡眠时间内一定不会再得到运行机会，直到它的睡眠时间完成；<br>  而 yield() 方法让出控制权后，还有可能马上被系统的调度机制选中来运行，比如，执行yield()方法的线程优先级高于其他的线程，那么这个线程即使执行了 yield() 方法也可能不能起到让出CPU控制权的效果，因为它让出控制权后，进入排队队列，调度机制将&gt;从等待运行的线程队列中选出一个等级最高的线程来运行，那么它又（很可能）被选中来运行。</p>
 </blockquote>
 </li>
 </ol>
 <h3 id="Java-多线程的实现的三种方式"><a href="#Java-多线程的实现的三种方式" class="headerlink" title="Java 多线程的实现的三种方式"></a>Java 多线程的实现的三种方式</h3><ol>
-<li>继承thread方式<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">public <span class="class"><span class="keyword">class</span> <span class="title">newThread</span> <span class="keyword">extends</span> <span class="title">Thread</span></span>&#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    public void run() &#123;</span><br><span class="line">        <span class="comment">//do something</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    public void start() &#123;</span><br><span class="line">        <span class="comment">//do something</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-</li>
-</ol>
+<li>继承thread方式<pre class=" language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">newThread</span> <span class="token keyword">extends</span> <span class="token class-name">Thread</span><span class="token punctuation">{</span>
+    <span class="token annotation punctuation">@Override</span>
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">run</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token comment" spellcheck="true">//do something</span>
+    <span class="token punctuation">}</span>
+    <span class="token annotation punctuation">@Override</span>
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">start</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token comment" spellcheck="true">//do something</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre>
 <blockquote>
-<p>Thread 类中的 start() 和 run() 方法有什么区别<br>  调用 start() 方法才会启动新线程；如果直接调用 Thread 的 run() 方法，它的行为就会和普通的方法一样；为了在新的线程中执行我们的代码，必须使用 Thread.start() 方法。</p>
-<ol start="2">
-<li>实现runable接口方式<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">NewThread</span> <span class="keyword">implements</span> <span class="title">Runnable</span></span>&#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="comment">//do something</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-</li>
-</ol>
+<p>Thread 类中的 start() 和 run() 方法有什么区别<br>调用 start() 方法才会启动新线程；如果直接调用 Thread 的 run() 方法，它的行为就会和普通的方法一样；为了在新的线程中执行我们的代码，必须使用 Thread.start() 方法。</p>
 </blockquote>
-<ol start="3">
+</li>
+<li>实现runable接口方式<pre class=" language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">NewThread</span> <span class="token keyword">implements</span> <span class="token class-name">Runnable</span><span class="token punctuation">{</span>
+    <span class="token annotation punctuation">@Override</span>
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">run</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token comment" spellcheck="true">//do something</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre>
+</li>
 <li>继承thread其实也是实现runable接口的方式实现的<br><img src="/images/thread.png" alt=""></li>
 <li><p>实现callable接口</p>
-<figure class="highlight gradle"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> NewCallableThread <span class="keyword">implements</span> Callable&lt;String&gt; &#123;<span class="comment">//String 是线程的返回值类型</span></span><br><span class="line">    <span class="keyword">private</span> String threadName;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> <span class="keyword">count</span> = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">private</span> Object obj;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">public</span> NewCallableThread(String threadName, <span class="keyword">int</span> <span class="keyword">count</span>, Object obj) &#123;</span><br><span class="line">        <span class="keyword">this</span>.threadName = threadName;</span><br><span class="line">        <span class="keyword">this</span>.<span class="keyword">count</span> = <span class="keyword">count</span>;</span><br><span class="line">        <span class="keyword">this</span>.obj   = obj;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    <span class="keyword">public</span> String <span class="keyword">call</span>()&#123;</span><br><span class="line">        <span class="keyword">while</span>(<span class="keyword">count</span> &lt; <span class="number">100</span>) &#123;</span><br><span class="line">            <span class="keyword">try</span> &#123;</span><br><span class="line">                <span class="keyword">count</span> ++;</span><br><span class="line">                Thread.sleep(<span class="number">1000</span>);</span><br><span class="line">                System.out.<span class="keyword">println</span>(threadName + <span class="string">"&gt;count&gt;"</span> + <span class="keyword">count</span> +<span class="string">"object is "</span> + obj);</span><br><span class="line">            &#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</span><br><span class="line">                e.printStackTrace();</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">"这是返回值"</span>;<span class="comment">//callable接口可以返回线程的执行结果,也可以抛出异常，例如此线程处理完的数据结果可返回给调用者，但是线程不会释放资源直到拿到返回值，所以如果不需要返回return null即可</span></span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> main(String[] args) &#123;</span><br><span class="line">        NewCallableThread thread1 = <span class="keyword">new</span> NewCallableThread(<span class="string">"thread1"</span>, <span class="number">0</span>, <span class="keyword">null</span>);</span><br><span class="line">        thread1.<span class="keyword">call</span>();</span><br><span class="line">        NewCallableThread thread2 = <span class="keyword">new</span> NewCallableThread(<span class="string">"thread2"</span>, <span class="number">5</span>, <span class="string">"hello"</span>);</span><br><span class="line">        thread2.<span class="keyword">call</span>();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<pre class=" language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">NewCallableThread</span> <span class="token keyword">implements</span> <span class="token class-name">Callable</span><span class="token operator">&lt;</span>String<span class="token operator">></span> <span class="token punctuation">{</span><span class="token comment" spellcheck="true">//String 是线程的返回值类型</span>
+    <span class="token keyword">private</span> String threadName<span class="token punctuation">;</span>
+    <span class="token keyword">private</span> <span class="token keyword">int</span> count <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
+    <span class="token keyword">private</span> Object obj<span class="token punctuation">;</span>
+
+    <span class="token keyword">public</span> <span class="token function">NewCallableThread</span><span class="token punctuation">(</span>String threadName<span class="token punctuation">,</span> <span class="token keyword">int</span> count<span class="token punctuation">,</span> Object obj<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>threadName <span class="token operator">=</span> threadName<span class="token punctuation">;</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>count <span class="token operator">=</span> count<span class="token punctuation">;</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>obj   <span class="token operator">=</span> obj<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token annotation punctuation">@Override</span>
+    <span class="token keyword">public</span> String <span class="token function">call</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
+        <span class="token keyword">while</span><span class="token punctuation">(</span>count <span class="token operator">&lt;</span> <span class="token number">100</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token keyword">try</span> <span class="token punctuation">{</span>
+                count <span class="token operator">++</span><span class="token punctuation">;</span>
+                Thread<span class="token punctuation">.</span><span class="token function">sleep</span><span class="token punctuation">(</span><span class="token number">1000</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+                System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>threadName <span class="token operator">+</span> <span class="token string">">count>"</span> <span class="token operator">+</span> count <span class="token operator">+</span><span class="token string">"object is "</span> <span class="token operator">+</span> obj<span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token punctuation">}</span> <span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">InterruptedException</span> e<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+                e<span class="token punctuation">.</span><span class="token function">printStackTrace</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token punctuation">}</span>
+        <span class="token punctuation">}</span>
+        <span class="token keyword">return</span> <span class="token string">"这是返回值"</span><span class="token punctuation">;</span><span class="token comment" spellcheck="true">//callable接口可以返回线程的执行结果,也可以抛出异常，例如此线程处理完的数据结果可返回给调用者，但是线程不会释放资源直到拿到返回值，所以如果不需要返回return null即可</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">main</span><span class="token punctuation">(</span>String<span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        NewCallableThread thread1 <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">NewCallableThread</span><span class="token punctuation">(</span><span class="token string">"thread1"</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> null<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        thread1<span class="token punctuation">.</span><span class="token function">call</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        NewCallableThread thread2 <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">NewCallableThread</span><span class="token punctuation">(</span><span class="token string">"thread2"</span><span class="token punctuation">,</span> <span class="token number">5</span><span class="token punctuation">,</span> <span class="token string">"hello"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        thread2<span class="token punctuation">.</span><span class="token function">call</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+<span class="token punctuation">}</span>
+</code></pre>
 </li>
 <li><p>单线程和多线程演示</p>
-<figure class="highlight axapta"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">NewThread</span> <span class="keyword">extends</span> <span class="title">Thread</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> String threadName;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> <span class="keyword">count</span> = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">private</span> Object obj;<span class="comment">//obj 是任何类型的可将此对象传入线程中使用</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">public</span> NewThread(String threadName, <span class="keyword">int</span> <span class="keyword">count</span>, Object obj) &#123;</span><br><span class="line">        <span class="keyword">this</span>.threadName = threadName;</span><br><span class="line">        <span class="keyword">this</span>.<span class="keyword">count</span> = <span class="keyword">count</span>;</span><br><span class="line">        <span class="keyword">this</span>.obj   = obj;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> run()&#123;</span><br><span class="line">        <span class="keyword">while</span>(<span class="keyword">count</span> &lt; <span class="number">100</span>) &#123;</span><br><span class="line">            <span class="keyword">try</span> &#123;</span><br><span class="line">                <span class="keyword">count</span> ++;</span><br><span class="line">                Thread.sleep(<span class="number">1000</span>);</span><br><span class="line">                System.out.println(threadName + <span class="string">"&gt;count&gt;"</span> + <span class="keyword">count</span> +<span class="string">"object is "</span> + obj);</span><br><span class="line">            &#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</span><br><span class="line">                e.printStackTrace();</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> main(String[] args) &#123;</span><br><span class="line">        NewThread thread1 = <span class="keyword">new</span> NewThread(<span class="string">"thread1"</span>, <span class="number">0</span>, <span class="keyword">null</span>);</span><br><span class="line">        thread1.run();</span><br><span class="line">        NewThread thread2 = <span class="keyword">new</span> NewThread(<span class="string">"thread2"</span>, <span class="number">5</span>, <span class="string">"hello"</span>);</span><br><span class="line">        thread2.run();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-</li>
-</ol>
+<pre class=" language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">NewThread</span> <span class="token keyword">extends</span> <span class="token class-name">Thread</span> <span class="token punctuation">{</span>
+    <span class="token keyword">private</span> String threadName<span class="token punctuation">;</span>
+    <span class="token keyword">private</span> <span class="token keyword">int</span> count <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
+    <span class="token keyword">private</span> Object obj<span class="token punctuation">;</span><span class="token comment" spellcheck="true">//obj 是任何类型的可将此对象传入线程中使用</span>
+
+    <span class="token keyword">public</span> <span class="token function">NewThread</span><span class="token punctuation">(</span>String threadName<span class="token punctuation">,</span> <span class="token keyword">int</span> count<span class="token punctuation">,</span> Object obj<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>threadName <span class="token operator">=</span> threadName<span class="token punctuation">;</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>count <span class="token operator">=</span> count<span class="token punctuation">;</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>obj   <span class="token operator">=</span> obj<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token annotation punctuation">@Override</span>
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">run</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
+        <span class="token keyword">while</span><span class="token punctuation">(</span>count <span class="token operator">&lt;</span> <span class="token number">100</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token keyword">try</span> <span class="token punctuation">{</span>
+                count <span class="token operator">++</span><span class="token punctuation">;</span>
+                Thread<span class="token punctuation">.</span><span class="token function">sleep</span><span class="token punctuation">(</span><span class="token number">1000</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+                System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>threadName <span class="token operator">+</span> <span class="token string">">count>"</span> <span class="token operator">+</span> count <span class="token operator">+</span><span class="token string">"object is "</span> <span class="token operator">+</span> obj<span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token punctuation">}</span> <span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">InterruptedException</span> e<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+                e<span class="token punctuation">.</span><span class="token function">printStackTrace</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token punctuation">}</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">main</span><span class="token punctuation">(</span>String<span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        NewThread thread1 <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">NewThread</span><span class="token punctuation">(</span><span class="token string">"thread1"</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> null<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        thread1<span class="token punctuation">.</span><span class="token function">run</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        NewThread thread2 <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">NewThread</span><span class="token punctuation">(</span><span class="token string">"thread2"</span><span class="token punctuation">,</span> <span class="token number">5</span><span class="token punctuation">,</span> <span class="token string">"hello"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        thread2<span class="token punctuation">.</span><span class="token function">run</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre>
 <blockquote>
 <p>thread1、thread2都是单独的一个线程,都是由CPU调度执行</p>
-<ol start="6">
-<li>附runable和callable的接口源码<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">public<span class="built_in"> interface </span>Runnable &#123;</span><br><span class="line">    public void <span class="builtin-name">run</span>();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">public<span class="built_in"> interface </span>Callable&lt;V&gt; &#123;</span><br><span class="line">    V call() throws Exception;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-</li>
-</ol>
 </blockquote>
-<ol start="7">
-<li>runable和callable的对比<blockquote>
+</li>
+<li><p>附runable和callable的接口源码</p>
+<pre class=" language-java"><code class="language-java"> <span class="token keyword">public</span> <span class="token keyword">interface</span> <span class="token class-name">Runnable</span> <span class="token punctuation">{</span>
+     <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">run</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+ <span class="token punctuation">}</span>
+
+ <span class="token keyword">public</span> <span class="token keyword">interface</span> <span class="token class-name">Callable</span><span class="token operator">&lt;</span>V<span class="token operator">></span> <span class="token punctuation">{</span>
+     V <span class="token function">call</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">throws</span> Exception<span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+</code></pre>
+</li>
+<li><p>runable和callable的对比</p>
+<blockquote>
 <p>Callable 接口下的方法是 call()，Runnable 接口的方法是 run()。<br>   Callable 的任务执行后可返回值，而 Runnable 的任务是不能返回值的。<br>   call() 方法可以抛出异常，run()方法不可以的。<br>   运行 Callable 任务可以拿到一个 Future 对象，表示异步计算的结果。它提供了检查计算是否完成的方法，以等待计算的完成，并检索计算的结果。<br>   通过 Future 对象可以了解任务执行情况，可取消任务的执行，还可获取执行结果。</p>
 </blockquote>
 </li>
 <li><p>附future接口的源码</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">Future</span>&lt;<span class="title">V</span>&gt; </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">boolean</span> <span class="title">cancel</span><span class="params">(<span class="keyword">boolean</span> mayInterruptIfRunning)</span></span>;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">boolean</span> <span class="title">isCancelled</span><span class="params">()</span></span>;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">boolean</span> <span class="title">isDone</span><span class="params">()</span></span>;</span><br><span class="line"></span><br><span class="line">    <span class="function">V <span class="title">get</span><span class="params">()</span> <span class="keyword">throws</span> InterruptedException, ExecutionException</span>;</span><br><span class="line"></span><br><span class="line">    <span class="function">V <span class="title">get</span><span class="params">(<span class="keyword">long</span> timeout, TimeUnit unit)</span></span></span><br><span class="line"><span class="function">        <span class="keyword">throws</span> InterruptedException, ExecutionException, TimeoutException</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<pre class=" language-java"><code class="language-java"> <span class="token keyword">public</span> <span class="token keyword">interface</span> <span class="token class-name">Future</span><span class="token operator">&lt;</span>V<span class="token operator">></span> <span class="token punctuation">{</span>
+
+     <span class="token keyword">boolean</span> <span class="token function">cancel</span><span class="token punctuation">(</span><span class="token keyword">boolean</span> mayInterruptIfRunning<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+     <span class="token keyword">boolean</span> <span class="token function">isCancelled</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+     <span class="token keyword">boolean</span> <span class="token function">isDone</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+     V <span class="token function">get</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">throws</span> InterruptedException<span class="token punctuation">,</span> ExecutionException<span class="token punctuation">;</span>
+
+     V <span class="token function">get</span><span class="token punctuation">(</span><span class="token keyword">long</span> timeout<span class="token punctuation">,</span> TimeUnit unit<span class="token punctuation">)</span> <span class="token keyword">throws</span> InterruptedException<span class="token punctuation">,</span> ExecutionException<span class="token punctuation">,</span> TimeoutException<span class="token punctuation">;</span>
+ <span class="token punctuation">}</span>
+</code></pre>
 <blockquote>
 <p>boolean cancel(boolean mayInterruptIfRunning);<br>   此方法试图取消对此任务的执行。<strong>[任务已完成、已取消，或者由于某些其他原因而无法取消，则此尝试将失败，cancel调用成功后，isCancelled和isDone将始终返回true]</strong>，<br>   mayInterruptIfRunning 参数确定是否应该使用试图停止任务的方式来中断执行此任务的线程</p>
 </blockquote>
@@ -276,63 +648,141 @@
 </blockquote>
 </li>
 <li><p>FutureTask-Thread的设计优化</p>
-<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">public class FutureTask&lt;V&gt; implements RunnableFuture&lt;V&gt; &#123;</span><br><span class="line">    <span class="built_in">..</span>.</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">public<span class="built_in"> interface </span>RunnableFuture&lt;V&gt; extends Runnable, Future&lt;V&gt; &#123;</span><br><span class="line">    void <span class="builtin-name">run</span>();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<pre class=" language-java"><code class="language-java">     <span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">FutureTask</span><span class="token operator">&lt;</span>V<span class="token operator">></span> <span class="token keyword">implements</span> <span class="token class-name">RunnableFuture</span><span class="token operator">&lt;</span>V<span class="token operator">></span> <span class="token punctuation">{</span>
+         <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
+     <span class="token punctuation">}</span>
+
+     <span class="token keyword">public</span> <span class="token keyword">interface</span> <span class="token class-name">RunnableFuture</span><span class="token operator">&lt;</span>V<span class="token operator">></span> <span class="token keyword">extends</span> <span class="token class-name">Runnable</span><span class="token punctuation">,</span> Future<span class="token operator">&lt;</span>V<span class="token operator">></span> <span class="token punctuation">{</span>
+         <span class="token keyword">void</span> <span class="token function">run</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+     <span class="token punctuation">}</span>
+</code></pre>
 <blockquote>
 <p>FutureTask 实现了 Runnable 和 Future，所以兼顾两者优点，既可以在 Thread 中使用，又可以在 ExecutorService 中使用。</p>
-<figure class="highlight haxe"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">Callable&lt;<span class="keyword">String</span>&gt; callable = <span class="keyword">new</span> <span class="type">Callable</span>&lt;<span class="keyword">String</span>&gt;() &#123;</span><br><span class="line">    @Override</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">String</span> call() throws Exception &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">"something"</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line">FutureTask&lt;<span class="keyword">String</span>&gt; task = <span class="keyword">new</span> <span class="type">FutureTask</span>&lt;<span class="keyword">String</span>&gt;(callable);</span><br><span class="line"></span><br><span class="line">Thread t = <span class="keyword">new</span> <span class="type">Thread</span>(task);</span><br><span class="line">t.start(); <span class="comment">// 启动线程</span></span><br><span class="line">task.cancel(<span class="literal">true</span>); <span class="comment">// 取消线程</span></span><br></pre></td></tr></table></figure>
 </blockquote>
+<pre class=" language-java"><code class="language-java">     Callable<span class="token operator">&lt;</span>String<span class="token operator">></span> callable <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Callable</span><span class="token operator">&lt;</span>String<span class="token operator">></span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+         <span class="token annotation punctuation">@Override</span>
+         <span class="token keyword">public</span> String <span class="token function">call</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">throws</span> Exception <span class="token punctuation">{</span>
+             <span class="token keyword">return</span> <span class="token string">"something"</span><span class="token punctuation">;</span>
+         <span class="token punctuation">}</span>
+     <span class="token punctuation">}</span><span class="token punctuation">;</span>
+     FutureTask<span class="token operator">&lt;</span>String<span class="token operator">></span> task <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">FutureTask</span><span class="token operator">&lt;</span>String<span class="token operator">></span><span class="token punctuation">(</span>callable<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+     Thread t <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Thread</span><span class="token punctuation">(</span>task<span class="token punctuation">)</span><span class="token punctuation">;</span>
+     t<span class="token punctuation">.</span><span class="token function">start</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">// 启动线程</span>
+     task<span class="token punctuation">.</span><span class="token function">cancel</span><span class="token punctuation">(</span><span class="token boolean">true</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">// 取消线程</span>
+</code></pre>
 <blockquote>
-<p>使用 FutureTask 的好处是 FutureTask 弥补了Thread 的不足，它可以让调用者准确地知道线程什么时候执行完成并获得线程执行完成后的返回结果。<br>   FutureTask 是一种可以取消的异步的计算任务，它的计算是通过 Callable 实现的，它等价于可以携带结果的 Runnable，并且有三个状态：等待、运行和完成。<br>   完成包括所有计算以任意的方式结束，包括正常结束、取消和异常。</p>
+<p>使用 FutureTask 的好处是 FutureTask 弥补了Thread 的不足，它可以让调用者准确地知道线程什么时候执行完成并获得线程执行完成后的返回结果。<br>FutureTask 是一种可以取消的异步的计算任务，它的计算是通过 Callable 实现的，它等价于可以携带结果的 Runnable，并且有三个状态：等待、运行和完成。<br>完成包括所有计算以任意的方式结束，包括正常结束、取消和异常。</p>
 </blockquote>
 </li>
 </ol>
 <hr>
 <h3 id="线程池"><a href="#线程池" class="headerlink" title="线程池"></a>线程池</h3><ol>
 <li>线程池简介<blockquote>
-<p>Java里面线程池的顶级接口是 Executor，不过真正的线程池接口是 ExecutorService， ExecutorService 的默认实现是 ThreadPoolExecutor；<br>普通类 Executors 里面调用的就是 ThreadPoolExecutor。</p>
+<p>Java里面线程池的顶级接口是 Executor，不过真正的线程池接口是 ExecutorService， ExecutorService 的默认实现是 ThreadPoolExecutor；<br>   普通类 Executors 里面调用的就是 ThreadPoolExecutor。</p>
 </blockquote>
 </li>
-<li>线程池的优点<blockquote>
+<li><p>线程池的优点</p>
+<blockquote>
 <p>1 避免线程的创建和销毁带来的性能开销。<br>   2 避免大量的线程间因互相抢占系统资源导致的阻塞现象。<br>   3 能够对线程进行简单的管理并提供定时执行、间隔执行等功能。</p>
 </blockquote>
 </li>
-<li><p>如何初始化一个线程池, 并调用需要用到的线程处理数据</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">NewPool</span> </span>&#123;</span><br><span class="line">    <span class="keyword">final</span> <span class="keyword">static</span> <span class="keyword">int</span> corePoolSize = <span class="number">5</span>;</span><br><span class="line">    <span class="keyword">final</span> <span class="keyword">static</span> <span class="keyword">int</span> maximumPoolSize = <span class="number">5</span>;</span><br><span class="line">    <span class="keyword">final</span> <span class="keyword">static</span> BlockingQueue&lt;Runnable&gt; workQueue = <span class="keyword">new</span> LinkedBlockingQueue&lt;Runnable&gt;(<span class="number">1000</span>);</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> ExecutorService pool = <span class="keyword">null</span>;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//初始化线程池</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">initPool</span><span class="params">()</span> <span class="keyword">throws</span> InterruptedException </span>&#123;</span><br><span class="line">        pool = <span class="keyword">new</span> ThreadPoolExecutor(corePoolSize, maximumPoolSize, <span class="number">0L</span>, TimeUnit.MILLISECONDS, workQueue);</span><br><span class="line">        <span class="comment">//或者使用Executors创建线程池</span></span><br><span class="line">        <span class="comment">//pool = Executors.newSingleThreadExecutor();</span></span><br><span class="line">        <span class="comment">//pool = Executors.newCachedThreadPool();</span></span><br><span class="line">        <span class="comment">//pool = Executors.newFixedThreadPool(5);</span></span><br><span class="line">        <span class="comment">//pool = Executors.newScheduledThreadPool(5);</span></span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    </span><br><span class="line">    <span class="comment">//当有新的数据时调用poolAddThread(String,int,Object obj)处理传入的数据，例如如obj, object就相当于数据</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">poolAddThread</span><span class="params">(String threadName, <span class="keyword">int</span> count, Object obj)</span> </span>&#123;</span><br><span class="line">        NewThread thread = <span class="keyword">new</span> NewThread(threadName, count, obj);</span><br><span class="line">        pool.submit(thread);</span><br><span class="line">        NewCallableThread callThread = <span class="keyword">new</span> NewCallableThread(threadName, count, obj);</span><br><span class="line">        pool.submit(callThread);</span><br><span class="line">        pool.execute(thread);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> InterruptedException </span>&#123;</span><br><span class="line">        initPool();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<li><p>如何初始化一个线程池</p>
+<pre class=" language-java"><code class="language-java">     <span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">NewPool</span> <span class="token punctuation">{</span>
+         <span class="token keyword">final</span> <span class="token keyword">static</span> <span class="token keyword">int</span> corePoolSize <span class="token operator">=</span> <span class="token number">5</span><span class="token punctuation">;</span>
+         <span class="token keyword">final</span> <span class="token keyword">static</span> <span class="token keyword">int</span> maximumPoolSize <span class="token operator">=</span> <span class="token number">5</span><span class="token punctuation">;</span>
+         <span class="token keyword">final</span> <span class="token keyword">static</span> BlockingQueue<span class="token operator">&lt;</span>Runnable<span class="token operator">></span> workQueue <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">LinkedBlockingQueue</span><span class="token operator">&lt;</span>Runnable<span class="token operator">></span><span class="token punctuation">(</span><span class="token number">1000</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+         <span class="token keyword">private</span> <span class="token keyword">static</span> ExecutorService pool <span class="token operator">=</span> null<span class="token punctuation">;</span>
+
+         <span class="token comment" spellcheck="true">//初始化线程池</span>
+         <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">initPool</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">throws</span> InterruptedException <span class="token punctuation">{</span>
+             pool <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">ThreadPoolExecutor</span><span class="token punctuation">(</span>corePoolSize<span class="token punctuation">,</span> maximumPoolSize<span class="token punctuation">,</span> 0L<span class="token punctuation">,</span> TimeUnit<span class="token punctuation">.</span>MILLISECONDS<span class="token punctuation">,</span> workQueue<span class="token punctuation">)</span><span class="token punctuation">;</span>
+             <span class="token comment" spellcheck="true">//或者使用Executors创建线程池</span>
+             <span class="token comment" spellcheck="true">//pool = Executors.newSingleThreadExecutor();</span>
+             <span class="token comment" spellcheck="true">//pool = Executors.newCachedThreadPool();</span>
+             <span class="token comment" spellcheck="true">//pool = Executors.newFixedThreadPool(5);</span>
+             <span class="token comment" spellcheck="true">//pool = Executors.newScheduledThreadPool(5);</span>
+         <span class="token punctuation">}</span>
+         <span class="token comment" spellcheck="true">//当有新的数据时调用poolAddThread(String,int,Object obj)处理传入的数据，</span>
+         <span class="token comment" spellcheck="true">//例如如obj, object就相当于数据</span>
+         <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">poolAddThread</span><span class="token punctuation">(</span>String threadName<span class="token punctuation">,</span> <span class="token keyword">int</span> count<span class="token punctuation">,</span> Object obj<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+             NewThread thread <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">NewThread</span><span class="token punctuation">(</span>threadName<span class="token punctuation">,</span> count<span class="token punctuation">,</span> obj<span class="token punctuation">)</span><span class="token punctuation">;</span>
+             pool<span class="token punctuation">.</span><span class="token function">submit</span><span class="token punctuation">(</span>thread<span class="token punctuation">)</span><span class="token punctuation">;</span>
+             NewCallableThread callThread <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">NewCallableThread</span><span class="token punctuation">(</span>threadName<span class="token punctuation">,</span> count<span class="token punctuation">,</span> obj<span class="token punctuation">)</span><span class="token punctuation">;</span>
+             pool<span class="token punctuation">.</span><span class="token function">submit</span><span class="token punctuation">(</span>callThread<span class="token punctuation">)</span><span class="token punctuation">;</span>
+             pool<span class="token punctuation">.</span><span class="token function">execute</span><span class="token punctuation">(</span>thread<span class="token punctuation">)</span><span class="token punctuation">;</span>
+         <span class="token punctuation">}</span>
+
+         <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">main</span><span class="token punctuation">(</span>String<span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span> <span class="token keyword">throws</span> InterruptedException <span class="token punctuation">{</span>
+             <span class="token function">initPool</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+         <span class="token punctuation">}</span>
+     <span class="token punctuation">}</span>
+</code></pre>
 <blockquote>
 <p>execute 和submit的区别在于submit可以抛出异常和返回结果，给外部调用者处理，例如某一个task失败则终止其他task执行，或者shutdown线程池.</p>
 </blockquote>
 </li>
-<li><p>线程池分类及比较<br>Executors 提供四种线程池：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">Executor</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">execute</span><span class="params">(Runnable command)</span></span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">ExecutorService</span> <span class="keyword">extends</span> <span class="title">Executor</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">shutdown</span><span class="params">()</span></span>;</span><br><span class="line">    <span class="function">List&lt;Runnable&gt; <span class="title">shutdownNow</span><span class="params">()</span></span>;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">boolean</span> <span class="title">isShutdown</span><span class="params">()</span></span>;</span><br><span class="line">    <span class="function"><span class="keyword">boolean</span> <span class="title">isTerminated</span><span class="params">()</span></span>;</span><br><span class="line">    </span><br><span class="line">    &lt;T&gt; <span class="function">Future&lt;T&gt; <span class="title">submit</span><span class="params">(Callable&lt;T&gt; task)</span></span>;</span><br><span class="line">    &lt;T&gt; <span class="function">Future&lt;T&gt; <span class="title">submit</span><span class="params">(Runnable task, T result)</span></span>;</span><br><span class="line">    Future&lt;?&gt; submit(Runnable task);</span><br><span class="line">    ...</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Executors</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> ExecutorService <span class="title">newCachedThreadPool</span><span class="params">()</span> </span>&#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">new</span> ThreadPoolExecutor(<span class="number">0</span>, Integer.MAX_VALUE, <span class="number">60L</span>, TimeUnit.SECONDS, </span><br><span class="line">                            <span class="keyword">new</span> SynchronousQueue&lt;Runnable&gt;());</span><br><span class="line">    &#125;</span><br><span class="line">    ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<li><p>线程池分类及比较-Executors 提供四种线程池</p>
+<blockquote>
+<p>newCachedThreadPool<br>   可根据需要创建新线程的线程池，但是在以前构造的线程可用时将重用它们。对于执行很多短期异步任务的程序而言，这些线程池通常可提高程序性能。<br>   调用 execute() 将重用以前构造的线程（如果线程可用）。如果现有线程没有可用的，则创建一个新线程并添加到池中,<br>   终止并从缓存中移除那些已有 60 秒钟未被使用的线程。<br>   因此，长时间保持空闲的线程池不会使用任&gt;何资源。注意，可以使用 ThreadPoolExecutor 构造方法创建具有类似属性但细节不同（例如超时参数）的线程池。</p>
+</blockquote>
+<blockquote>
+<p>newSingleThreadExecutor<br>   创建一个单线程池，也就是该线程池只有一个线程在工作，所有的任务是串行执行的，如果这个唯一的线程因为异常结束，那么会有一个新的线程来替代它，<br>   此线程池保证所有任务的执行顺序按照任务的提交顺序执行。</p>
+</blockquote>
+<blockquote>
+<p>newFixedThreadPool<br>   创建固定大小的线程池，每次提交一个任务就创建一个线程，直到线程达到线程池的最大大小，线程池的大小一旦达到最大值就会保持不变，<br>   如果某个线程因为执行异常而结束，那么线程池会补充一个新线程。</p>
+</blockquote>
+<blockquote>
+<p>newScheduledThreadPool<br>   创建一个大小无限的线程池，此线程池支持定时以及周期性执行任务的需求。</p>
+</blockquote>
+<pre class=" language-java"><code class="language-java">     <span class="token keyword">public</span> <span class="token keyword">interface</span> <span class="token class-name">Executor</span> <span class="token punctuation">{</span>
+         <span class="token keyword">void</span> <span class="token function">execute</span><span class="token punctuation">(</span>Runnable command<span class="token punctuation">)</span><span class="token punctuation">;</span>
+     <span class="token punctuation">}</span>
+
+     <span class="token keyword">public</span> <span class="token keyword">interface</span> <span class="token class-name">ExecutorService</span> <span class="token keyword">extends</span> <span class="token class-name">Executor</span> <span class="token punctuation">{</span>
+         <span class="token keyword">void</span> <span class="token function">shutdown</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+         List<span class="token operator">&lt;</span>Runnable<span class="token operator">></span> <span class="token function">shutdownNow</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+         <span class="token keyword">boolean</span> <span class="token function">isShutdown</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+         <span class="token keyword">boolean</span> <span class="token function">isTerminated</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+         <span class="token operator">&lt;</span>T<span class="token operator">></span> Future<span class="token operator">&lt;</span>T<span class="token operator">></span> <span class="token function">submit</span><span class="token punctuation">(</span>Callable<span class="token operator">&lt;</span>T<span class="token operator">></span> task<span class="token punctuation">)</span><span class="token punctuation">;</span>
+         <span class="token operator">&lt;</span>T<span class="token operator">></span> Future<span class="token operator">&lt;</span>T<span class="token operator">></span> <span class="token function">submit</span><span class="token punctuation">(</span>Runnable task<span class="token punctuation">,</span> T result<span class="token punctuation">)</span><span class="token punctuation">;</span>
+         Future<span class="token operator">&lt;</span><span class="token operator">?</span><span class="token operator">></span> <span class="token function">submit</span><span class="token punctuation">(</span>Runnable task<span class="token punctuation">)</span><span class="token punctuation">;</span>
+         <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
+     <span class="token punctuation">}</span>
+
+     <span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">Executors</span> <span class="token punctuation">{</span>
+         <span class="token keyword">public</span> <span class="token keyword">static</span> ExecutorService <span class="token function">newCachedThreadPool</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+                 <span class="token keyword">return</span> <span class="token keyword">new</span> <span class="token class-name">ThreadPoolExecutor</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">,</span> Integer<span class="token punctuation">.</span>MAX_VALUE<span class="token punctuation">,</span> 60L<span class="token punctuation">,</span> TimeUnit<span class="token punctuation">.</span>SECONDS<span class="token punctuation">,</span> 
+                                 <span class="token keyword">new</span> <span class="token class-name">SynchronousQueue</span><span class="token operator">&lt;</span>Runnable<span class="token operator">></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+         <span class="token punctuation">}</span>
+         <span class="token comment" spellcheck="true">//...</span>
+     <span class="token punctuation">}</span>
+</code></pre>
 </li>
-</ol>
+<li><p>ThreadPoolExecutor构造函数</p>
+<pre class=" language-java"><code class="language-java">     <span class="token keyword">public</span> <span class="token function">ThreadPoolExecutor</span><span class="token punctuation">(</span><span class="token keyword">int</span> corePoolSize<span class="token punctuation">,</span>
+                             <span class="token keyword">int</span> maximumPoolSize<span class="token punctuation">,</span>
+                             <span class="token keyword">long</span> keepAliveTime<span class="token punctuation">,</span>
+                             TimeUnit unit<span class="token punctuation">,</span>
+                             BlockingQueue<span class="token operator">&lt;</span>Runnable<span class="token operator">></span> workQueue<span class="token punctuation">,</span>
+                             ThreadFactory threadFactory<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+         <span class="token keyword">this</span><span class="token punctuation">(</span>corePoolSize<span class="token punctuation">,</span> maximumPoolSize<span class="token punctuation">,</span> keepAliveTime<span class="token punctuation">,</span> unit<span class="token punctuation">,</span> workQueue<span class="token punctuation">,</span> 
+             threadFactory<span class="token punctuation">,</span> defaultHandler<span class="token punctuation">)</span><span class="token punctuation">;</span>
+     <span class="token punctuation">}</span>
+</code></pre>
 <blockquote>
-<p>1 newCachedThreadPool<br>    是一个可根据需要创建新线程的线程池，但是在以前构造的线程可用时将重用它们。对于执行很多短期异步任务的程序而言，这些线程池通常可提高程序性能。<br>    调用 execute() 将重用以前构造的线程（如果线程可用）。如果现有线程没有可用的，则创建一个新线程并添加到池中。终止并从缓存中移除那些已有 60 秒钟未被使用的线程。<br>    因此，长时间保持空闲的线程池不会使用任&gt;何资源。注意，可以使用 ThreadPoolExecutor 构造方法创建具有类似属性但细节不同（例如超时参数）的线程池。</p>
-</blockquote>
-<blockquote>
-<p>2 newSingleThreadExecutor<br>    创建是一个单线程池，也就是该线程池只有一个线程在工作，所有的任务是串行执行的，如果这个唯一的线程因为异常结束，那么会有一个新的线程来替代它，<br>    此线程池保证所有任务的执行顺序按照任务的提交顺序执行。</p>
-</blockquote>
-<blockquote>
-<p>3 newFixedThreadPool<br>    创建固定大小的线程池，每次提交一个任务就创建一个线程，直到线程达到线程池的最大大小，线程池的大小一旦达到最大值就会保持不变，<br>    如果某个线程因为执行异常而结束，那么线程池会补充一个新线程。</p>
-</blockquote>
-<blockquote>
-<p>4 newScheduledThreadPool<br>    创建一个大小无限的线程池，此线程池支持定时以及周期性执行任务的需求。</p>
-</blockquote>
-<ol start="5">
-<li>ThreadPoolExecutor构造函数<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="title">ThreadPoolExecutor</span><span class="params">(<span class="keyword">int</span> corePoolSize,</span></span></span><br><span class="line"><span class="function"><span class="params">                        <span class="keyword">int</span> maximumPoolSize,</span></span></span><br><span class="line"><span class="function"><span class="params">                        <span class="keyword">long</span> keepAliveTime,</span></span></span><br><span class="line"><span class="function"><span class="params">                        TimeUnit unit,</span></span></span><br><span class="line"><span class="function"><span class="params">                        BlockingQueue&lt;Runnable&gt; workQueue,</span></span></span><br><span class="line"><span class="function"><span class="params">                        ThreadFactory threadFactory)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">this</span>(corePoolSize, maximumPoolSize, keepAliveTime, unit, workQueue, </span><br><span class="line">        threadFactory, defaultHandler);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-</li>
-</ol>
-<blockquote>
-<p>1 corePoolSize：线程池的核心线程数，一般情况下不管有没有任务都会一直在线程池中一直存活，只有在 ThreadPoolExecutor 中的方法 allowCoreThreadTimeOut(boolean value) 设置为 true 时，闲置的核心线程会存   在超时机制，如果在指定时间没有新任务来时，核心线程也会被终止，而这个时间间隔由第3个属性 keepAliveTime 指定。</p>
+<p>1 corePoolSize：线程池的核心线程数，一般情况下不管有没有任务都会一直在线程池中一直存活，只有在 ThreadPoolExecutor 中的方法<br>   allowCoreThreadTimeOut(boolean value) 设置为 true 时，闲置的核心线程会存在超时机制，如果在指定时间没有新任务来时，<br>   核心线程也会被终止，而这个时间间隔由第3个属性 keepAliveTime 指定。</p>
 </blockquote>
 <blockquote>
 <p>2 maximumPoolSize：线程池所能容纳的最大线程数，当活动的线程数达到这个值后，后续的新任务将会被阻塞。</p>
 </blockquote>
 <blockquote>
-<p>3 keepAliveTime：控制线程闲置时的超时时长，超过则终止该线程。一般情况下用于非核心线程，只有在 ThreadPoolExecutor 中的方法 allowCoreThreadTimeOut(boolean value) 设置为 true时，也作用于核心线程。</p>
+<p>3 keepAliveTime：控制线程闲置时的超时时长，超过则终止该线程。一般情况下用于非核心线程，<br>   只有在 ThreadPoolExecutor 中的方法 allowCoreThreadTimeOut(boolean value) 设置为 true时，也作用于核心线程。</p>
 </blockquote>
 <blockquote>
-<p>4 unit：用于指定 keepAliveTime 参数的时间单位，TimeUnit 是个 enum 枚举类型，常用的有：TimeUnit.HOURS(小时)、TimeUnit.MINUTES(分钟)、TimeUnit.SECONDS(秒) 和 TimeUnit.MILLISECONDS(毫秒)等。</p>
+<p>4 unit：用于指定 keepAliveTime 参数的时间单位，TimeUnit 是个 enum 枚举类型，常用的有：TimeUnit.HOURS(小时)、TimeUnit.MINUTES(分钟)、<br>   TimeUnit.SECONDS(秒) 和TimeUnit.MILLISECONDS(毫秒)等。</p>
 </blockquote>
 <blockquote>
 <p>5 workQueue：线程池的任务队列，通过线程池的 execute(Runnable command) 方法会将任务 Runnable 存储在队列中，之后我会出一个submit和excute的详细对比。</p>
@@ -340,165 +790,418 @@
 <blockquote>
 <p>6 threadFactory：线程工厂，它是一个接口，用来为线程池创建新线程的。</p>
 </blockquote>
-<ol start="6">
-<li>线程池的关闭</li>
-</ol>
+</li>
+<li><p>线程池的关闭</p>
 <blockquote>
-<p>ThreadPoolExecutor 提供了两个方法，用于线程池的关闭，分别是 shutdown() 和 shutdownNow()。<br>  shutdown()：不会立即的终止线程池，而是要等所有任务缓存队列中的任务都执行完后才终止，但再也不会接受新的任务。<br>  shutdownNow()：立即终止线程池，并尝试打断正在执行的任务，并且清空任务缓存队列，返回尚未执行的任务。</p>
+<p>ThreadPoolExecutor 提供了两个方法，用于线程池的关闭，分别是 shutdown() 和 shutdownNow()。<br>   shutdown()：不会立即的终止线程池，而是要等所有任务缓存队列中的任务都执行完后才终止，但再也不会接受新的任务。<br>   shutdownNow()：立即终止线程池，并尝试打断正在执行的任务，并且清空任务缓存队列，返回尚未执行的任务。</p>
 </blockquote>
+</li>
+</ol>
 <hr>
 <p><a href="https://www.jianshu.com/p/b8197dd2934c" target="_blank" rel="noopener">参考https://www.jianshu.com/p/b8197dd2934c</a></p>
 
-                    
-                    <!-- Tags Bottom -->
-                    
-                        <div class="tags-container-bottom">
-                            <i class="fa fa-tag pr3 text-main-color"></i><a class="fw3 ph1 dib" href="/tags/并发/">#并发</a> <a class="fw3 ph1 dib" href="/tags/pool/">#pool</a> <a class="fw3 ph1 dib" href="/tags/synchronized/">#synchronized</a>
-                        </div>
-                    
+            </div>
+            <hr>
 
-                    <!-- Comments -->
-                    
-
-
-
-                </div>
-                <div class="fl w-100 w-30-l center fw3 lh-copy pl4-ns tl black-50">
-                    
-                    <hr class="dn-l mw4 black-50 mt5">
-                    
-                    <!-- Widget 1: About -->
-                    <!-- <div class="mt5 mt0-l">
-    <article class="dt db-l mw8 mw8-m mw5-ns center ml0-l bg-white mv3">
-        <div class="dn dtc-m db-l v-mid tc pr4 pr0-l" style="min-width: 6rem;">
-            <img src="" class="mb4-l br-100 h3 w3 h4-l w4-l dib" title="Jack Romer">
-        </div>
-        <div class="dtc db-l v-mid lh-copy measure center f6 black-50 tj">
             
-        </div>
-    </article>
-</div> -->
+            <style>
+    #reward {
+        margin: 40px 0;
+        text-align: center;
+    }
 
-                    <hr class="dn-l mw4 black-50 mt5">
-                    
-                    <!-- Widget 2: Categories -->
-                    
-                        <div class="mt5 tc tl-l">
-    <h3>分类</h3>
-    
-        <p>
-            <a href="/categories/Java/">Java</a>
-        </p>
-    
-        <p>
-            <a href="/categories/Java/Thread/">Thread</a>
-        </p>
-    
-</div>
+    #reward .reward-link {
+        font-size: 1.88rem;
+    }
 
+    #reward .btn-floating:hover {
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2), 0 5px 15px rgba(0, 0, 0, 0.2);
+    }
 
-                        <hr class="dn-l mw4 black-50 mt5">
-                    
+    #rewardModal {
+        width: 320px;
+        height: 350px;
+    }
 
-                    <!-- Widget 3: Recent Posts -->
-                    <div class="mt5 tc tl-l">
-    <h3>近期文章</h3>
-    
-        <p>
-            <a href="/2018/10/31/storm安装教程/">storm安装教程</a>
-        </p>
-    
-        <p>
-            <a href="/2018/10/29/Netty-NIO-介绍和使用/">Netty-Nio</a>
-        </p>
-    
-        <p>
-            <a href="/2018/10/29/Spring-transactional-事务/">Spring-transactional-事务</a>
-        </p>
-    
-        <p>
-            <a href="/2018/10/29/Thread-pool-多线程并发/">Thread-pool-多线程并发</a>
-        </p>
-    
-</div>
+    #rewardModal .reward-title {
+        margin: 15px auto;
+        padding-bottom: 5px;
+    }
+
+    #rewardModal .modal-content {
+        padding: 10px;
+    }
+
+    #rewardModal .close {
+        position: absolute;
+        right: 15px;
+        top: 15px;
+        color: rgba(0, 0, 0, 0.5);
+        font-size: 1.3rem;
+        line-height: 20px;
+        cursor: pointer;
+    }
+
+    #rewardModal .reward-tabs {
+        margin: 0 auto;
+        width: 210px;
+    }
+
+    .reward-tabs .tabs {
+        height: 38px;
+        margin: 10px auto;
+        padding-left: 0;
+    }
+
+    .reward-tabs .tabs .tab {
+        height: 38px;
+        line-height: 38px;
+    }
+
+    .reward-tabs .tab a {
+        color: #fff;
+        background-color: #ccc;
+    }
+
+    .reward-tabs .tab a:hover {
+        color: #fff;
+    }
+
+    .reward-tabs .wechat-tab .active {
+        color: #fff;
+        background-color: #22AB38;
+    }
+
+    .reward-tabs .alipay-tab .active {
+        color: #fff;
+        background-color: #019FE8;
+    }
+
+    .reward-tabs .reward-img {
+        width: 210px;
+        height: 210px;
+    }
+</style>
+
+<div id="reward">
+    <a class="reward-link btn-floating btn-large waves-effect waves-light red">赏</a>
+
+    <!-- Modal Structure -->
+    <div id="rewardModal" class="modal">
+        <div class="modal-content">
+            <a class="close"><i class="fa fa-close"></i></a>
+            <h4 class="reward-title">你的赏识是我前进的动力</h4>
+            <div class="reward-content">
+                <div class="reward-tabs">
+                    <ul class="tabs">
+                        <li class="tab wechat-tab waves-effect waves-light"><a class="active" href="#wechat">微信</a></li>
+                        <li class="tab alipay-tab waves-effect waves-light"><a href="#alipay">支付宝</a></li>
+                    </ul>
+                    <div id="wechat">
+                        <img src="/images/weixin.png" class="reward-img" alt="微信打赏二维码">
+                    </div>
+                    <div id="alipay">
+                        <img src="/images/alipay.png" class="reward-img" alt="支付宝打赏二维码">
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
 
+<script>
+    $(function () {
+        $('#reward .reward-link').on('click', function () {
+            $('#rewardModal').openModal();
+        });
 
-<!-- Footer -->
-<div class="bg-1 ph2 ph5-ns pv5">
-        <div class="mv8">
-            <div class="center tc">
-                
-                    <div class="dib mh3">
-                        <a class="f3 f2-ns white dim" href="https://twitter.com/?lang=en" target="_blank">
-                            <i class="fa fa-twitter"></i>
-                        </a>
-                    </div>
-                
-                    <div class="dib mh3">
-                        <a class="f3 f2-ns white dim" href="https://www.facebook.com/" target="_blank">
-                            <i class="fa fa-facebook"></i>
-                        </a>
-                    </div>
-                
-                    <div class="dib mh3">
-                        <a class="f3 f2-ns white dim" href="https://dribbble.com/" target="_blank">
-                            <i class="fa fa-dribbble"></i>
-                        </a>
-                    </div>
-                
-                    <div class="dib mh3">
-                        <a class="f3 f2-ns white dim" href="https://github.com/klugjo/hexo-theme-anodyne" target="_blank">
-                            <i class="fa fa-github"></i>
-                        </a>
-                    </div>
-                
-                    <div class="dib mh3">
-                        <a class="f3 f2-ns white dim" href="https://plus.google.com/" target="_blank">
-                            <i class="fa fa-google-plus"></i>
-                        </a>
-                    </div>
-                
-                    <div class="dib mh3">
-                        <a class="f3 f2-ns white dim" href="https://www.behance.net/" target="_blank">
-                            <i class="fa fa-behance"></i>
-                        </a>
-                    </div>
-                
-                    <div class="dib mh3">
-                        <a class="f3 f2-ns white dim" href="https://500px.com/" target="_blank">
-                            <i class="fa fa-500px"></i>
-                        </a>
-                    </div>
-                
-                    <div class="dib mh3">
-                        <a class="f3 f2-ns white dim" href="mailto:test@example.com" target="_blank">
-                            <i class="fa fa-envelope"></i>
-                        </a>
-                    </div>
-                
-                    <div class="dib mh3">
-                        <a class="f3 f2-ns white dim" href="/#" target="_blank">
-                            <i class="fa fa-rss"></i>
-                        </a>
-                    </div>
-                
-            </div>
-            <div class="f6 f5-ns center tc white pt5 fw3">
-                @Untitled. All right reserved | Design & Hexo <a class="link dim white" href="http://www.codeblocq.com/">Jonathan Klughertz</a>
+        $('#rewardModal .close').on('click', function () {
+            $('#rewardModal').closeModal();
+        });
+    });
+</script>
+            
+
+            <link rel="stylesheet" type="text/css" href="/libs/share/css/share.min.css">
+
+<div id="article-share">
+    
+    <div class="social-share" data-disabled="qzone" data-wechat-qrcode-helper="<p>微信里点“发现”->“扫一扫”二维码便可查看分享。</p>"></div>
+    
+</div>
+
+<script src="/libs/share/js/social-share.min.js"></script>
+
+            <div class="reprint">
+                <p>
+                    <span class="reprint-tip">转载请注明: </span>
+                    <a href="https://jackromer.github.io" class="b-link-green">Jack Romer welcome ...</a>
+                    <i class="fa fa-angle-right fa-lg fa-fw text-color"></i>
+                    <a href="/2018/10/29/Thread-pool-多线程并发/" class="b-link-green">Thread-pool-多线程并发</a>
+                </p>
             </div>
         </div>
     </div>
 
-<!-- After Footer -->
-<!-- Disqus Comments -->
+    
+        <link rel="stylesheet" href="/libs/gitalk/gitalk.css">
+<link rel="stylesheet" href="/css/my-gitalk.css">
+
+<div class="card gitalk-card" data-aos="fade-up">
+    <div id="gitalk-container" class="card-content"></div>
+</div>
+
+<script src="/libs/gitalk/gitalk.min.js"></script>
+<script>
+    let gitalk = new Gitalk({
+        clientID: '1127667b07d1fb577d33',
+        clientSecret: 'e9ccb1aa6da4e6e06b74638240042cc316e5d234',
+        repo: 'https://github.com/JACKROMER/GitTalk-Issues',
+        owner: 'Jack Romer',
+        admin: "JACKROMER",
+        id: '2018-10-29T15-42-56',
+        distractionFreeMode: false  // Facebook-like distraction free mode
+    });
+
+    gitalk.render('gitalk-container');
+</script>
+    
+
+    
+
+    
+
+    
+
+    
+
+<article id="prenext-posts" class="prev-next articles">
+    <div class="row article-row">
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge left-badge text-color">上一篇</div>
+            <div class="card">
+                <a href="/2018/10/29/Spring-transactional-事务/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/2.jpg" class="responsive-img" alt="Spring-transactional-事务">
+                        
+                        <span class="card-title">Spring-transactional-事务</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary">hello 小姐姐！this is my page for you. good afternoon.
 
 
 
+一盏灯， 一片昏黄； 一简书， 一杯淡茶。 守着那一份淡定， 品读属于自己的寂寞。 保持淡定， 才能欣赏到最美丽的风景！ 保持淡定，</div>
+                    <div class="publish-info">
+                        <span class="publish-date">
+                            <i class="fa fa-clock-o fa-fw icon-date"></i>2018-10-29
+                        </span>
+                        <span class="publish-author">
+                            
+                            <i class="fa fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/Java/" class="post-category" target="_blank">
+                                    Java
+                                </a>
+                            
+                            <a href="/categories/Java/spring/" class="post-category" target="_blank">
+                                    spring
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/transaction/" target="_blank">
+                        <span class="chip bg-color">transaction</span>
+                    </a>
+                    
+                    <a href="/tags/spring/" target="_blank">
+                        <span class="chip bg-color">spring</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">本篇</div>
+            <div class="card">
+                <a href="/2018/10/29/Thread-pool-多线程并发/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/5.jpg" class="responsive-img" alt="Thread-pool-多线程并发">
+                        
+                        <span class="card-title">Thread-pool-多线程并发</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary">多线程简介
+多线程适合多种开发语言的开发, 这是一种思想，基于的是操作系统底层的CPU调度.  此篇介绍线程、多线程、和线程池的使用和机制。
+
+进程\线程
+进程
+1 进程 是指在系统中正在运行的一个应用程序, 每一个进程都有一个PID， 当</div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="fa fa-clock-o fa-fw icon-date"></i>2018-10-29
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fa fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/Java/" class="post-category" target="_blank">
+                                    Java
+                                </a>
+                            
+                            <a href="/categories/Java/Thread/" class="post-category" target="_blank">
+                                    Thread
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/并发/" target="_blank">
+                        <span class="chip bg-color">并发</span>
+                    </a>
+                    
+                    <a href="/tags/pool/" target="_blank">
+                        <span class="chip bg-color">pool</span>
+                    </a>
+                    
+                    <a href="/tags/synchronized/" target="_blank">
+                        <span class="chip bg-color">synchronized</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+    </div>
+</article>
+</div>
+    </div>
+    <div class="col l3 hide-on-med-and-down">
+        <div class="toc-widget">
+            <div class="toc-title">目录</div>
+            <div id="toc-content">
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="/libs/tocbot/tocbot.min.js"></script>
+<script>
+    $(function () {
+        tocbot.init({
+            tocSelector: '#toc-content',
+            contentSelector: '#articleContent',
+            headingSelector: 'h2, h3, h4'
+        });
+
+        // modify the toc link href to support Chinese.
+        let i = 0;
+        let tocHeading = 'toc-heading-';
+        $('#toc-content a').each(function () {
+            $(this).attr('href', '#' + tocHeading + (++i));
+        });
+
+        // modify the heading title id to support Chinese.
+        i = 0;
+        $('#articleContent').children('h2, h3, h4').each(function () {
+            $(this).attr('id', tocHeading + (++i));
+        });
+
+        // Set scroll toc fixed.
+        let tocHeight = parseInt($(window).height() * 0.4 - 64);
+        let $tocWidget = $('.toc-widget');
+        $(window).scroll(function () {
+            let scroll = $(window).scrollTop();
+            /* add post toc fixed. */
+            if (scroll > tocHeight) {
+                $tocWidget.addClass('toc-fixed');
+            } else {
+                $tocWidget.removeClass('toc-fixed');
+            }
+        });
+    });
+</script>
+    
+
+</main>
+
+<footer class="page-footer bg-color">
+    <div class="container row center-align">
+        <div class="col s12 m8 l8 copy-right">
+            本站由&copy;<a href="https://blinkfox.github.io/" target="_blank">Blinkfox</a>基于
+            <a href="https://hexo.io/" target="_blank">Hexo</a> 采用
+            <a href="https://github.com/blinkfox/hexo-theme-matery" target="_blank">hexo-theme-matery</a>的主题搭建.
+        </div>
+        <div class="col s12 m4 l4 social-link"><a href="https://github.com/JACKROMER" class="tooltipped" target="_blank" data-tooltip="访问我的GitHub" data-position="top" data-delay="50">
+    <i class="fa fa-github"></i>
+</a>
+<a href="mailto:jackromer@163.com" class="tooltipped" target="_blank" data-tooltip="邮件联系我" data-position="top" data-delay="50">
+    <i class="fa fa-envelope-open"></i>
+</a>
+<a href="#!" class="tooltipped" data-tooltip="QQ联系我: 943655387" data-position="top" data-delay="50">
+    <i class="fa fa-qq"></i>
+</a>
+
+<a href="/atom.xml" class="tooltipped" target="_blank" data-tooltip="RSS 订阅" data-position="top" data-delay="50">
+    <i class="fa fa-rss"></i>
+</a>
+</div>
+    </div>
+</footer>
+
+<div class="progress-bar"></div>
+
+
+<!-- 搜索遮罩框 -->
+<div id="searchModal" class="modal">
+    <div class="modal-content">
+        <div class="search-header">
+            <span class="title">搜索</span>
+            <input type="search" id="searchInput" name="s" placeholder="请输入搜索的关键字" class="search-input" autofocus>
+        </div>
+        <div id="searchResult"></div>
+    </div>
+</div>
+
+<script src="/js/search.js"></script>
+<script type="text/javascript">
+    searchFunc("/" + "search.xml", 'searchInput', 'searchResult');
+</script>
+<!-- 回到顶部按钮 -->
+<div id="backTop" class="top-scroll">
+    <a class="btn-floating btn-large waves-effect waves-light" href="#!">
+        <i class="fa fa-angle-up"></i>
+    </a>
+</div>
+
+
+<script src="/libs/materialize/js/materialize.min.js"></script>
+<script src="/libs/masonry/masonry.pkgd.min.js"></script>
+<script src="/libs/aos/aos.js"></script>
+<script src="/libs/scrollprogress/scrollProgress.min.js"></script>
+<script src="/libs/lightGallery/js/lightgallery-all.min.js"></script>
+<script src="/js/matery.js"></script>
 </body>
-
 </html>
