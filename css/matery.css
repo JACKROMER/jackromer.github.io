@@ -379,7 +379,7 @@ header .go-back i {
 }
 
 .bg-cover .title {
-    font-size: 4rem;
+    /* font-size: 4rem; */
     font-weight: 700;
     line-height: 1.85em;
     margin-bottom: 20px;
@@ -976,7 +976,7 @@ table tr:nth-child(2n), thead {
 }
 
 .chip-container .chip-default {
-    color: #34495e;
+    color: #1c69b7;
 }
 
 .chip-container .chip-active {
@@ -1483,7 +1483,7 @@ table tr:nth-child(2n), thead {
 }
 
 .other-skills .chip {
-    background-color: #fff;
+    background-color: #ffd1dc;
     border: 1px solid #eee;
 }
 

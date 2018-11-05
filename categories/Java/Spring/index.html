@@ -254,7 +254,7 @@
                 <div class="brand">
                     <div class="title center-align">
                     
-                        See as faraway as you can, do as firm as you can do, getting better every day.
+                        See as far away as possible you can, do as firm as possible you can , getting better every day.
                     
                     </div>
 
@@ -273,7 +273,8 @@
 <script>
 // Dynamically switch banner pictures every day.
 var sec =  new Date().getSeconds();
-var imageNum = sec%10;
+//var imageNum = Math.floor(Math.random() * 10) + 9;
+var imageNum = sec%10 + 10;
 $('.bg-cover').css('background-image', 'url(/medias/banner/' + imageNum + '.jpg)');
 </script>
 
@@ -353,7 +354,7 @@ $('.bg-cover').css('background-image', 'url(/medias/banner/' + imageNum + '.jpg)
                         <div class="card-image tag-image">
                             
                             
-                            <img src="/medias/featureimages/2.jpg" class="responsive-img" alt="Spring-transactional-事务">
+                            <img src="/medias/banner/2.jpg" class="responsive-img" alt="Spring-transactional-事务">
                             
                             <span class="card-title">Spring-transactional-事务</span>
                         </div>
