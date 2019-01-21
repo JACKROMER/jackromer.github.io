@@ -5,12 +5,10 @@
 
 <head><meta name="generator" content="Hexo 3.8.0">
     <meta charset="utf-8">
-    <meta name="keywords" content="使用Hibernate.jdbc.Work高性能处理批量数据, Romer">
-    <meta name="description" content="
-本文介绍如何使用Hibernate.jdbc.Work批量处理大量的数据（QCUD）
-
-简介
-为何使用原生的批量处理数据操作而不用现有的hibernate框架实现呢，因为hibernate对插入和更新的处理方式在大量数据插入式并不能更好的">
+    <meta name="keywords" content="Kafka介绍以及集群安装, Romer">
+    <meta name="description" content="简介本文介绍KAFKA的特性和集群安装以及配合ACTIVEMQ使用
+什么是KAFKA
+Kafka是由Apache软件基金会开发的一个开源流处理平台，由Scala和Java编写。Kafka是一种高吞吐量的分布式发布订阅消息系统，它可以处理消费">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="renderer" content="webkit|ie-stand|ie-comp">
@@ -18,7 +16,7 @@
     <meta name="format-detection" content="telephone=no">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <title>使用Hibernate.jdbc.Work高性能处理批量数据 | Jack Romer</title>
+    <title>Kafka介绍以及集群安装 | Jack Romer</title>
     <link rel="icon" type="image/png" href="/images/mine.jpg">
 
     <link rel="stylesheet" type="text/css" href="/libs/awesome/css/font-awesome.min.css">
@@ -253,13 +251,13 @@
 
 
 
-<div class="bg-cover post-cover" style="background-image: url('/medias/banner/3.jpg')">
+<div class="bg-cover post-cover" style="background-image: url('/medias/banner/17.jpg')">
     <div class="container">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
                     <div class="description center-align post-title">
-                        使用Hibernate.jdbc.Work高性能处理批量数据
+                        Kafka介绍以及集群安装
                     </div>
                 </div>
             </div>
@@ -370,6 +368,10 @@
             
             <div class="article-tag">
                 
+                <a href="/tags/Kafka/" target="_blank">
+                    <span class="chip bg-color">Kafka</span>
+                </a>
+                
                 <a href="/tags/Java/" target="_blank">
                     <span class="chip bg-color">Java</span>
                 </a>
@@ -381,140 +383,148 @@
                 <span class="post-cate">
                     <i class="fa fa-bookmark fa-fw icon-category"></i>
                     
-                    <a href="/categories/Java/" class="post-category" target="_blank">
-                        Java
+                    <a href="/categories/JAVA/" class="post-category" target="_blank">
+                        JAVA
                     </a>
                     
-                    <a href="/categories/Java/Jdbc/" class="post-category" target="_blank">
-                        Jdbc
+                    <a href="/categories/JAVA/MQTT/" class="post-category" target="_blank">
+                        MQTT
+                    </a>
+                    
+                    <a href="/categories/JAVA/MQTT/Kafka/" class="post-category" target="_blank">
+                        Kafka
                     </a>
                     
                 </span>
                 
 
                 <span class="post-date">
-                    <i class="fa fa-clock-o fa-fw"></i>2019-01-18
+                    <i class="fa fa-clock-o fa-fw"></i>2019-01-21
                 </span>
             </div>
         </div>
         <hr>
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <blockquote>
-<p>本文介绍如何使用Hibernate.jdbc.Work批量处理大量的数据（QCUD）<br><a id="more"></a></p>
+                <h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p>本文介绍KAFKA的特性和集群安装以及配合ACTIVEMQ使用<br><a id="more"></a></p>
+<h2 id="什么是KAFKA"><a href="#什么是KAFKA" class="headerlink" title="什么是KAFKA"></a>什么是KAFKA</h2><blockquote>
+<p>Kafka是由Apache软件基金会开发的一个开源流处理平台，由Scala和Java编写。Kafka是一种高吞吐量的分布式发布订阅消息系统，它可以处理消费者规模的网站中的所有动作流数据。 这种动作（网页浏览，搜索和其他用户的行动）是在现代网络上的许多社会功能的一个关键因素。 这些数据通常是由于吞吐量的要求而通过处理日志和日志聚合来解决。 对于像Hadoop一样的日志数据和离线分析系统，但又要求实时处理的限制，这是一个可行的解决方案。Kafka的目的是通过Hadoop的并行加载机制来统一线上和离线的消息处理，也是为了通过集群来提供实时的消息。</p>
 </blockquote>
-<h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><blockquote>
-<p>为何使用原生的批量处理数据操作而不用现有的hibernate框架实现呢，因为hibernate对插入和更新的处理方式在大量数据插入式并不能更好的支持。</p>
+<h2 id="为什么使用KAFKA"><a href="#为什么使用KAFKA" class="headerlink" title="为什么使用KAFKA"></a>为什么使用KAFKA</h2><blockquote>
+<p>当数据是由上游模块产生，上游模块，使用上游模块的数据计算、统计、分析，这个时候就可以使用消息系统，尤其是分布式消息系统！kafka主要用来存储和接收上游或者下游的数据，也可以自己处理数据.下图是KAFKA和其他分布式消息系统的对比.<br><img src="/images/kafka-01.png" alt=""></p>
 </blockquote>
+<h2 id="KAFKA-协议AMOP"><a href="#KAFKA-协议AMOP" class="headerlink" title="KAFKA 协议AMOP"></a>KAFKA 协议AMOP</h2><blockquote>
+<p>Advanced Message Queuing Protocol （高级消息队列协议）<br>The Advanced Message Queuing Protocol (AMQP)：是一个标准开放的应用层的消息中间件（Message Oriented Middleware）协议。AMQP定义了通过网络发送的字节流的数据格式。<br>因此兼容性非常好，任何实现AMQP协议的程序都可以和与AMQP协议兼容的其他程序交互，可以很容易做到跨语言，跨平台。</p>
+</blockquote>
+<h2 id="KAFKA特性"><a href="#KAFKA特性" class="headerlink" title="KAFKA特性"></a>KAFKA特性</h2><blockquote>
+<p>通过O(1)的磁盘数据结构提供消息的持久化，这种结构对于即使数以TB的消息存储也能够保持长时间的稳定性能。<br>高吞吐量 ：即使是非常普通的硬件Kafka也可以支持每秒数百万的消息。<br>支持通过Kafka服务器和消费机集群来分区消息。<br>支持Hadoop并行数据加载。<br>KAFAK数据备份保证了再其他机器down机的时候，集群的稳定性，同时消息会replication备份，保证数据不丢失，且保证了消息的唯一性。<br>但是KAFKA尚未确保消息的发送与接收绝对可靠(比如,消息重发,消息发送丢失等)，消息消费失败时需要consumer手动重置offset来重新消费该条消息。</p>
+</blockquote>
+<h2 id="KAFKA如何能支持消息数据的高并发"><a href="#KAFKA如何能支持消息数据的高并发" class="headerlink" title="KAFKA如何能支持消息数据的高并发"></a>KAFKA如何能支持消息数据的高并发</h2><h3 id="1、持久性"><a href="#1、持久性" class="headerlink" title="1、持久性"></a>1、持久性</h3><blockquote>
+<p>kafka使用文件存储消息,这就直接决定kafka在性能上严重依赖文件系统的本身特性.且无论任何OS下,对文件系统本身的优化几乎没有可能.文件缓存/直接内存映射等是常用的手段.因为kafka是对日志文件进行append操作,因此磁盘检索的开支是较小的;同时为了减少磁盘写入的次数,broker会将消息暂时buffer起来,当消息的个数(或尺寸)达到一定阀值时,再flush到磁盘,这样减少了磁盘IO调用的次数.</p>
+</blockquote>
+<h3 id="2、性能"><a href="#2、性能" class="headerlink" title="2、性能"></a>2、性能</h3><blockquote>
+<p>需要考虑的影响性能点很多,除磁盘IO之外,我们还需要考虑网络IO,这直接关系到kafka的吞吐量问题.kafka并没有提供太多高超的技巧;对于producer端,可以将消息buffer起来,当消息的条数达到一定阀值时,批量发送给broker;对于consumer端也是一样,批量fetch多条消息.不过消息量的大小可以通过配置文件来指定.对于kafka broker端,似乎有个sendfile系统调用可以潜在的提升网络IO的性能:将文件的数据映射到系统内存中,socket直接读取相应的内存区域即可,而无需进程再次copy和交换. 其实对于producer/consumer/broker三者而言,CPU的开支应该都不大,因此启用消息压缩机制是一个良好的策略;压缩需要消耗少量的CPU资源,不过对于kafka而言,网络IO更应该需要考虑.可以将任何在网络上传输的消息都经过压缩.kafka支持gzip/snappy等多种压缩方式.</p>
+</blockquote>
+<h3 id="3、生产者"><a href="#3、生产者" class="headerlink" title="3、生产者"></a>3、生产者</h3><blockquote>
+<p>负载均衡: producer将会和Topic下所有partition leader保持socket连接;消息由producer直接通过socket发送到broker,中间不会经过任何”路由层”.事实上,消息被路由到哪个partition上,有producer客户端决定.比如可以采用”random””key-hash””轮询”等,如果一个topic中有多个partitions,那么在producer端实现”消息均衡分发”是必要的.<br>  其中partition leader的位置(host:port)注册在zookeeper中,producer作为zookeeper client,已经注册了watch用来监听partition leader的变更事件.<br>  异步发送：将多条消息暂且在客户端buffer起来，并将他们批量的发送到broker，小数据IO太多，会拖慢整体的网络延迟，批量延迟发送事实上提升了网络效率。不过这也有一定的隐患，比如说当producer失效时，那些尚未发送的消息将会丢失。</p>
+</blockquote>
+<h3 id="4、消费者"><a href="#4、消费者" class="headerlink" title="4、消费者"></a>4、消费者</h3><blockquote>
+<p>consumer端向broker发送”fetch”请求,并告知其获取消息的offset;此后consumer将会获得一定条数的消息;consumer端也可以重置offset来重新消费消息.</p>
+</blockquote>
+<h2 id="KAFKA-术语分析"><a href="#KAFKA-术语分析" class="headerlink" title="KAFKA 术语分析"></a>KAFKA 术语分析</h2><blockquote>
+<p>Broker：Kafka集群包含一个或多个服务器，这种服务器被称为broker<br>Topic：每条发布到Kafka集群的消息都有一个类别，这个类别被称为Topic。（<br>物理上不同Topic的消息分开存储，逻辑上一个Topic的消息虽然保存于一个或多个broker上但用户只需指定消息的Topic即可生产或消费数据而不必关心数据存于何处）<br>Partition:Partition是物理上的概念，每个Topic包含一个或多个Partition,数据也是按partition来存储的，简称为分区.<br>Producer:负责发布消息到Kafka broker<br>Consumer:消息消费者，向Kafka broker读取消息的客户端。<br>Consumer Group：每个Consumer属于一个特定的Consumer Group（可为每个Consumer指定group name，若不指定group name则属于默认的group）。</p>
+</blockquote>
+<h2 id="KAFKA架构"><a href="#KAFKA架构" class="headerlink" title="KAFKA架构"></a>KAFKA架构</h2><p><img src="/images/kafka-02.png" alt=""></p>
 <blockquote>
-<p>需求分析，如果你希望将一个对象的集合全部插入到数据库，但使用hibernate框架的批处理速度回比较慢，hibernate其实是一条一条的插入数据的，JDBC的BATCH不同是JDBC的bactch会先将sql预编译，再将集合的值SET进去，大大节省了编译SQL的时间。</p>
+<p>kafka集群中的消息，是通过Topic（主题）来进行组织的，一个Topic可以认为是一类消息，每个topic将被分成多个partition(区),每个partition在存储层面是append log文件。任何发布到此partition的消息都会被直接追加到log文件的尾部，每条消息在文件中的位置称为offset（偏移量），offset为一个long型数字，它是唯一标记一条消息。它唯一的标记一条消息。kafka并没有提供其他额外的索引机制来存储offset，因为在kafka中几乎不允许对消息进行“随机读写”，其结构如下图：<br><img src="/images/kafka-03.png" alt=""></p>
 </blockquote>
-<blockquote>
-<p>经过测试：使用hibernate插入10条数据，需要预编译SQL10次，而原始JDBC的batch只需要预编译一次，且随着需要插入的数据增长需要的时间区别也越来越大，使用hibernate默认batch插入10000条数据需要1-2秒，优化后只需要200毫秒左右.</p>
-</blockquote>
-<h2 id="hibernate-de-persist-he-merge"><a href="#hibernate-de-persist-he-merge" class="headerlink" title="hibernate de persist he merge"></a>hibernate de persist he merge</h2><pre class=" language-java"><code class="language-java"> <span class="token comment" spellcheck="true">/**
-     * Make an instance managed and persistent.
-     * @param entity  entity instance
-     * @throws EntityExistsException if the entity already exists.
-     * (If the entity already exists, the &lt;code>EntityExistsException&lt;/code> may
-     * be thrown when the persist operation is invoked, or the
-     * &lt;code>EntityExistsException&lt;/code> or another &lt;code>PersistenceException&lt;/code> may be
-     * thrown at flush or commit time.)
-     * @throws IllegalArgumentException if the instance is not an
-     *         entity
-     * @throws TransactionRequiredException if invoked on a
-     *         container-managed entity manager of type
-     *         &lt;code>PersistenceContextType.TRANSACTION&lt;/code> and there is
-     *         no transaction
-     */</span>
-    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">persist</span><span class="token punctuation">(</span>Object entity<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<h2 id="搭建KAFKA集群"><a href="#搭建KAFKA集群" class="headerlink" title="搭建KAFKA集群"></a>搭建KAFKA集群</h2><h3 id="1-下载KAFKA并解压-假设zookeeper集群已经搭建好了"><a href="#1-下载KAFKA并解压-假设zookeeper集群已经搭建好了" class="headerlink" title="1. 下载KAFKA并解压(假设zookeeper集群已经搭建好了)"></a>1. 下载KAFKA并解压(假设zookeeper集群已经搭建好了)</h3><p><a href="http://kafka.apache.org/downloads.html" target="_blank" rel="noopener">下载KAFKAhttp://kafka.apache.org/downloads.html</a></p>
+<h3 id="2-修改配置文件kafka-config-server-properties"><a href="#2-修改配置文件kafka-config-server-properties" class="headerlink" title="2. 修改配置文件kafka/config/server.properties"></a>2. 修改配置文件kafka/config/server.properties</h3><pre class=" language-linux"><code class="language-linux">#
+#node1下
+broker.id=3
+advertised.listeners=PLAINTEXT:////your.host.name:9092
+log.dirs=/home/hadoop/kafka_log
+zookeeper.connect=192.168.80.123:2181,192.168.80.124:2181,192.168.80.125:2181
 
-    <span class="token comment" spellcheck="true">/**
-     * Merge the state of the given entity into the
-     * current persistence context.
-     * @param entity  entity instance
-     * @return the managed instance that the state was merged to
-     * @throws IllegalArgumentException if instance is not an
-     *         entity or is a removed entity
-     * @throws TransactionRequiredException if invoked on a
-     *         container-managed entity manager of type
-     *         &lt;code>PersistenceContextType.TRANSACTION&lt;/code> and there is
-     *         no transaction
-     */</span>
-    <span class="token keyword">public</span> <span class="token operator">&lt;</span>T<span class="token operator">></span> T <span class="token function">merge</span><span class="token punctuation">(</span>T entity<span class="token punctuation">)</span><span class="token punctuation">;</span>
+#node2下
+broker.id=2
+advertised.listeners=PLAINTEXT:////your.host.name:9092
+log.dirs=/home/hadoop/kafka_log
+zookeeper.connect=192.168.80.123:2181,192.168.80.124:2181,192.168.80.125:2181
+
+#node3下
+broker.id=3
+advertised.listeners=PLAINTEXT:////your.host.name:9092
+log.dirs=/home/hadoop/kafka_log
+zookeeper.connect=192.168.80.123:2181,192.168.80.124:2181,192.168.80.125:2181
 </code></pre>
-<h2 id="通过Hibernate的缓存进行批量插入"><a href="#通过Hibernate的缓存进行批量插入" class="headerlink" title="通过Hibernate的缓存进行批量插入"></a>通过Hibernate的缓存进行批量插入</h2><pre class=" language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">HibernateTest</span> <span class="token punctuation">{</span>
-    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">main</span><span class="token punctuation">(</span>String args<span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
-        SessionFactory sessionFactory <span class="token operator">=</span> hibernateTemplate<span class="token punctuation">.</span><span class="token function">getSessionFactory</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        Session session <span class="token operator">=</span> sessionFactory<span class="token punctuation">.</span><span class="token function">openSession</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        Transaction tx  <span class="token operator">=</span> session<span class="token punctuation">.</span><span class="token function">beginTransaction</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">//开启事务</span>
-        <span class="token keyword">for</span><span class="token punctuation">(</span><span class="token keyword">int</span> i<span class="token operator">=</span><span class="token number">0</span><span class="token punctuation">;</span>i<span class="token operator">&lt;</span><span class="token number">50</span><span class="token punctuation">;</span>i<span class="token operator">++</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
-            Usertable user <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Usertable</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-            user<span class="token punctuation">.</span><span class="token function">setPassword</span><span class="token punctuation">(</span><span class="token string">"100"</span><span class="token operator">+</span>i<span class="token punctuation">)</span><span class="token punctuation">;</span>
-            session<span class="token punctuation">.</span><span class="token function">save</span><span class="token punctuation">(</span>user<span class="token punctuation">)</span><span class="token punctuation">;</span>
-            <span class="token keyword">if</span><span class="token punctuation">(</span>i<span class="token operator">%</span><span class="token number">100</span><span class="token operator">==</span><span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
-                session<span class="token punctuation">.</span><span class="token function">flush</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>  
-                session<span class="token punctuation">.</span><span class="token function">clear</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> 
-            <span class="token punctuation">}</span>
+<h3 id="3-启动zookeeper和kafka集群"><a href="#3-启动zookeeper和kafka集群" class="headerlink" title="3.启动zookeeper和kafka集群"></a>3.启动zookeeper和kafka集群</h3><pre class=" language-linux"><code class="language-linux">启动zookeeper    bin/zookeeper-server-start.sh config/zookeeper.properties
+
+启动kafka        bin/kafka-server-start.sh config/server.properties(集群下需要三台都启动)
+
+###创建主题
+bin/kafka-topics.sh --create --zookeeper 131.10.10.202:2181,131.10.10.203:2181,131.10.10.204:2181 --replication-factor 3 --partitions 8 --topic ff
+
+###查看主题
+bin/kafka-topics.sh --list --zookeeper 131.10.10.202:2181,131.10.10.203:2181,131.10.10.204:2181
+
+###删除主题
+bin/kafka-topics.sh --delete --zookeeper 131.10.10.202:2181,131.10.10.203:2181,131.10.10.204:2181 --topic test
+
+启动生产着      bin/kafka-console-producer.sh --broker-list localhost:9092 --topic test
+启动消费者      bin/kafka-console-consumer.sh --zookeeper localhost:2181 --topic test
+
+发送消息（模拟kafka发送消息）：
+./kafka-console-producer.sh --broker-list 131.10.10.202:9092,131.10.10.203:9092,131.10.10.204:9092 –topic    test
+接收消息：
+./kafka-console-consumer.sh -zookeeper 131.10.10.202:2181,131.10.10.203:2181,131.10.10.204:2181  --topic test
+
+</code></pre>
+<h2 id="使用postman提交配置和删除查看配置"><a href="#使用postman提交配置和删除查看配置" class="headerlink" title="使用postman提交配置和删除查看配置"></a>使用postman提交配置和删除查看配置</h2><blockquote>
+<p>由于Kafka Connect的目的是作为一个服务运行，提供了一个用于管理connector的REST API。默认情况下，此服务的端口是8083。以下是当前支持的终端入口：</p>
+</blockquote>
+<h3 id="创建topic提交的数据"><a href="#创建topic提交的数据" class="headerlink" title="创建topic提交的数据"></a>创建topic提交的数据</h3><blockquote>
+<p>com.company.connector.sink.ActiveMQSinkConnector是自定义的类，并添加JAR到kafka的libs目录中供使用</p>
+</blockquote>
+<pre class=" language-java"><code class="language-java"><span class="token punctuation">{</span>
+    <span class="token string">"name"</span><span class="token operator">:</span><span class="token string">"iot-data-kafka-mqtt-source"</span><span class="token punctuation">,</span>
+    <span class="token string">"config"</span><span class="token operator">:</span><span class="token punctuation">{</span>
+                <span class="token string">"name"</span><span class="token operator">:</span><span class="token string">"iot-data-kafka-mqtt-source"</span><span class="token punctuation">,</span>
+                <span class="token string">"connector.class"</span><span class="token operator">:</span><span class="token string">"com.company.connector.source.ActiveMQSourceConnector"</span><span class="token punctuation">,</span>
+                <span class="token string">"topics"</span><span class="token operator">:</span><span class="token string">"ThingsUpstreamSourceTopic"</span><span class="token punctuation">,</span>
+                <span class="token string">"tasks.max"</span><span class="token operator">:</span><span class="token string">"10"</span><span class="token punctuation">,</span>
+                <span class="token string">"activemq.server_uris"</span><span class="token operator">:</span><span class="token string">"failover:(tcp://131.10.10.68:50000)?randomize=false"</span><span class="token punctuation">,</span>
+                <span class="token string">"activemq.destination"</span><span class="token operator">:</span><span class="token string">"Consumer.Iot-Hub-Kafka-Mqtt.VirtualTopic.conpany.v1.things.*.>"</span><span class="token comment" spellcheck="true">//订阅的MQTT的topic</span>
         <span class="token punctuation">}</span>
-        ts<span class="token punctuation">.</span><span class="token function">commit</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        HibernateSessionFactory<span class="token punctuation">.</span><span class="token function">closeSession</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span class="token comment" spellcheck="true">//--------------------------------------------------------------------------------------</span>
+<span class="token punctuation">{</span>
+    <span class="token string">"name"</span><span class="token operator">:</span><span class="token string">"iot-data-kafka-mqtt-sink"</span><span class="token punctuation">,</span>
+    <span class="token string">"config"</span><span class="token operator">:</span><span class="token punctuation">{</span>
+                <span class="token string">"name"</span><span class="token operator">:</span><span class="token string">"iot-data-kafka-mqtt-sink"</span><span class="token punctuation">,</span>
+                <span class="token string">"connector.class"</span><span class="token operator">:</span><span class="token string">"com.company.connector.sink.ActiveMQSinkConnector"</span><span class="token punctuation">,</span>
+                <span class="token string">"topics"</span><span class="token operator">:</span><span class="token string">"ThingsDownstreamMqttSinkTopic"</span><span class="token punctuation">,</span>
+                <span class="token string">"tasks.max"</span><span class="token operator">:</span><span class="token string">"10"</span><span class="token punctuation">,</span>
+                <span class="token string">"activemq.server_uris"</span><span class="token operator">:</span><span class="token string">"failover:(tcp://131.10.10.68:50000)?randomize=false"</span>
+            <span class="token punctuation">}</span>
 <span class="token punctuation">}</span>
 
 </code></pre>
-<h2 id="直接调用JDBC"><a href="#直接调用JDBC" class="headerlink" title="直接调用JDBC"></a>直接调用JDBC</h2><pre class=" language-java"><code class="language-java"><span class="token annotation punctuation">@Transactional</span><span class="token punctuation">(</span>rollbackFor <span class="token operator">=</span> Exception<span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">)</span>
-    <span class="token keyword">public</span> RpcServiceResult <span class="token function">createSubThings</span><span class="token punctuation">(</span>ArrayNode insertArray<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-
-        SessionFactory sessionFactory <span class="token operator">=</span> hibernateTemplate<span class="token punctuation">.</span><span class="token function">getSessionFactory</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        Session session <span class="token operator">=</span> sessionFactory<span class="token punctuation">.</span><span class="token function">openSession</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        Transaction tx  <span class="token operator">=</span> session<span class="token punctuation">.</span><span class="token function">beginTransaction</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">//开启事务</span>
-
-        <span class="token keyword">try</span> <span class="token punctuation">{</span>
-            <span class="token comment" spellcheck="true">//do something</span>
-            String sqlStr <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">String</span><span class="token punctuation">(</span><span class="token string">"INSERT INTO  table       ( `attribute1`,"</span>
-                                                                <span class="token operator">+</span> <span class="token string">" `attribute2`, "</span>
-                                                                <span class="token operator">+</span> <span class="token string">" `attribute3`"</span>
-                                                                <span class="token operator">+</span> <span class="token string">") "</span>
-                                    <span class="token operator">+</span>  <span class="token string">"VALUES (?, ?, ?);"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-
-            Work work <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Work</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span><span class="token comment" spellcheck="true">//Contract for performing a discrete piece of org.hibernate.jdbc.Work;</span>
-                <span class="token annotation punctuation">@Override</span>
-                <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">execute</span><span class="token punctuation">(</span>Connection connection<span class="token punctuation">)</span> <span class="token keyword">throws</span> SQLException <span class="token punctuation">{</span>
-                    PreparedStatement statement <span class="token operator">=</span> connection<span class="token punctuation">.</span><span class="token function">prepareStatement</span><span class="token punctuation">(</span>sqlStr<span class="token punctuation">)</span><span class="token punctuation">;</span>
-                    <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">int</span> i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> insertArray<span class="token punctuation">.</span><span class="token function">size</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> i<span class="token operator">++</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-                        JsonNode subThingJsonNode <span class="token operator">=</span> insertArray<span class="token punctuation">.</span><span class="token function">get</span><span class="token punctuation">(</span>i<span class="token punctuation">)</span><span class="token punctuation">;</span>
-                        String value1     <span class="token operator">=</span> subThingJsonNode<span class="token punctuation">.</span><span class="token function">get</span><span class="token punctuation">(</span><span class="token string">"key1"</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">asText</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-                        String value2   <span class="token operator">=</span> subThingJsonNode<span class="token punctuation">.</span><span class="token function">get</span><span class="token punctuation">(</span><span class="token string">"key2"</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">asText</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-                        String value3   <span class="token operator">=</span> subThingJsonNode<span class="token punctuation">.</span><span class="token function">get</span><span class="token punctuation">(</span><span class="token string">"key3"</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">asText</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-                        statement<span class="token punctuation">.</span><span class="token function">setString</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span>value1<span class="token punctuation">)</span><span class="token punctuation">;</span>
-                        statement<span class="token punctuation">.</span><span class="token function">setString</span><span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">,</span>value2<span class="token punctuation">)</span><span class="token punctuation">;</span>
-                        statement<span class="token punctuation">.</span><span class="token function">setString</span><span class="token punctuation">(</span><span class="token number">3</span><span class="token punctuation">,</span>value3<span class="token punctuation">)</span><span class="token punctuation">;</span>
-                        statement<span class="token punctuation">.</span><span class="token function">addBatch</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-                    <span class="token punctuation">}</span>
-                    statement<span class="token punctuation">.</span><span class="token function">executeBatch</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-                <span class="token punctuation">}</span>
-            <span class="token punctuation">}</span><span class="token punctuation">;</span>
-            session<span class="token punctuation">.</span><span class="token function">doWork</span><span class="token punctuation">(</span>work<span class="token punctuation">)</span><span class="token punctuation">;</span>
-            tx<span class="token punctuation">.</span><span class="token function">commit</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">//提交事务</span>
-            ObjectNode responseNode <span class="token operator">=</span> JsonNodeFactory<span class="token punctuation">.</span>instance<span class="token punctuation">.</span><span class="token function">objectNode</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-            <span class="token keyword">return</span> <span class="token keyword">new</span> <span class="token class-name">RpcServiceResult</span><span class="token punctuation">(</span>HttpStatus<span class="token punctuation">.</span>SC_OK<span class="token punctuation">,</span> responseNode<span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token punctuation">}</span> <span class="token keyword">catch</span><span class="token punctuation">(</span>HibernateException en<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-            tx<span class="token punctuation">.</span><span class="token function">rollback</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-            logger<span class="token punctuation">.</span><span class="token function">error</span><span class="token punctuation">(</span><span class="token string">"Failed to save the ..."</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-            <span class="token keyword">return</span> <span class="token keyword">new</span> <span class="token class-name">RpcServiceResult</span><span class="token punctuation">(</span>HttpStatus<span class="token punctuation">.</span>SC_INTERNAL_SERVER_ERROR<span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token punctuation">}</span> <span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">Exception</span> en<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-            logger<span class="token punctuation">.</span><span class="token function">error</span><span class="token punctuation">(</span><span class="token string">"Failed to save the ..."</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-            tx<span class="token punctuation">.</span><span class="token function">rollback</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-            <span class="token keyword">return</span> <span class="token keyword">new</span> <span class="token class-name">RpcServiceResult</span><span class="token punctuation">(</span>HttpStatus<span class="token punctuation">.</span>SC_INTERNAL_SERVER_ERROR<span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token punctuation">}</span> <span class="token keyword">finally</span> <span class="token punctuation">{</span>
-            session<span class="token punctuation">.</span><span class="token function">close</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token punctuation">}</span>
-    <span class="token punctuation">}</span>
+<h3 id="常用的rest接口"><a href="#常用的rest接口" class="headerlink" title="常用的rest接口"></a>常用的rest接口</h3><pre class=" language-linux"><code class="language-linux">GET /connectors                  返回活跃的connector列表。
+POST /connectors                 请求的主体是包含name字段和对象config字段（connector的配置参数）的JSON对象。
+GET /connectors/{name}           获取指定connector的信息。
+GET /connectors/{name}/config    获取指定connector的配置参数。
+PUT /connectors/{name}/config    更新指定connector的配置参数。
+GET /connectors/{name}/status    获取connector的当前状态，包括它是否正在运行，失败，暂停等。
+GET /connectors/{name}/tasks     获取当前正在运行的connector的任务列表。
+GET /connectors/{name}/tasks/{taskid}/status       获取任务的当前状态，包括是否是运行中的，失败的，暂停的等。
+PUT /connectors/{name}/pause                       暂停连接器和它的任务，停止消息处理，直到connector恢复。
+PUT /connectors/{name}/resume                      恢复暂停的connector（如果connector没有暂停，则什么都不做）。
+POST /connectors/{name}/restart                    重启connector（connector已故障）。
+POST /connectors/{name}/tasks/{taskId}/restart     重启单个任务 (通常这个任务已失败)。
+DELETE /connectors/{name}                          删除connector, 停止所有的任务并删除其配置。
 </code></pre>
-<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><blockquote>
-<p>使用此方法批量提交插入操作，不仅可以提高效率，也可以防止SQL注入, 同时UPDATE, DELETE 等操作也可以使用此方式.</p>
-</blockquote>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>KAFKA作为支持高并发，高可用的分布式消息系统现在广泛的应用在各大商业平台，如果你需要对消息处理做高并发的支持，并且希望消息日志和消息具有高可靠性，可以选用KAFAKA做分布式消息系统，其结合其他分布式消息系统可组成一套高可用、高并发的消息处理流程，例如activeMQ做上游消息处理，kafka集群做中间层持久化数据和消息分发，使用storm做消息的实时处理.</p>
 
             </div>
             <hr>
@@ -653,7 +663,7 @@
                     <span class="reprint-tip">转载请注明: </span>
                     <a href="https://jackromer.github.io" class="b-link-green">Jack Romer</a>
                     <i class="fa fa-angle-right fa-lg fa-fw text-color"></i>
-                    <a href="/2019/01/18/如何使用原生JDBC批量插入数据/" class="b-link-green">使用Hibernate.jdbc.Work高性能处理批量数据</a>
+                    <a href="/2019/01/21/kafka介绍以及集群安装/" class="b-link-green">Kafka介绍以及集群安装</a>
                 </p>
             </div>
         </div>
@@ -675,7 +685,7 @@
         repo: 'jackromer.github.io',
         owner: 'JACKROMER',
         admin: "JACKROMER",
-        id: '2019-01-18T17-10-10',
+        id: '2019-01-21T15-23-03',
         distractionFreeMode: false  // Facebook-like distraction free mode
     });
 
@@ -695,7 +705,7 @@
     <div class="row article-row">
         
         <div class="article col s12 m6" data-aos="fade-up">
-            <div class="article-badge left-badge text-color">上一篇</div>
+            <div class="article-badge left-badge text-color">本篇</div>
             <div class="card">
                 <a href="/2019/01/21/kafka介绍以及集群安装/">
                     <div class="card-image">
@@ -711,9 +721,9 @@
 什么是KAFKA
 Kafka是由Apache软件基金会开发的一个开源流处理平台，由Scala和Java编写。Kafka是一种高吞吐量的分布式发布订阅消息系统，它可以处理消费</div>
                     <div class="publish-info">
-                        <span class="publish-date">
-                            <i class="fa fa-clock-o fa-fw icon-date"></i>2019-01-21
-                        </span>
+                            <span class="publish-date">
+                                <i class="fa fa-clock-o fa-fw icon-date"></i>2019-01-21
+                            </span>
                         <span class="publish-author">
                             
                             <i class="fa fa-bookmark fa-fw icon-category"></i>
@@ -734,6 +744,7 @@ Kafka是由Apache软件基金会开发的一个开源流处理平台，由Scala�
                         </span>
                     </div>
                 </div>
+
                 
                 <div class="card-action article-tags">
                     
@@ -754,34 +765,35 @@ Kafka是由Apache软件基金会开发的一个开源流处理平台，由Scala�
         <div class="article col s12 m6" data-aos="fade-up">
             <div class="article-badge right-badge text-color">下一篇</div>
             <div class="card">
-                <a href="/2018/10/31/storm安装教程/">
+                <a href="/2019/01/18/如何使用原生JDBC批量插入数据/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/banner/2.jpg" class="responsive-img" alt="Storm介绍、集群搭建以及topology使用">
+                        <img src="/medias/banner/3.jpg" class="responsive-img" alt="使用Hibernate.jdbc.Work高性能处理批量数据">
                         
-                        <span class="card-title">Storm介绍、集群搭建以及topology使用</span>
+                        <span class="card-title">使用Hibernate.jdbc.Work高性能处理批量数据</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
-                    <div class="summary">本文主要介绍STORM，以及storm集群的安装和使用
+                    <div class="summary">
+本文介绍如何使用Hibernate.jdbc.Work批量处理大量的数据（QCUD）
 
-什么是storm
-Apache Storm是自由开源的分布式实时计算系统，擅长处理海量数据，适用于数据实时处理而非批处理。批处理使用的大多是鼎鼎大名的hadoop或者hive，作为一</div>
+简介
+为何使用原生的批量处理数据操作而不用现有的hibernate框架实现呢，因为hibernate对插入和更新的处理方式在大量数据插入式并不能更好的</div>
                     <div class="publish-info">
                             <span class="publish-date">
-                                <i class="fa fa-clock-o fa-fw icon-date"></i>2018-10-31
+                                <i class="fa fa-clock-o fa-fw icon-date"></i>2019-01-18
                             </span>
                         <span class="publish-author">
                             
                             <i class="fa fa-bookmark fa-fw icon-category"></i>
                             
-                            <a href="/categories/Storm/" class="post-category" target="_blank">
-                                    Storm
+                            <a href="/categories/Java/" class="post-category" target="_blank">
+                                    Java
                                 </a>
                             
-                            <a href="/categories/Storm/Storm-集群/" class="post-category" target="_blank">
-                                    Storm 集群
+                            <a href="/categories/Java/Jdbc/" class="post-category" target="_blank">
+                                    Jdbc
                                 </a>
                             
                             
@@ -791,16 +803,8 @@ Apache Storm是自由开源的分布式实时计算系统，擅长处理海量�
                 
                 <div class="card-action article-tags">
                     
-                    <a href="/tags/Storm/" target="_blank">
-                        <span class="chip bg-color">Storm</span>
-                    </a>
-                    
-                    <a href="/tags/Topology/" target="_blank">
-                        <span class="chip bg-color">Topology</span>
-                    </a>
-                    
-                    <a href="/tags/Stream/" target="_blank">
-                        <span class="chip bg-color">Stream</span>
+                    <a href="/tags/Java/" target="_blank">
+                        <span class="chip bg-color">Java</span>
                     </a>
                     
                 </div>

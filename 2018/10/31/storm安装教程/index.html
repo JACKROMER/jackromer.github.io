@@ -5,12 +5,11 @@
 
 <head><meta name="generator" content="Hexo 3.8.0">
     <meta charset="utf-8">
-    <meta name="keywords" content="storm安装教程, Romer">
-    <meta name="description" content="hello 小姐姐！this is my page for you. good afternoon.
+    <meta name="keywords" content="Storm介绍、集群搭建以及topology使用, Romer">
+    <meta name="description" content="本文主要介绍STORM，以及storm集群的安装和使用
 
-
-
-一盏灯， 一片昏黄； 一简书， 一杯淡茶。 守着那一份淡定， 品读属于自己的寂寞。 保持淡定， 才能欣赏到最美丽的风景！ 保持淡定，">
+什么是storm
+Apache Storm是自由开源的分布式实时计算系统，擅长处理海量数据，适用于数据实时处理而非批处理。批处理使用的大多是鼎鼎大名的hadoop或者hive，作为一">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="renderer" content="webkit|ie-stand|ie-comp">
@@ -18,7 +17,7 @@
     <meta name="format-detection" content="telephone=no">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <title>storm安装教程 | Jack Romer</title>
+    <title>Storm介绍、集群搭建以及topology使用 | Jack Romer</title>
     <link rel="icon" type="image/png" href="/images/mine.jpg">
 
     <link rel="stylesheet" type="text/css" href="/libs/awesome/css/font-awesome.min.css">
@@ -253,13 +252,13 @@
 
 
 
-<div class="bg-cover post-cover" style="background-image: url('/medias/banner/9.jpg')">
+<div class="bg-cover post-cover" style="background-image: url('/medias/banner/2.jpg')">
     <div class="container">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
                     <div class="description center-align post-title">
-                        storm安装教程
+                        Storm介绍、集群搭建以及topology使用
                     </div>
                 </div>
             </div>
@@ -370,8 +369,16 @@
             
             <div class="article-tag">
                 
-                <a href="/tags/storm/" target="_blank">
-                    <span class="chip bg-color">storm</span>
+                <a href="/tags/Storm/" target="_blank">
+                    <span class="chip bg-color">Storm</span>
+                </a>
+                
+                <a href="/tags/Topology/" target="_blank">
+                    <span class="chip bg-color">Topology</span>
+                </a>
+                
+                <a href="/tags/Stream/" target="_blank">
+                    <span class="chip bg-color">Stream</span>
                 </a>
                 
             </div>
@@ -385,8 +392,8 @@
                         Storm
                     </a>
                     
-                    <a href="/categories/Storm/storm-安装/" class="post-category" target="_blank">
-                        storm 安装
+                    <a href="/categories/Storm/Storm-集群/" class="post-category" target="_blank">
+                        Storm 集群
                     </a>
                     
                 </span>
@@ -400,9 +407,224 @@
         <hr>
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <p>hello 小姐姐！this is my page for you. good afternoon.</p>
+                <p>本文主要介绍STORM，以及storm集群的安装和使用</p>
 <a id="more"></a>
-<p><img src="/images/mine.jpg" alt=""></p>
+<h2 id="什么是storm"><a href="#什么是storm" class="headerlink" title="什么是storm"></a>什么是storm</h2><blockquote>
+<p>Apache Storm是自由开源的分布式实时计算系统，擅长处理海量数据，适用于数据实时处理而非批处理。<br>批处理使用的大多是鼎鼎大名的hadoop或者hive，作为一个批处理系统，hadoop以其吞吐量大、自动容错等优点，在海量数据处理上得到了广泛的使用。但是，hadoop不擅长实时计算，因为它天然就是为批处理而生的，这也是业界一致的共识。否则最近几年也不会有s4,storm,puma这些实时计算系统如雨后春笋般冒出来啦。STORM就是为了处理及时的消费者请求而生，在用户给出需求时及时的处理数据并给出响应的结果。</p>
+</blockquote>
+<h2 id="storm处理流程"><a href="#storm处理流程" class="headerlink" title="storm处理流程"></a>storm处理流程</h2><p><img src="/images/storm.jpg" alt=""></p>
+<blockquote>
+<p>可以看出storm的数据处理是交给ZK处理分发的，由nimbus管理supervisor，supervis管理worker，worker才是真正做数据处理的进程，worker提交TASK，类似多线程提交任务，整个流程达到消息的实时处理能力。</p>
+</blockquote>
+<h2 id="spout和bolt"><a href="#spout和bolt" class="headerlink" title="spout和bolt"></a>spout和bolt</h2><h3 id="spout"><a href="#spout" class="headerlink" title="spout"></a>spout</h3><blockquote>
+<p>spout是数据源，例如spout可以调用 Twitter API 得到一个微博数据流，就是从外部数据源（队列、数据库等）中读取数据，封装成元组，形成STREAM数据流。<br><img src="/images/spout1.png" alt=""></p>
+</blockquote>
+<h3 id="bolt"><a href="#bolt" class="headerlink" title="bolt"></a>bolt</h3><blockquote>
+<p>bolt是用来处理数据的，可以对一些数据流（不只一个数据流）进行处理，可能会产生新的STREAM数据流。对一些复杂的数据流变换，<br>比如从一个微博流中计算一个热门话题流，就需要很多步骤，因此就有多个bolt，因此bolt中就有很多处理，比如运行函数，做流式聚合，流式链接，访问数据库等等。<br><img src="/images/tuple.jpg" alt=""><br>不同的bolt可以订阅相同的spout来达到消息共享的目的，比如来了一条数据，bolt1是做数据入库处理，bolt2只是做简单的日志记录，bolt3….<br><img src="/images/spout-bolt.png" alt=""></p>
+</blockquote>
+<h3 id="topology"><a href="#topology" class="headerlink" title="topology"></a>topology</h3><blockquote>
+<p>如上图所示 topology就是spout 和 bolt组成的网络拓扑图，Topology就是最高层的逻辑抽象，可以直接送到 Storm 集群去执行。一个Topology图就是流式转换，每个节点是 spout 或者 bolt，图中的每条边就是 bolt 订阅了流，当一个 spout或者 bolt 产生一个元组到一个流时，它就发送元组到订阅了流的每个 bolt。</p>
+</blockquote>
+<h2 id="自定义topology并提交topology到storm集群"><a href="#自定义topology并提交topology到storm集群" class="headerlink" title="自定义topology并提交topology到storm集群"></a>自定义topology并提交topology到storm集群</h2><h3 id="1-首先需要实现storm的spout和bolt接口实现对stream流数据的接收和处理"><a href="#1-首先需要实现storm的spout和bolt接口实现对stream流数据的接收和处理" class="headerlink" title="1.首先需要实现storm的spout和bolt接口实现对stream流数据的接收和处理"></a>1.首先需要实现storm的spout和bolt接口实现对stream流数据的接收和处理</h3><pre class=" language-java"><code class="language-java"><span class="token keyword">package</span> cn<span class="token punctuation">.</span>xpleaf<span class="token punctuation">.</span>bigdata<span class="token punctuation">.</span>storm<span class="token punctuation">.</span>remote<span class="token punctuation">;</span>
+
+<span class="token keyword">import</span> cn<span class="token punctuation">.</span>xpleaf<span class="token punctuation">.</span>bigdata<span class="token punctuation">.</span>storm<span class="token punctuation">.</span>utils<span class="token punctuation">.</span>StormUtil<span class="token punctuation">;</span>
+<span class="token keyword">import</span> org<span class="token punctuation">.</span>apache<span class="token punctuation">.</span>storm<span class="token punctuation">.</span>Config<span class="token punctuation">;</span>
+<span class="token keyword">import</span> org<span class="token punctuation">.</span>apache<span class="token punctuation">.</span>storm<span class="token punctuation">.</span>LocalCluster<span class="token punctuation">;</span>
+<span class="token keyword">import</span> org<span class="token punctuation">.</span>apache<span class="token punctuation">.</span>storm<span class="token punctuation">.</span>StormSubmitter<span class="token punctuation">;</span>
+<span class="token keyword">import</span> org<span class="token punctuation">.</span>apache<span class="token punctuation">.</span>storm<span class="token punctuation">.</span>generated<span class="token punctuation">.</span>StormTopology<span class="token punctuation">;</span>
+<span class="token keyword">import</span> org<span class="token punctuation">.</span>apache<span class="token punctuation">.</span>storm<span class="token punctuation">.</span>spout<span class="token punctuation">.</span>SpoutOutputCollector<span class="token punctuation">;</span>
+<span class="token keyword">import</span> org<span class="token punctuation">.</span>apache<span class="token punctuation">.</span>storm<span class="token punctuation">.</span>task<span class="token punctuation">.</span>OutputCollector<span class="token punctuation">;</span>
+<span class="token keyword">import</span> org<span class="token punctuation">.</span>apache<span class="token punctuation">.</span>storm<span class="token punctuation">.</span>task<span class="token punctuation">.</span>TopologyContext<span class="token punctuation">;</span>
+<span class="token keyword">import</span> org<span class="token punctuation">.</span>apache<span class="token punctuation">.</span>storm<span class="token punctuation">.</span>topology<span class="token punctuation">.</span>OutputFieldsDeclarer<span class="token punctuation">;</span>
+<span class="token keyword">import</span> org<span class="token punctuation">.</span>apache<span class="token punctuation">.</span>storm<span class="token punctuation">.</span>topology<span class="token punctuation">.</span>TopologyBuilder<span class="token punctuation">;</span>
+<span class="token keyword">import</span> org<span class="token punctuation">.</span>apache<span class="token punctuation">.</span>storm<span class="token punctuation">.</span>topology<span class="token punctuation">.</span>base<span class="token punctuation">.</span>BaseRichBolt<span class="token punctuation">;</span>
+<span class="token keyword">import</span> org<span class="token punctuation">.</span>apache<span class="token punctuation">.</span>storm<span class="token punctuation">.</span>topology<span class="token punctuation">.</span>base<span class="token punctuation">.</span>BaseRichSpout<span class="token punctuation">;</span>
+<span class="token keyword">import</span> org<span class="token punctuation">.</span>apache<span class="token punctuation">.</span>storm<span class="token punctuation">.</span>tuple<span class="token punctuation">.</span>Fields<span class="token punctuation">;</span>
+<span class="token keyword">import</span> org<span class="token punctuation">.</span>apache<span class="token punctuation">.</span>storm<span class="token punctuation">.</span>tuple<span class="token punctuation">.</span>Tuple<span class="token punctuation">;</span>
+<span class="token keyword">import</span> org<span class="token punctuation">.</span>apache<span class="token punctuation">.</span>storm<span class="token punctuation">.</span>tuple<span class="token punctuation">.</span>Values<span class="token punctuation">;</span>
+
+<span class="token keyword">import</span> java<span class="token punctuation">.</span>util<span class="token punctuation">.</span>Date<span class="token punctuation">;</span>
+<span class="token keyword">import</span> java<span class="token punctuation">.</span>util<span class="token punctuation">.</span>Map<span class="token punctuation">;</span>
+
+<span class="token comment" spellcheck="true">/**
+ * 1°、实现数字累加求和的案例：数据源不断产生递增数字，对产生的数字累加求和。
+ * &lt;p>
+ * Storm组件：Spout、Bolt、数据是Tuple，使用main中的Topology将spout和bolt进行关联
+ * MapReduce的组件：Mapper和Reducer、数据是Writable，通过一个main中的job将二者关联
+ * &lt;p>
+ * 适配器模式（Adapter）：BaseRichSpout，其对继承接口中一些没必要的方法进行了重写，但其重写的代码没有实现任何功能。
+ * 我们称这为适配器模式
+ */</span>
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">StormSumTopology</span> <span class="token punctuation">{</span>
+
+    <span class="token comment" spellcheck="true">/**
+     * 数据源
+     */</span>
+    <span class="token keyword">static</span> <span class="token keyword">class</span> <span class="token class-name">OrderSpout</span> <span class="token keyword">extends</span> <span class="token class-name">BaseRichSpout</span> <span class="token punctuation">{</span>
+
+        <span class="token keyword">private</span> Map conf<span class="token punctuation">;</span>   <span class="token comment" spellcheck="true">// 当前组件配置信息</span>
+        <span class="token keyword">private</span> TopologyContext context<span class="token punctuation">;</span>    <span class="token comment" spellcheck="true">// 当前组件上下文对象</span>
+        <span class="token keyword">private</span> SpoutOutputCollector collector<span class="token punctuation">;</span> <span class="token comment" spellcheck="true">// 发送tuple的组件</span>
+
+        <span class="token annotation punctuation">@Override</span>
+        <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">open</span><span class="token punctuation">(</span>Map conf<span class="token punctuation">,</span> TopologyContext context<span class="token punctuation">,</span> SpoutOutputCollector collector<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token keyword">this</span><span class="token punctuation">.</span>conf <span class="token operator">=</span> conf<span class="token punctuation">;</span>
+            <span class="token keyword">this</span><span class="token punctuation">.</span>context <span class="token operator">=</span> context<span class="token punctuation">;</span>
+            <span class="token keyword">this</span><span class="token punctuation">.</span>collector <span class="token operator">=</span> collector<span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+
+        <span class="token comment" spellcheck="true">/**
+         * 接收数据的核心方法
+         */</span>
+        <span class="token annotation punctuation">@Override</span>
+        <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">nextTuple</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token keyword">long</span> num <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
+            <span class="token keyword">while</span> <span class="token punctuation">(</span><span class="token boolean">true</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+                num<span class="token operator">++</span><span class="token punctuation">;</span>
+                StormUtil<span class="token punctuation">.</span><span class="token function">sleep</span><span class="token punctuation">(</span><span class="token number">1000</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+                System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"当前时间"</span> <span class="token operator">+</span> StormUtil<span class="token punctuation">.</span>df_yyyyMMddHHmmss<span class="token punctuation">.</span><span class="token function">format</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">Date</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token operator">+</span> <span class="token string">"产生的订单金额："</span> <span class="token operator">+</span> num<span class="token punctuation">)</span><span class="token punctuation">;</span>
+                <span class="token keyword">this</span><span class="token punctuation">.</span>collector<span class="token punctuation">.</span><span class="token function">emit</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">Values</span><span class="token punctuation">(</span>num<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token punctuation">}</span>
+        <span class="token punctuation">}</span>
+
+        <span class="token comment" spellcheck="true">/**
+         * 是对发送出去的数据的描述schema
+         */</span>
+        <span class="token annotation punctuation">@Override</span>
+        <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">declareOutputFields</span><span class="token punctuation">(</span>OutputFieldsDeclarer declarer<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            declarer<span class="token punctuation">.</span><span class="token function">declare</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">Fields</span><span class="token punctuation">(</span><span class="token string">"order_cost"</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token comment" spellcheck="true">/**
+     * 计算和的Bolt节点
+     */</span>
+    <span class="token keyword">static</span> <span class="token keyword">class</span> <span class="token class-name">SumBolt</span> <span class="token keyword">extends</span> <span class="token class-name">BaseRichBolt</span> <span class="token punctuation">{</span>
+
+        <span class="token keyword">private</span> Map conf<span class="token punctuation">;</span>   <span class="token comment" spellcheck="true">// 当前组件配置信息</span>
+        <span class="token keyword">private</span> TopologyContext context<span class="token punctuation">;</span>    <span class="token comment" spellcheck="true">// 当前组件上下文对象</span>
+        <span class="token keyword">private</span> OutputCollector collector<span class="token punctuation">;</span> <span class="token comment" spellcheck="true">// 发送tuple的组件</span>
+
+        <span class="token annotation punctuation">@Override</span>
+        <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">prepare</span><span class="token punctuation">(</span>Map stormConf<span class="token punctuation">,</span> TopologyContext context<span class="token punctuation">,</span> OutputCollector collector<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token keyword">this</span><span class="token punctuation">.</span>conf <span class="token operator">=</span> conf<span class="token punctuation">;</span>
+            <span class="token keyword">this</span><span class="token punctuation">.</span>context <span class="token operator">=</span> context<span class="token punctuation">;</span>
+            <span class="token keyword">this</span><span class="token punctuation">.</span>collector <span class="token operator">=</span> collector<span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+
+        <span class="token keyword">private</span> Long sumOrderCost <span class="token operator">=</span> 0L<span class="token punctuation">;</span>
+
+        <span class="token comment" spellcheck="true">/**
+         * 处理数据的核心方法
+         */</span>
+        <span class="token annotation punctuation">@Override</span>
+        <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">execute</span><span class="token punctuation">(</span>Tuple input<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            Long orderCost <span class="token operator">=</span> input<span class="token punctuation">.</span><span class="token function">getLongByField</span><span class="token punctuation">(</span><span class="token string">"order_cost"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            sumOrderCost <span class="token operator">+=</span> orderCost<span class="token punctuation">;</span>
+
+            System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"商城网站到目前"</span> <span class="token operator">+</span> StormUtil<span class="token punctuation">.</span>df_yyyyMMddHHmmss<span class="token punctuation">.</span><span class="token function">format</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">Date</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token operator">+</span> <span class="token string">"的商品总交易额"</span> <span class="token operator">+</span> sumOrderCost<span class="token punctuation">)</span><span class="token punctuation">;</span>
+            StormUtil<span class="token punctuation">.</span><span class="token function">sleep</span><span class="token punctuation">(</span><span class="token number">1000</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+
+        <span class="token comment" spellcheck="true">/**
+         * 如果当前bolt为最后一个处理单元，该方法可以不用管
+         */</span>
+        <span class="token annotation punctuation">@Override</span>
+        <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">declareOutputFields</span><span class="token punctuation">(</span>OutputFieldsDeclarer declarer<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token comment" spellcheck="true">/**
+     * 构建拓扑，相当于在MapReduce中构建Job
+     */</span>
+    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">main</span><span class="token punctuation">(</span>String<span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span> <span class="token keyword">throws</span> Exception <span class="token punctuation">{</span>
+        TopologyBuilder builder <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">TopologyBuilder</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token comment" spellcheck="true">/**
+         * 设置spout和bolt的dag（有向无环图）
+         */</span>
+        builder<span class="token punctuation">.</span><span class="token function">setSpout</span><span class="token punctuation">(</span><span class="token string">"id_order_spout"</span><span class="token punctuation">,</span> <span class="token keyword">new</span> <span class="token class-name">OrderSpout</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        builder<span class="token punctuation">.</span><span class="token function">setBolt</span><span class="token punctuation">(</span><span class="token string">"id_sum_bolt"</span><span class="token punctuation">,</span> <span class="token keyword">new</span> <span class="token class-name">SumBolt</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">shuffleGrouping</span><span class="token punctuation">(</span><span class="token string">"id_order_spout"</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">// 通过不同的数据流转方式，来指定数据的上游组件</span>
+        <span class="token comment" spellcheck="true">// 使用builder构建topology</span>
+        StormTopology topology <span class="token operator">=</span> builder<span class="token punctuation">.</span><span class="token function">createTopology</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        String topologyName <span class="token operator">=</span> StormSumTopology<span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">.</span><span class="token function">getSimpleName</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>  <span class="token comment" spellcheck="true">// 拓扑的名称</span>
+        Config config <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Config</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>   <span class="token comment" spellcheck="true">// Config()对象继承自HashMap，但本身封装了一些基本的配置</span>
+
+        <span class="token comment" spellcheck="true">// 启动topology，本地启动使用LocalCluster，集群启动使用StormSubmitter</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>args <span class="token operator">==</span> null <span class="token operator">||</span> args<span class="token punctuation">.</span>length <span class="token operator">&lt;</span> <span class="token number">1</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>  <span class="token comment" spellcheck="true">// 没有参数时使用本地模式，有参数时使用集群模式</span>
+            LocalCluster localCluster <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">LocalCluster</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">// 本地开发模式，创建的对象为LocalCluster</span>
+            localCluster<span class="token punctuation">.</span><span class="token function">submitTopology</span><span class="token punctuation">(</span>topologyName<span class="token punctuation">,</span> config<span class="token punctuation">,</span> topology<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token punctuation">{</span>
+            StormSubmitter<span class="token punctuation">.</span><span class="token function">submitTopology</span><span class="token punctuation">(</span>topologyName<span class="token punctuation">,</span> config<span class="token punctuation">,</span> topology<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<h3 id="2-将spout和bolt接口以及其他配置类组成的topology的jar包放入到指定的目录中（最好放在storm的nimbus节点下），注意打包方式确保JAR包下有storm-core相关依赖包"><a href="#2-将spout和bolt接口以及其他配置类组成的topology的jar包放入到指定的目录中（最好放在storm的nimbus节点下），注意打包方式确保JAR包下有storm-core相关依赖包" class="headerlink" title="2.将spout和bolt接口以及其他配置类组成的topology的jar包放入到指定的目录中（最好放在storm的nimbus节点下），注意打包方式确保JAR包下有storm-core相关依赖包."></a>2.将spout和bolt接口以及其他配置类组成的topology的jar包放入到指定的目录中（最好放在storm的nimbus节点下），注意打包方式确保JAR包下有storm-core相关依赖包.</h3><h3 id="3-执行命令提交topology的JAR到storm的集群"><a href="#3-执行命令提交topology的JAR到storm的集群" class="headerlink" title="3.执行命令提交topology的JAR到storm的集群"></a>3.执行命令提交topology的JAR到storm的集群</h3><pre class=" language-linux"><code class="language-linux">  #先切换到strom 的bin目录，然后执行以下命令
+  bin/storm kill topology #执行KILL操作时候可能会报没有此topology错误,可以不用理会
+    sleep 5
+  # 类似JAVA -JAR 方式启动JAR包，后面的bootstrap-servers根据业务而定，可要可不要.
+    bin/storm jar topology/topology-1.0.0.jar  com.company.ApplicationLoader --bootstrap-serverIp1=ip1:9092,serverIp2:9092,serverIp3:9092
+</code></pre>
+<h3 id="4-通过nimbus的UI端口查看topology的运行情况，以及异常情况"><a href="#4-通过nimbus的UI端口查看topology的运行情况，以及异常情况" class="headerlink" title="4.通过nimbus的UI端口查看topology的运行情况，以及异常情况"></a>4.通过nimbus的UI端口查看topology的运行情况，以及异常情况</h3><p><img src="/images/stormui.png" alt=""></p>
+<h2 id="storm-核心逻辑"><a href="#storm-核心逻辑" class="headerlink" title="storm 核心逻辑"></a>storm 核心逻辑</h2><blockquote>
+<p>Nimbus：Storm集群主节点，负责资源分配和任务调度。我们提交任务和截止任务都是在Nimbus上操作的。一个Storm集群只有一个Nimbus节点。<br>Supervisor：Storm集群工作节点，接受Nimbus分配任务，管理所有Worker。<br>Worker：工作进程，每个工作进程中都有多个Task。<br>Task：任务，每个Spout和Bolt都是一个任务，每个任务都是一个线程。<br>Topology：计算拓扑，包含了应用程序的逻辑。<br>Stream：消息流，关键抽象，是没有边界的Tuple序列。<br>Spout：消息流的源头，Topology的消息生产者。<br>Bolt：消息处理单元，可以过滤、聚合、查询数据库。<br>Stream grouping：消息分发策略，一共6种，定义每个Bolt接受何种输入。<br>Reliability：可靠性，Storm保证每个Tuple都会被处理。</p>
+</blockquote>
+<h2 id="Storm安装部署"><a href="#Storm安装部署" class="headerlink" title="Storm安装部署"></a>Storm安装部署</h2><h3 id="zookeeper集群安装"><a href="#zookeeper集群安装" class="headerlink" title="zookeeper集群安装"></a>zookeeper集群安装</h3><blockquote>
+<p>略，请自行查看文档安装，这个比较简单</p>
+</blockquote>
+<h3 id="搭建storm集群"><a href="#搭建storm集群" class="headerlink" title="搭建storm集群"></a>搭建storm集群</h3><p><a href="http://storm.apache.org/index.html" target="_blank" rel="noopener">下载storm包,目前已经更新到2.0版本，下载地址&gt;http://storm.apache.org/index.html</a></p>
+<h3 id="1-解压"><a href="#1-解压" class="headerlink" title="1.解压"></a>1.解压</h3><pre class=" language-LINUX"><code class="language-LINUX">[uplooking@uplooking01 soft]$ tar -zxvf apache-storm-1.0.2.tar.gz -C ../app/
+[uplooking@uplooking01 app]$ mv apache-storm-1.0.2/ storm
+</code></pre>
+<h3 id="2-修改配置文件-storm-env-sh"><a href="#2-修改配置文件-storm-env-sh" class="headerlink" title="2.修改配置文件 storm-env.sh"></a>2.修改配置文件 storm-env.sh</h3><pre class=" language-LINUX"><code class="language-LINUX">export JAVA_HOME=/opt/jdk
+export STORM_CONF_DIR="/home/uplooking/app/storm/conf"
+</code></pre>
+<h3 id="3-修改storm-yaml"><a href="#3-修改storm-yaml" class="headerlink" title="3. 修改storm.yaml"></a>3. 修改storm.yaml</h3><pre class=" language-LINUX"><code class="language-LINUX">storm.zookeeper.servers:
+    - "uplooking01"
+    - "uplooking02"
+    - "uplooking03"
+
+nimbus.seeds: ["uplooking01", "uplooking02"]
+
+storm.local.dir: "/home/uplooking/data/storm" # 日志目录
+supervisor.slots.ports:
+    - 6700
+    - 6701
+    - 6702
+    - 6703
+storm.zookeeper.port: 2181 #zookeeper端口配置
+ui.port: 8000 #ui 端口设置
+</code></pre>
+<h3 id="4-创建storm-local-dir"><a href="#4-创建storm-local-dir" class="headerlink" title="4.创建storm.local.dir"></a>4.创建storm.local.dir</h3><pre class=" language-LINUX"><code class="language-LINUX">mkdir -p /home/uplooing/data/storm
+</code></pre>
+<h3 id="5-配置环境变量"><a href="#5-配置环境变量" class="headerlink" title="5.配置环境变量"></a>5.配置环境变量</h3><pre class=" language-LINUX"><code class="language-LINUX"># .bash_profile
+export STORM_HOME=/home/uplooking/app/storm
+export PATH=$PATH:$STORM_HOME/bin
+</code></pre>
+<h3 id="6-将其同步到其它节点"><a href="#6-将其同步到其它节点" class="headerlink" title="6.将其同步到其它节点"></a>6.将其同步到其它节点</h3><pre class=" language-LINUX"><code class="language-LINUX">scp .bash_profile uplooking@uplooking02:/home/uplooking
+scp .bash_profile uplooking@uplooking03:/home/uplooking
+</code></pre>
+<h3 id="7-复制storm安装目录到其它节点"><a href="#7-复制storm安装目录到其它节点" class="headerlink" title="7.复制storm安装目录到其它节点"></a>7.复制storm安装目录到其它节点</h3><pre class=" language-linux"><code class="language-linux">scp -r storm/ uplooking@uplooking02:/home/uplooking/app
+scp -r storm/ uplooking@uplooking03:/home/uplooking/app
+</code></pre>
+<h3 id="8-启动storm集群"><a href="#8-启动storm集群" class="headerlink" title="8.启动storm集群"></a>8.启动storm集群</h3><pre class=" language-linux"><code class="language-linux"># uplooking01
+storm nimbus &
+storm ui &
+
+# uplooking02
+storm nimbus &
+storm supervisor &
+
+# uplooking03
+storm supervisor &
+</code></pre>
+<h3 id="9-启动logviewer（可选）"><a href="#9-启动logviewer（可选）" class="headerlink" title="9.启动logviewer（可选）"></a>9.启动logviewer（可选）</h3><pre class=" language-linux"><code class="language-linux">在所有从节点执行"nohup bin/storm logviewer >/dev/null 2>&1 &"启动log后台程序，并放到后台执行。
+(nimbus节点可以不用启动logviewer进程，因为logviewer进程主要是为了方便查看任务的执行日志，这些执行日志都在supervisor节点上)。
+</code></pre>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><blockquote>
+<p>storm作为一款高效的数据流实时处理框架得到了广泛的使用，解决了Hadoop、spark在数据处理方面的性能问题，对JAVA良好的支持使得其在商业上应用更加广泛.<br>此文是自己学习和使用了storm集群的一些理解和体会，如有错误，欢迎指正.</p>
+</blockquote>
 <blockquote>
 <p>一盏灯， 一片昏黄； <strong>一简书</strong>， 一杯淡茶。 守着那一份淡定， 品读属于自己的寂寞。 保持淡定， 才能欣赏到最美丽的风景！ 保持淡定， 人生从此不再寂寞。</p>
 </blockquote>
@@ -544,7 +766,7 @@
                     <span class="reprint-tip">转载请注明: </span>
                     <a href="https://jackromer.github.io" class="b-link-green">Jack Romer</a>
                     <i class="fa fa-angle-right fa-lg fa-fw text-color"></i>
-                    <a href="/2018/10/31/storm安装教程/" class="b-link-green">storm安装教程</a>
+                    <a href="/2018/10/31/storm安装教程/" class="b-link-green">Storm介绍、集群搭建以及topology使用</a>
                 </p>
             </div>
         </div>
@@ -592,17 +814,17 @@
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/21.jpg" class="responsive-img" alt="如何使用hibernate.jdbc.Work批量插入数据">
+                        <img src="/medias/banner/3.jpg" class="responsive-img" alt="使用Hibernate.jdbc.Work高性能处理批量数据">
                         
-                        <span class="card-title">如何使用hibernate.jdbc.Work批量插入数据</span>
+                        <span class="card-title">使用Hibernate.jdbc.Work高性能处理批量数据</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
                     <div class="summary">
-本文介绍如何使用hibernate.jdbc.Work批量处理大量的数据插入工作
+本文介绍如何使用Hibernate.jdbc.Work批量处理大量的数据（QCUD）
 
-概述
-为何使用原生的批量处理数据操作而不用现有的hibernate框架实现呢，因为hibernate对插入和更新的处理方式在大量数据插入式并不能更好的支持</div>
+简介
+为何使用原生的批量处理数据操作而不用现有的hibernate框架实现呢，因为hibernate对插入和更新的处理方式在大量数据插入式并不能更好的</div>
                     <div class="publish-info">
                         <span class="publish-date">
                             <i class="fa fa-clock-o fa-fw icon-date"></i>2019-01-18
