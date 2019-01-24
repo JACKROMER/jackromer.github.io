@@ -3,6 +3,58 @@
   
     
     <entry>
+      <title>java支持https</title>
+      <link href="/2019/01/24/java%E6%94%AF%E6%8C%81https/"/>
+      <url>/2019/01/24/java%E6%94%AF%E6%8C%81https/</url>
+      
+        <content type="html"><![CDATA[<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>本文主要介绍JAVA对https的支持，为何使用https呢，https相当于是http的升级版本，具有http不具备的安全性.</p><h2 id="什么是https"><a href="#什么是https" class="headerlink" title="什么是https"></a>什么是https</h2><blockquote><p>HTTPS（全称：Hyper Text Transfer Protocol over Secure Socket Layer 或 Hypertext Transfer Protocol Secure，超文本传输安全协议），是以安全为目标的HTTP通道，简单讲是HTTP的安全版，即HTTP下加入SSL层，HTTPS的安全基础是SSL，因此加密的详细内容就需要SSL。<br>HTTP协议传输的数据都是未加密的，也就是明文的，因此使用HTTP协议传输隐私信息非常不安全，为了保证这些隐私数据能加密传输，于是网景公司设计了SSL（Secure Sockets Layer）协议用于对HTTP协议传输的数据进行加密，从而就诞生了HTTPS。简单来说，HTTPS协议是由SSL+HTTP协议构建的可进行加密传输、身份认证的网络协议，要比http协议安全。</p></blockquote><h2 id="http和https的区别"><a href="#http和https的区别" class="headerlink" title="http和https的区别"></a>http和https的区别</h2><blockquote><p>1、https协议需要到ca申请证书，一般免费证书较少，因而需要一定费用。</p></blockquote><blockquote><p>2、http是超文本传输协议，信息是明文传输，https则是具有安全性的ssl加密传输协议。</p></blockquote><blockquote><p>3、http和https使用的是完全不同的连接方式，用的端口也不一样，前者是80，后者是443。</p></blockquote><blockquote><p>4、http的连接很简单，是无状态的；HTTPS协议是由SSL+HTTP协议构建的可进行加密传输、身份认证的网络协议，比http协议安全。</p></blockquote><h2 id="Https协议的特点"><a href="#Https协议的特点" class="headerlink" title="Https协议的特点"></a>Https协议的特点</h2><blockquote><p>Https的通信端口由SSL和TSL代替了，它是一种应用层协议，一般的情况下http直接和Tcp进行通信，当使用了SSL之后，就会变成先和SSL通信，SSL再和Tcp进行通信，如下图<br><img src="/images/https-ssl.png" alt=""><br>采用了SSL协议之后，Http协议就具备了加密、证书、完整性保护三大功能，SSL是独立于Http存在的，它是现存的广泛使用的网络安全技术。</p></blockquote><h2 id="Https协议采用的加密技术"><a href="#Https协议采用的加密技术" class="headerlink" title="Https协议采用的加密技术"></a>Https协议采用的加密技术</h2><blockquote><p>https协议加密技术按类型分为两类，对称加密和非对称加密</p></blockquote><h3 id="https对称加密技术SSL"><a href="#https对称加密技术SSL" class="headerlink" title="https对称加密技术SSL"></a>https对称加密技术SSL</h3><p>为什么说SSL是对称加密呢，因为SSL也叫共享密钥加密，当客户端传递消息给服务端时其消息和密钥都是加密了的，但是其中的密钥一但被监听，消息也可能被破解.是一种看似安全，但存在一定风险的消息传输技术.<br><img src="/images/SSL.png" alt=""></p><pre class=" language-java"><code class="language-java">client<span class="token operator">--</span><span class="token operator">--</span><span class="token operator">-</span>publicKey<span class="token operator">--</span><span class="token operator">--</span><span class="token operator">></span> server #通过publicKey加密解密过程client<span class="token operator">&lt;</span><span class="token operator">--</span><span class="token operator">--</span>publicKey<span class="token operator">--</span><span class="token operator">--</span><span class="token operator">-</span> server #通过publicKey加密解密过程</code></pre><h3 id="https非对称加密技术"><a href="#https非对称加密技术" class="headerlink" title="https非对称加密技术"></a>https非对称加密技术</h3><blockquote><p>“非对称加密”使用的时候有两把锁，一把叫做“私有密钥”，一把是“公开密钥”。<br>运行原理:服务器首先告诉客户端按照自己给定的公开密钥进行加密处理，客户端按照公开密钥加密以后，服务器接受到信息再通过自己的私有密钥进行解密，这样做的好处就是解密的钥匙根本就不会进行传输，因此也就避免了被挟持的风险。就算公开密钥被窃听者拿到了，它也很难进行解密，因为解密过程是对离散对数求值，这可不是轻而易举就能做到的事。以下是非对称加密的原理图：<br><img src="/images/https-fdc.png" alt=""></p><pre class=" language-java"><code class="language-java">client<span class="token operator">--</span><span class="token operator">--</span><span class="token operator">-</span>publicKey<span class="token operator">--</span><span class="token operator">--</span><span class="token operator">></span> server use privateKey #先通过publicKey加密解密再通过privateKey解密client<span class="token operator">&lt;</span><span class="token operator">--</span><span class="token operator">--</span>publicKey<span class="token operator">--</span><span class="token operator">--</span><span class="token operator">-</span> server use privateKey #先通过publicKey加密解密再通过privateKey解密</code></pre></blockquote><h3 id="非称加密方式的缺点："><a href="#非称加密方式的缺点：" class="headerlink" title="非称加密方式的缺点："></a>非称加密方式的缺点：</h3><blockquote><p>第一个是：如何保证接收端向发送端发出公开秘钥的时候，发送端确保收到的是预先要发送的，而不会被挟持。只要是发送密钥，就有可能有被挟持的风险。</p></blockquote><blockquote><p>第二个是：非对称加密的方式效率比较低，它处理起来更为复杂，通信过程中使用就有一定的效率问题而影响通信速度<br>非称加密方式的缺点</p></blockquote><h3 id="Https的安全通信机制"><a href="#Https的安全通信机制" class="headerlink" title="Https的安全通信机制"></a>Https的安全通信机制</h3><blockquote><p>基于上述单个加密方式的不足,Https采用混合机制的加密方式,https则综合了公开密钥加密和共享密钥加密的两种方式，充分利用两者的优势，在最初的连接的时候使用非对称密钥的加密方式保证连接的安全性，之后稳定的通讯采用对称加密的方式，稳定的通讯是指确保交换的密钥是安全的。</p></blockquote><blockquote><p>公钥很可能存在被挟持的情况，无法保证客户端收到的公开密钥就是服务器发行的公开密钥。此时就引出了公开密钥证书机制。数字证书认证机构是客户端与服务器都可信赖的第三方机构。证书的具体传播过程如下：<br><img src="/images/https-zhongheSSL.png" alt=""></p></blockquote><blockquote><ol><li>服务器的开发者携带公开密钥，向数字证书认证机构提出公开密钥的申请，数字证书认证机构在认清申请者的身份，审核通过以后，会对开发者申请的公开密钥做数字签名，然后分配这个已签名的公开密钥，并将密钥放在证书里面，绑定在一起</li><li>服务器将这份数字证书发送给客户端，因为客户端也认可证书机构，客户端可以通过数字证书中的数字签名来验证公钥的真伪，来确保服务器传过来的公开密钥是真实的。一般情况下，证书的数字签名是很难被伪造的，这取决于认证机构的公信力。一旦确认信息无误之后，客户端就会通过公钥对报文进行加密发送，服务器接收到以后用自己的私钥进行解密.</li></ol></blockquote><h2 id="为什么还有很多网站不使用Https"><a href="#为什么还有很多网站不使用Https" class="headerlink" title="为什么还有很多网站不使用Https"></a>为什么还有很多网站不使用Https</h2><blockquote><p>1：加密通信会消耗一定的cpu和服务器资源,如果每次通信都加密，就会消耗更多的资源.<br>2: 如果所有的信息都采用https加密，这无疑是一种浪费。非敏感信息就算被窃取了，也无伤大雅。可以在其传输敏感信息的时候，采用https协议进行加密.<br>3：向认证机构购买证书的开销也是一笔很大的费用。</p></blockquote><h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><blockquote><p>本文主要介绍了HTTPS和其通信机制，现在更加注重信息安全，预计未来https的应用场景将会更广.</p></blockquote>]]></content>
+      
+      
+      <categories>
+          
+          <category> JAVA </category>
+          
+          <category> Https </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> Java </tag>
+            
+            <tag> Https </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    <entry>
+      <title>python-PyInstaller安装和使用</title>
+      <link href="/2019/01/24/python-installer%E4%BD%BF%E7%94%A8/"/>
+      <url>/2019/01/24/python-installer%E4%BD%BF%E7%94%A8/</url>
+      
+        <content type="html"><![CDATA[<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>本文主要介绍pyinstaller的安装和使用，目前Python的打包工具主要有py2exe、cxfreeze、PyInstaller三种，经过测试py2exe和cxfreeze的安装过程比较麻烦，且对高版本PYTHON3.7支持不好，使用也比较复杂,虽然pyinstaller打包后文件相对较大，但是其安装的简单性和易用性得到广大Python使用者的青睐.</p><h2 id="如何安装pyinstaller"><a href="#如何安装pyinstaller" class="headerlink" title="如何安装pyinstaller"></a>如何安装pyinstaller</h2><blockquote><p>如果已经安装了Python3.7且安装了PIP，则可以直接使用PIP命令安装pyintaller,注意可能安装失败，有几种原因，如果你之前安装了其他版本的Python但是其pip相关文件未清除干净，可能会安装失败，会有提示文件夹信息，可能是pip出现了为，把之前的旧pip文件清除，再重新执行命令.总的来说就是保证Python的环境和pip是正确的.</p><pre class=" language-linux"><code class="language-linux">pip install pyintaller</code></pre></blockquote><h2 id="如何使用pyinstaller打包"><a href="#如何使用pyinstaller打包" class="headerlink" title="如何使用pyinstaller打包"></a>如何使用pyinstaller打包</h2><blockquote><p>确保PyInstaller安装成功,如果你要打包的文件为hello.py, 则运行CMD或者bash命令窗，切换到该文件的目录下，然后运行如下命令，然后会看到如下页面.</p><pre class=" language-linux"><code class="language-linux">pyinstaller -F hello.py</code></pre><p><img src="/images/python-pyinstaller.png" alt=""></p></blockquote><blockquote><p>然后在当前文件夹下会自动生成<strong>dist</strong>目录和<strong>build</strong>目录，生成的exe文件则在<strong>dist</strong>目录中，这样通过pyinstaller打包exe的工作就完成了.</p></blockquote><h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><blockquote><p>总的来说，pyinstaller还是挺方便好用的，相对其他两类对高版本的Python支持也比较好,现在你可以尝试将自己的Python脚本编译成exe文件啦.</p></blockquote>]]></content>
+      
+      
+      <categories>
+          
+          <category> Python </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> Python </tag>
+            
+            <tag> PyInstaller </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    <entry>
       <title>Kafka介绍以及集群安装</title>
       <link href="/2019/01/21/kafka%E4%BB%8B%E7%BB%8D%E4%BB%A5%E5%8F%8A%E9%9B%86%E7%BE%A4%E5%AE%89%E8%A3%85/"/>
       <url>/2019/01/21/kafka%E4%BB%8B%E7%BB%8D%E4%BB%A5%E5%8F%8A%E9%9B%86%E7%BE%A4%E5%AE%89%E8%A3%85/</url>
@@ -23,9 +75,9 @@
       
         <tags>
             
-            <tag> Kafka </tag>
-            
             <tag> Java </tag>
+            
+            <tag> Kafka </tag>
             
         </tags>
       
