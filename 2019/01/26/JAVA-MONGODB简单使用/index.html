@@ -1,0 +1,1087 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head>
+    
+
+<head><meta name="generator" content="Hexo 3.8.0">
+    <meta charset="utf-8">
+    <meta name="keywords" content="JAVA-MONGODB简单使用, Romer">
+    <meta name="description" content="概述
+本文主要介绍MongoDB和java简单使用MongoDB，MongoDB作为流行的 NOT ONLY SQL 数据库，和关系型数据库mysql，oracle等的ACID不同，非关系型数据库为分布式系统和大数据的应用提供了良好的支持.">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="renderer" content="webkit|ie-stand|ie-comp">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <title>JAVA-MONGODB简单使用 | Jack Romer</title>
+    <link rel="icon" type="image/png" href="/images/mine.jpg">
+
+    <link rel="stylesheet" type="text/css" href="/libs/awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/materialize/css/materialize.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/aos/aos.css">
+    <link rel="stylesheet" type="text/css" href="/libs/animate/animate.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/lightGallery/css/lightgallery.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/matery.css">
+    <link rel="stylesheet" type="text/css" href="/css/my.css">
+
+    <script src="/libs/jquery/jquery-2.2.0.min.js"></script>
+<link rel="stylesheet" href="/css/prism-tomorrow.css" type="text/css"></head>
+
+</head>
+
+<body>
+
+<header class="navbar-fixed">
+    <nav id="headNav" class="bg-color nav-transparent">
+        <div id="navContainer" class="container">
+            <div class="nav-wrapper">
+                <div class="brand-logo">
+                    <a href="/" class="waves-effect waves-light">
+                        
+                        <img src="/images/mine.jpg" class="logo-img hide-on-small-only">
+                        
+                        <span class="logo-span">Jack Romer</span>
+                    </a>
+                </div>
+                <a href="#" data-activates="mobile-nav" class="button-collapse"><i class="fa fa-navicon"></i></a>
+<ul class="right">
+    
+    <li class="hide-on-med-and-down">
+        <a href="/" class="waves-effect waves-light">
+            
+            <i class="fa fa-home"></i>
+            
+            <span>主页</span>
+        </a>
+    </li>
+    
+    <li class="hide-on-med-and-down">
+        <a href="/tags" class="waves-effect waves-light">
+            
+            <i class="fa fa-tags"></i>
+            
+            <span>标签</span>
+        </a>
+    </li>
+    
+    <li class="hide-on-med-and-down">
+        <a href="/categories" class="waves-effect waves-light">
+            
+            <i class="fa fa-bookmark"></i>
+            
+            <span>分类</span>
+        </a>
+    </li>
+    
+    <li class="hide-on-med-and-down">
+        <a href="/archives" class="waves-effect waves-light">
+            
+            <i class="fa fa-archive"></i>
+            
+            <span>归档</span>
+        </a>
+    </li>
+    
+    <li class="hide-on-med-and-down">
+        <a href="/about" class="waves-effect waves-light">
+            
+            <i class="fa fa-user-circle-o"></i>
+            
+            <span>关于</span>
+        </a>
+    </li>
+    
+    <li>
+        <a id="toggleSearch" class="waves-effect waves-light">
+            <i id="searchIcon" class="mdi-action-search"></i>
+        </a>
+    </li>
+
+</ul>
+
+<div class="side-nav" id="mobile-nav">
+
+    <div class="mobile-head bg-color">
+        
+        <img src="/images/mine.jpg" class="logo-img circle responsive-img">
+        
+        <div class="logo-name">Jack Romer</div>
+        <div class="logo-desc">
+            
+            Jack Romer&#39;s blog
+            
+        </div>
+    </div>
+
+    <ul class="menu-list mobile-menu-list">
+        
+        <li>
+            <a href="/" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-home"></i>
+                
+                主页
+            </a>
+        </li>
+        
+        <li>
+            <a href="/tags" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-tags"></i>
+                
+                标签
+            </a>
+        </li>
+        
+        <li>
+            <a href="/categories" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-bookmark"></i>
+                
+                分类
+            </a>
+        </li>
+        
+        <li>
+            <a href="/archives" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-archive"></i>
+                
+                归档
+            </a>
+        </li>
+        
+        <li>
+            <a href="/about" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-user-circle-o"></i>
+                
+                关于
+            </a>
+        </li>
+        
+        
+        <li><div class="divider"></div></li>
+        <li>
+            <a href="https://github.com/JACKROMER" class="waves-effect waves-light" target="_blank">
+                <i class="fa fa-github-square fa-fw"></i>Fork Me
+            </a>
+        </li>
+        
+    </ul>
+
+    <div class="social-link"><a href="https://github.com/JACKROMER" class="tooltipped" target="_blank" data-tooltip="访问我的GitHub" data-position="top" data-delay="50">
+    <i class="fa fa-github"></i>
+</a>
+<a href="mailto:jackromer@163.com" class="tooltipped" target="_blank" data-tooltip="邮件联系我" data-position="top" data-delay="50">
+    <i class="fa fa-envelope-open"></i>
+</a>
+<a href="#!" class="tooltipped" data-tooltip="QQ联系我: 943655387" data-position="top" data-delay="50">
+    <i class="fa fa-qq"></i>
+</a>
+
+<a href="/atom.xml" class="tooltipped" target="_blank" data-tooltip="RSS 订阅" data-position="top" data-delay="50">
+    <i class="fa fa-rss"></i>
+</a>
+</div>
+</div>
+
+            </div>
+        </div>
+
+        
+        <style>
+    .nav-transparent .github-corner {
+        display: none !important;
+    }
+
+    .github-corner {
+        position: absolute;
+        z-index: 10;
+        top: 0;
+        right: 0;
+        border: 0;
+        transform: scale(1.1);
+    }
+
+    .github-corner svg {
+        color: #0f9d58;
+        fill: #fff;
+        height: 64px;
+        width: 64px;
+    }
+
+    .github-corner:hover .octo-arm {
+        animation: a 0.56s ease-in-out;
+    }
+
+    .github-corner .octo-arm {
+        animation: none;
+    }
+
+    @keyframes a {
+        0%,
+        to {
+            transform: rotate(0);
+        }
+        20%,
+        60% {
+            transform: rotate(-25deg);
+        }
+        40%,
+        80% {
+            transform: rotate(10deg);
+        }
+    }
+</style>
+
+<a href="https://github.com/JACKROMER" class="github-corner tooltipped hide-on-med-and-down" target="_blank" data-tooltip="Fork Me" data-position="left" data-delay="50">
+    <svg viewbox="0 0 250 250" aria-hidden="true">
+        <path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"/>
+        <path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"/>
+        <path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"/>
+    </svg>
+</a>
+        
+    </nav>
+</header>
+
+
+
+<div class="bg-cover post-cover" style="background-image: url('/medias/scienceFiction/8.jpg')">
+    <div class="container">
+        <div class="row">
+            <div class="col s12 m12 l12">
+                <div class="brand">
+                    <div class="description center-align post-title">
+                        JAVA-MONGODB简单使用
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<main class="post-container content">
+
+    
+    <link rel="stylesheet" href="/libs/tocbot/tocbot.css">
+<style>
+    #articleContent h1,
+    #articleContent h2,
+    #articleContent h3,
+    #articleContent h4,
+    #articleContent h5,
+    #articleContent h6 {
+        padding-top: 76px;
+        margin-top: -76px;
+    }
+
+    #articleContent h1 {
+        line-height: 3.5rem;
+    }
+
+    #articleContent h2 {
+        line-height: 3.2rem;
+    }
+
+    #articleContent h3 {
+        line-height: 2.8rem;
+    }
+
+    #articleContent h4 {
+        line-height: 2.5rem;
+    }
+
+    #articleContent h5 {
+        line-height: 2.2rem;
+    }
+
+    #articleContent h6 {
+        line-height: 1.9rem;
+    }
+
+    #articleContent :focus {
+        outline: none;
+    }
+
+    .toc-fixed {
+        position: fixed;
+        top: 64px;
+    }
+
+    .toc-widget {
+        padding-left: 20px;
+    }
+
+    .toc-widget .toc-title {
+        margin: 35px 0 15px 0;
+        padding-left: 17px;
+        font-size: 1.5rem;
+        font-weight: bold;
+        line-height: 1.5rem;
+    }
+
+    .toc-widget ol {
+        padding: 0;
+        list-style: none;
+    }
+
+    #toc-content ol {
+        padding-left: 10px;
+    }
+
+    #toc-content ol li {
+        padding-left: 10px;
+    }
+
+    #toc-content .toc-link:hover {
+        color: #42b983;
+        font-weight: 700;
+        text-decoration: underline;
+    }
+
+    #toc-content .toc-link::before {
+        background-color: transparent;
+        max-height: 25px;
+    }
+
+    #toc-content .is-active-link {
+        color: #42b983;
+    }
+
+    #toc-content .is-active-link::before {
+        background-color: #42b983;
+    }
+</style>
+<div class="row">
+    <div class="col s12 m12 l9">
+        <!-- 文章内容详情 -->
+<div id="artDetail">
+    <div class="card">
+        <div class="card-content article-info">
+            
+            <div class="article-tag">
+                
+                <a href="/tags/Java/" target="_blank">
+                    <span class="chip bg-color">Java</span>
+                </a>
+                
+                <a href="/tags/MongoDb/" target="_blank">
+                    <span class="chip bg-color">MongoDb</span>
+                </a>
+                
+            </div>
+            
+            <div class="post-info">
+                
+                <span class="post-cate">
+                    <i class="fa fa-bookmark fa-fw icon-category"></i>
+                    
+                    <a href="/categories/JAVA/" class="post-category" target="_blank">
+                        JAVA
+                    </a>
+                    
+                    <a href="/categories/JAVA/MongoDb/" class="post-category" target="_blank">
+                        MongoDb
+                    </a>
+                    
+                </span>
+                
+
+                <span class="post-date">
+                    <i class="fa fa-clock-o fa-fw"></i>2019-01-26
+                </span>
+            </div>
+        </div>
+        <hr>
+        <div class="card-content article-card-content">
+            <div id="articleContent">
+                <h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><blockquote>
+<p>本文主要介绍MongoDB和java简单使用MongoDB，MongoDB作为流行的 NOT ONLY SQL 数据库，和关系型数据库mysql，oracle等的ACID不同，非关系型数据库为分布式系统和大数据的应用提供了良好的支持.当然MONGODB存储的内容是文档型的，这样也就有机会对某些字段建立索引，实现关系数据库的某些功能。</p>
+</blockquote>
+<h2 id="MongoDB的优点"><a href="#MongoDB的优点" class="headerlink" title="MongoDB的优点"></a>MongoDB的优点</h2><blockquote>
+<ul>
+<li>高可扩展性</li>
+<li>分布式计算</li>
+<li>低成本</li>
+<li>架构的灵活性，半结构化数据</li>
+<li>没有复杂的关系</li>
+</ul>
+</blockquote>
+<h2 id="MongoDb的缺点"><a href="#MongoDb的缺点" class="headerlink" title="MongoDb的缺点"></a>MongoDb的缺点</h2><ul>
+<li>没有标准化</li>
+<li>有限的查询功能（到目前为止）</li>
+<li>最终一致是不直观的程序</li>
+</ul>
+<h2 id="MongoDb-无密码连接"><a href="#MongoDb-无密码连接" class="headerlink" title="MongoDb 无密码连接"></a>MongoDb 无密码连接</h2><pre class=" language-java"><code class="language-java"><span class="token keyword">import</span> com<span class="token punctuation">.</span>mongodb<span class="token punctuation">.</span>MongoClient<span class="token punctuation">;</span>
+<span class="token keyword">import</span> com<span class="token punctuation">.</span>mongodb<span class="token punctuation">.</span>client<span class="token punctuation">.</span>MongoDatabase<span class="token punctuation">;</span>
+
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">MongoDBJDBC</span><span class="token punctuation">{</span>
+   <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">main</span><span class="token punctuation">(</span> String args<span class="token punctuation">[</span><span class="token punctuation">]</span> <span class="token punctuation">)</span><span class="token punctuation">{</span>
+      <span class="token keyword">try</span><span class="token punctuation">{</span>   
+       <span class="token comment" spellcheck="true">// 连接到 mongodb 服务</span>
+         MongoClient mongoClient <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">MongoClient</span><span class="token punctuation">(</span> <span class="token string">"localhost"</span> <span class="token punctuation">,</span> <span class="token number">27017</span> <span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+         <span class="token comment" spellcheck="true">// 连接到数据库</span>
+         MongoDatabase mongoDatabase <span class="token operator">=</span> mongoClient<span class="token punctuation">.</span><span class="token function">getDatabase</span><span class="token punctuation">(</span><span class="token string">"mycol"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>  
+       System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"Connect to database successfully"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+      <span class="token punctuation">}</span><span class="token keyword">catch</span><span class="token punctuation">(</span>Exception e<span class="token punctuation">)</span><span class="token punctuation">{</span>
+        System<span class="token punctuation">.</span>err<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span> e<span class="token punctuation">.</span><span class="token function">getClass</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">getName</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">+</span> <span class="token string">": "</span> <span class="token operator">+</span> e<span class="token punctuation">.</span><span class="token function">getMessage</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">)</span><span class="token punctuation">;</span>
+     <span class="token punctuation">}</span>
+   <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<h2 id="MongoDB-密码连接"><a href="#MongoDB-密码连接" class="headerlink" title="MongoDB 密码连接"></a>MongoDB 密码连接</h2><pre class=" language-java"><code class="language-java"><span class="token keyword">import</span> java<span class="token punctuation">.</span>util<span class="token punctuation">.</span>ArrayList<span class="token punctuation">;</span>  
+<span class="token keyword">import</span> java<span class="token punctuation">.</span>util<span class="token punctuation">.</span>List<span class="token punctuation">;</span>  
+<span class="token keyword">import</span> com<span class="token punctuation">.</span>mongodb<span class="token punctuation">.</span>MongoClient<span class="token punctuation">;</span>  
+<span class="token keyword">import</span> com<span class="token punctuation">.</span>mongodb<span class="token punctuation">.</span>MongoCredential<span class="token punctuation">;</span>  
+<span class="token keyword">import</span> com<span class="token punctuation">.</span>mongodb<span class="token punctuation">.</span>ServerAddress<span class="token punctuation">;</span>  
+<span class="token keyword">import</span> com<span class="token punctuation">.</span>mongodb<span class="token punctuation">.</span>client<span class="token punctuation">.</span>MongoDatabase<span class="token punctuation">;</span>  
+
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">MongoDBJDBC</span> <span class="token punctuation">{</span>  
+    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">main</span><span class="token punctuation">(</span>String<span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span><span class="token punctuation">{</span>  
+        <span class="token keyword">try</span> <span class="token punctuation">{</span>  
+            <span class="token comment" spellcheck="true">//连接到MongoDB服务 如果是远程连接可以替换“localhost”为服务器所在IP地址  </span>
+            <span class="token comment" spellcheck="true">//ServerAddress()两个参数分别为 服务器地址 和 端口  </span>
+            ServerAddress serverAddress <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">ServerAddress</span><span class="token punctuation">(</span><span class="token string">"localhost"</span><span class="token punctuation">,</span><span class="token number">27017</span><span class="token punctuation">)</span><span class="token punctuation">;</span>  
+            List<span class="token operator">&lt;</span>ServerAddress<span class="token operator">></span> addrs <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">ArrayList</span><span class="token operator">&lt;</span>ServerAddress<span class="token operator">></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>  
+            addrs<span class="token punctuation">.</span><span class="token function">add</span><span class="token punctuation">(</span>serverAddress<span class="token punctuation">)</span><span class="token punctuation">;</span>  
+
+            <span class="token comment" spellcheck="true">//MongoCredential.createScramSha1Credential()三个参数分别为 用户名 数据库名称 密码  </span>
+            MongoCredential credential <span class="token operator">=</span> MongoCredential<span class="token punctuation">.</span><span class="token function">createScramSha1Credential</span><span class="token punctuation">(</span><span class="token string">"username"</span><span class="token punctuation">,</span> <span class="token string">"databaseName"</span><span class="token punctuation">,</span> <span class="token string">"password"</span><span class="token punctuation">.</span><span class="token function">toCharArray</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>  
+            List<span class="token operator">&lt;</span>MongoCredential<span class="token operator">></span> credentials <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">ArrayList</span><span class="token operator">&lt;</span>MongoCredential<span class="token operator">></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>  
+            credentials<span class="token punctuation">.</span><span class="token function">add</span><span class="token punctuation">(</span>credential<span class="token punctuation">)</span><span class="token punctuation">;</span>  
+
+            <span class="token comment" spellcheck="true">//通过连接认证获取MongoDB连接  </span>
+            MongoClient mongoClient <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">MongoClient</span><span class="token punctuation">(</span>addrs<span class="token punctuation">,</span>credentials<span class="token punctuation">)</span><span class="token punctuation">;</span>  
+
+            <span class="token comment" spellcheck="true">//连接到数据库  </span>
+            MongoDatabase mongoDatabase <span class="token operator">=</span> mongoClient<span class="token punctuation">.</span><span class="token function">getDatabase</span><span class="token punctuation">(</span><span class="token string">"databaseName"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>  
+            System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"Connect to database successfully"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>  
+        <span class="token punctuation">}</span> <span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">Exception</span> e<span class="token punctuation">)</span> <span class="token punctuation">{</span>  
+            System<span class="token punctuation">.</span>err<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span> e<span class="token punctuation">.</span><span class="token function">getClass</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">getName</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">+</span> <span class="token string">": "</span> <span class="token operator">+</span> e<span class="token punctuation">.</span><span class="token function">getMessage</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">)</span><span class="token punctuation">;</span>  
+        <span class="token punctuation">}</span>  
+    <span class="token punctuation">}</span>  
+<span class="token punctuation">}</span> 
+</code></pre>
+<h2 id="MongoDB-创建集合collection"><a href="#MongoDB-创建集合collection" class="headerlink" title="MongoDB 创建集合collection"></a>MongoDB 创建集合collection</h2><pre class=" language-java"><code class="language-java"><span class="token keyword">import</span> com<span class="token punctuation">.</span>mongodb<span class="token punctuation">.</span>MongoClient<span class="token punctuation">;</span>
+<span class="token keyword">import</span> com<span class="token punctuation">.</span>mongodb<span class="token punctuation">.</span>client<span class="token punctuation">.</span>MongoDatabase<span class="token punctuation">;</span>
+
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">MongoDBJDBC</span><span class="token punctuation">{</span>
+   <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">main</span><span class="token punctuation">(</span> String args<span class="token punctuation">[</span><span class="token punctuation">]</span> <span class="token punctuation">)</span><span class="token punctuation">{</span>
+      <span class="token keyword">try</span><span class="token punctuation">{</span>   
+      <span class="token comment" spellcheck="true">// 连接到 mongodb 服务</span>
+      MongoClient mongoClient <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">MongoClient</span><span class="token punctuation">(</span> <span class="token string">"localhost"</span> <span class="token punctuation">,</span> <span class="token number">27017</span> <span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+
+      <span class="token comment" spellcheck="true">// 连接到数据库</span>
+      MongoDatabase mongoDatabase <span class="token operator">=</span> mongoClient<span class="token punctuation">.</span><span class="token function">getDatabase</span><span class="token punctuation">(</span><span class="token string">"mycol"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>  
+      System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"Connect to database successfully"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+      mongoDatabase<span class="token punctuation">.</span><span class="token function">createCollection</span><span class="token punctuation">(</span><span class="token string">"test"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+      System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"集合创建成功"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+      <span class="token punctuation">}</span><span class="token keyword">catch</span><span class="token punctuation">(</span>Exception e<span class="token punctuation">)</span><span class="token punctuation">{</span>
+        System<span class="token punctuation">.</span>err<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span> e<span class="token punctuation">.</span><span class="token function">getClass</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">getName</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">+</span> <span class="token string">": "</span> <span class="token operator">+</span> e<span class="token punctuation">.</span><span class="token function">getMessage</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">)</span><span class="token punctuation">;</span>
+     <span class="token punctuation">}</span>
+   <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<h2 id="MongoDB-获取集合"><a href="#MongoDB-获取集合" class="headerlink" title="MongoDB 获取集合"></a>MongoDB 获取集合</h2><blockquote>
+<p>我们可以使用com.mongodb.client.MongoDatabase类的 getCollection() 方法来获取一个集合</p>
+</blockquote>
+<pre class=" language-java"><code class="language-java">
+<span class="token keyword">import</span> org<span class="token punctuation">.</span>bson<span class="token punctuation">.</span>Document<span class="token punctuation">;</span>
+<span class="token keyword">import</span> com<span class="token punctuation">.</span>mongodb<span class="token punctuation">.</span>MongoClient<span class="token punctuation">;</span>
+<span class="token keyword">import</span> com<span class="token punctuation">.</span>mongodb<span class="token punctuation">.</span>client<span class="token punctuation">.</span>MongoCollection<span class="token punctuation">;</span>
+<span class="token keyword">import</span> com<span class="token punctuation">.</span>mongodb<span class="token punctuation">.</span>client<span class="token punctuation">.</span>MongoDatabase<span class="token punctuation">;</span>
+
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">MongoDBJDBC</span><span class="token punctuation">{</span>
+   <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">main</span><span class="token punctuation">(</span> String args<span class="token punctuation">[</span><span class="token punctuation">]</span> <span class="token punctuation">)</span><span class="token punctuation">{</span>
+      <span class="token keyword">try</span><span class="token punctuation">{</span>   
+       <span class="token comment" spellcheck="true">// 连接到 mongodb 服务</span>
+         MongoClient mongoClient <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">MongoClient</span><span class="token punctuation">(</span> <span class="token string">"localhost"</span> <span class="token punctuation">,</span> <span class="token number">27017</span> <span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+         <span class="token comment" spellcheck="true">// 连接到数据库</span>
+         MongoDatabase mongoDatabase <span class="token operator">=</span> mongoClient<span class="token punctuation">.</span><span class="token function">getDatabase</span><span class="token punctuation">(</span><span class="token string">"mycol"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>  
+       System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"Connect to database successfully"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+       MongoCollection<span class="token operator">&lt;</span>Document<span class="token operator">></span> collection <span class="token operator">=</span> mongoDatabase<span class="token punctuation">.</span><span class="token function">getCollection</span><span class="token punctuation">(</span><span class="token string">"test"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+       System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"集合 test 选择成功"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+      <span class="token punctuation">}</span><span class="token keyword">catch</span><span class="token punctuation">(</span>Exception e<span class="token punctuation">)</span><span class="token punctuation">{</span>
+        System<span class="token punctuation">.</span>err<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span> e<span class="token punctuation">.</span><span class="token function">getClass</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">getName</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">+</span> <span class="token string">": "</span> <span class="token operator">+</span> e<span class="token punctuation">.</span><span class="token function">getMessage</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">)</span><span class="token punctuation">;</span>
+     <span class="token punctuation">}</span>
+   <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<h2 id="MongoDB-插入文档"><a href="#MongoDB-插入文档" class="headerlink" title="MongoDB 插入文档"></a>MongoDB 插入文档</h2><blockquote>
+<p>我们可以使用com.mongodb.client.MongoCollection类的 insertMany() 方法来插入一个文档</p>
+</blockquote>
+<pre class=" language-java"><code class="language-java"><span class="token keyword">import</span> java<span class="token punctuation">.</span>util<span class="token punctuation">.</span>ArrayList<span class="token punctuation">;</span>
+<span class="token keyword">import</span> java<span class="token punctuation">.</span>util<span class="token punctuation">.</span>List<span class="token punctuation">;</span>
+<span class="token keyword">import</span> org<span class="token punctuation">.</span>bson<span class="token punctuation">.</span>Document<span class="token punctuation">;</span>
+
+<span class="token keyword">import</span> com<span class="token punctuation">.</span>mongodb<span class="token punctuation">.</span>MongoClient<span class="token punctuation">;</span>
+<span class="token keyword">import</span> com<span class="token punctuation">.</span>mongodb<span class="token punctuation">.</span>client<span class="token punctuation">.</span>MongoCollection<span class="token punctuation">;</span>
+<span class="token keyword">import</span> com<span class="token punctuation">.</span>mongodb<span class="token punctuation">.</span>client<span class="token punctuation">.</span>MongoDatabase<span class="token punctuation">;</span>
+
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">MongoDBJDBC</span><span class="token punctuation">{</span>
+   <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">main</span><span class="token punctuation">(</span> String args<span class="token punctuation">[</span><span class="token punctuation">]</span> <span class="token punctuation">)</span><span class="token punctuation">{</span>
+      <span class="token keyword">try</span><span class="token punctuation">{</span>   
+         <span class="token comment" spellcheck="true">// 连接到 mongodb 服务</span>
+         MongoClient mongoClient <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">MongoClient</span><span class="token punctuation">(</span> <span class="token string">"localhost"</span> <span class="token punctuation">,</span> <span class="token number">27017</span> <span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+         <span class="token comment" spellcheck="true">// 连接到数据库</span>
+         MongoDatabase mongoDatabase <span class="token operator">=</span> mongoClient<span class="token punctuation">.</span><span class="token function">getDatabase</span><span class="token punctuation">(</span><span class="token string">"mycol"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>  
+         System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"Connect to database successfully"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+         MongoCollection<span class="token operator">&lt;</span>Document<span class="token operator">></span> collection <span class="token operator">=</span> mongoDatabase<span class="token punctuation">.</span><span class="token function">getCollection</span><span class="token punctuation">(</span><span class="token string">"test"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+         System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"集合 test 选择成功"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+         <span class="token comment" spellcheck="true">//插入文档  </span>
+         <span class="token comment" spellcheck="true">/** 
+         * 1. 创建文档 org.bson.Document 参数为key-value的格式 
+         * 2. 创建文档集合List&lt;Document> 
+         * 3. 将文档集合插入数据库集合中 mongoCollection.insertMany(List&lt;Document>) 插入单个文档可以用 mongoCollection.insertOne(Document) 
+         * */</span>
+         Document document <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Document</span><span class="token punctuation">(</span><span class="token string">"title"</span><span class="token punctuation">,</span> <span class="token string">"MongoDB"</span><span class="token punctuation">)</span><span class="token punctuation">.</span>  
+         <span class="token function">append</span><span class="token punctuation">(</span><span class="token string">"description"</span><span class="token punctuation">,</span> <span class="token string">"database"</span><span class="token punctuation">)</span><span class="token punctuation">.</span>  
+         <span class="token function">append</span><span class="token punctuation">(</span><span class="token string">"likes"</span><span class="token punctuation">,</span> <span class="token number">100</span><span class="token punctuation">)</span><span class="token punctuation">.</span>  
+         <span class="token function">append</span><span class="token punctuation">(</span><span class="token string">"by"</span><span class="token punctuation">,</span> <span class="token string">"Fly"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>  
+         List<span class="token operator">&lt;</span>Document<span class="token operator">></span> documents <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">ArrayList</span><span class="token operator">&lt;</span>Document<span class="token operator">></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>  
+         documents<span class="token punctuation">.</span><span class="token function">add</span><span class="token punctuation">(</span>document<span class="token punctuation">)</span><span class="token punctuation">;</span>  
+         collection<span class="token punctuation">.</span><span class="token function">insertMany</span><span class="token punctuation">(</span>documents<span class="token punctuation">)</span><span class="token punctuation">;</span>  
+         System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"文档插入成功"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>  
+      <span class="token punctuation">}</span><span class="token keyword">catch</span><span class="token punctuation">(</span>Exception e<span class="token punctuation">)</span><span class="token punctuation">{</span>
+         System<span class="token punctuation">.</span>err<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span> e<span class="token punctuation">.</span><span class="token function">getClass</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">getName</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">+</span> <span class="token string">": "</span> <span class="token operator">+</span> e<span class="token punctuation">.</span><span class="token function">getMessage</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">)</span><span class="token punctuation">;</span>
+      <span class="token punctuation">}</span>
+   <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<h2 id="MongoDB-检索所有文档"><a href="#MongoDB-检索所有文档" class="headerlink" title="MongoDB 检索所有文档"></a>MongoDB 检索所有文档</h2><blockquote>
+<p>我们可以使用 com.mongodb.client.MongoCollection 类中的 find() 方法来获取集合中的所有文档。此方法返回一个游标，所以你需要遍历这个游标。</p>
+</blockquote>
+<pre class=" language-java"><code class="language-java"><span class="token keyword">import</span> org<span class="token punctuation">.</span>bson<span class="token punctuation">.</span>Document<span class="token punctuation">;</span>
+<span class="token keyword">import</span> com<span class="token punctuation">.</span>mongodb<span class="token punctuation">.</span>MongoClient<span class="token punctuation">;</span>
+<span class="token keyword">import</span> com<span class="token punctuation">.</span>mongodb<span class="token punctuation">.</span>client<span class="token punctuation">.</span>FindIterable<span class="token punctuation">;</span>
+<span class="token keyword">import</span> com<span class="token punctuation">.</span>mongodb<span class="token punctuation">.</span>client<span class="token punctuation">.</span>MongoCollection<span class="token punctuation">;</span>
+<span class="token keyword">import</span> com<span class="token punctuation">.</span>mongodb<span class="token punctuation">.</span>client<span class="token punctuation">.</span>MongoCursor<span class="token punctuation">;</span>
+<span class="token keyword">import</span> com<span class="token punctuation">.</span>mongodb<span class="token punctuation">.</span>client<span class="token punctuation">.</span>MongoDatabase<span class="token punctuation">;</span>
+
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">MongoDBJDBC</span><span class="token punctuation">{</span>
+   <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">main</span><span class="token punctuation">(</span> String args<span class="token punctuation">[</span><span class="token punctuation">]</span> <span class="token punctuation">)</span><span class="token punctuation">{</span>
+      <span class="token keyword">try</span><span class="token punctuation">{</span>   
+         <span class="token comment" spellcheck="true">// 连接到 mongodb 服务</span>
+         MongoClient mongoClient <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">MongoClient</span><span class="token punctuation">(</span> <span class="token string">"localhost"</span> <span class="token punctuation">,</span> <span class="token number">27017</span> <span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+         <span class="token comment" spellcheck="true">// 连接到数据库</span>
+         MongoDatabase mongoDatabase <span class="token operator">=</span> mongoClient<span class="token punctuation">.</span><span class="token function">getDatabase</span><span class="token punctuation">(</span><span class="token string">"mycol"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>  
+         System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"Connect to database successfully"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+         MongoCollection<span class="token operator">&lt;</span>Document<span class="token operator">></span> collection <span class="token operator">=</span> mongoDatabase<span class="token punctuation">.</span><span class="token function">getCollection</span><span class="token punctuation">(</span><span class="token string">"test"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+         System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"集合 test 选择成功"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+         <span class="token comment" spellcheck="true">//检索所有文档  </span>
+         <span class="token comment" spellcheck="true">/** 
+         * 1. 获取迭代器FindIterable&lt;Document> 
+         * 2. 获取游标MongoCursor&lt;Document> 
+         * 3. 通过游标遍历检索出的文档集合 
+         * */</span>  
+         FindIterable<span class="token operator">&lt;</span>Document<span class="token operator">></span> findIterable <span class="token operator">=</span> collection<span class="token punctuation">.</span><span class="token function">find</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>  
+         MongoCursor<span class="token operator">&lt;</span>Document<span class="token operator">></span> mongoCursor <span class="token operator">=</span> findIterable<span class="token punctuation">.</span><span class="token function">iterator</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>  
+         <span class="token keyword">while</span><span class="token punctuation">(</span>mongoCursor<span class="token punctuation">.</span><span class="token function">hasNext</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">{</span>  
+            System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>mongoCursor<span class="token punctuation">.</span><span class="token function">next</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>  
+         <span class="token punctuation">}</span>  
+
+      <span class="token punctuation">}</span><span class="token keyword">catch</span><span class="token punctuation">(</span>Exception e<span class="token punctuation">)</span><span class="token punctuation">{</span>
+         System<span class="token punctuation">.</span>err<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span> e<span class="token punctuation">.</span><span class="token function">getClass</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">getName</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">+</span> <span class="token string">": "</span> <span class="token operator">+</span> e<span class="token punctuation">.</span><span class="token function">getMessage</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">)</span><span class="token punctuation">;</span>
+      <span class="token punctuation">}</span>
+   <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<h2 id="MongoDB-更新文档"><a href="#MongoDB-更新文档" class="headerlink" title="MongoDB 更新文档"></a>MongoDB 更新文档</h2><blockquote>
+<p>你可以使用 com.mongodb.client.MongoCollection 类中的 updateMany() 方法来更新集合中的文档。</p>
+</blockquote>
+<pre class=" language-java"><code class="language-java"><span class="token keyword">import</span> org<span class="token punctuation">.</span>bson<span class="token punctuation">.</span>Document<span class="token punctuation">;</span>
+<span class="token keyword">import</span> com<span class="token punctuation">.</span>mongodb<span class="token punctuation">.</span>MongoClient<span class="token punctuation">;</span>
+<span class="token keyword">import</span> com<span class="token punctuation">.</span>mongodb<span class="token punctuation">.</span>client<span class="token punctuation">.</span>FindIterable<span class="token punctuation">;</span>
+<span class="token keyword">import</span> com<span class="token punctuation">.</span>mongodb<span class="token punctuation">.</span>client<span class="token punctuation">.</span>MongoCollection<span class="token punctuation">;</span>
+<span class="token keyword">import</span> com<span class="token punctuation">.</span>mongodb<span class="token punctuation">.</span>client<span class="token punctuation">.</span>MongoCursor<span class="token punctuation">;</span>
+<span class="token keyword">import</span> com<span class="token punctuation">.</span>mongodb<span class="token punctuation">.</span>client<span class="token punctuation">.</span>MongoDatabase<span class="token punctuation">;</span>
+<span class="token keyword">import</span> com<span class="token punctuation">.</span>mongodb<span class="token punctuation">.</span>client<span class="token punctuation">.</span>model<span class="token punctuation">.</span>Filters<span class="token punctuation">;</span>
+
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">MongoDBJDBC</span><span class="token punctuation">{</span>
+   <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">main</span><span class="token punctuation">(</span> String args<span class="token punctuation">[</span><span class="token punctuation">]</span> <span class="token punctuation">)</span><span class="token punctuation">{</span>
+      <span class="token keyword">try</span><span class="token punctuation">{</span>   
+         <span class="token comment" spellcheck="true">// 连接到 mongodb 服务</span>
+         MongoClient mongoClient <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">MongoClient</span><span class="token punctuation">(</span> <span class="token string">"localhost"</span> <span class="token punctuation">,</span> <span class="token number">27017</span> <span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+         <span class="token comment" spellcheck="true">// 连接到数据库</span>
+         MongoDatabase mongoDatabase <span class="token operator">=</span> mongoClient<span class="token punctuation">.</span><span class="token function">getDatabase</span><span class="token punctuation">(</span><span class="token string">"mycol"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>  
+         System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"Connect to database successfully"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+         MongoCollection<span class="token operator">&lt;</span>Document<span class="token operator">></span> collection <span class="token operator">=</span> mongoDatabase<span class="token punctuation">.</span><span class="token function">getCollection</span><span class="token punctuation">(</span><span class="token string">"test"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+         System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"集合 test 选择成功"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+         <span class="token comment" spellcheck="true">//更新文档   将文档中likes=100的文档修改为likes=200   </span>
+         collection<span class="token punctuation">.</span><span class="token function">updateMany</span><span class="token punctuation">(</span>Filters<span class="token punctuation">.</span><span class="token function">eq</span><span class="token punctuation">(</span><span class="token string">"likes"</span><span class="token punctuation">,</span> <span class="token number">100</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token keyword">new</span> <span class="token class-name">Document</span><span class="token punctuation">(</span><span class="token string">"$set"</span><span class="token punctuation">,</span><span class="token keyword">new</span> <span class="token class-name">Document</span><span class="token punctuation">(</span><span class="token string">"likes"</span><span class="token punctuation">,</span><span class="token number">200</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>  
+         <span class="token comment" spellcheck="true">//检索查看结果  </span>
+         FindIterable<span class="token operator">&lt;</span>Document<span class="token operator">></span> findIterable <span class="token operator">=</span> collection<span class="token punctuation">.</span><span class="token function">find</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>  
+         MongoCursor<span class="token operator">&lt;</span>Document<span class="token operator">></span> mongoCursor <span class="token operator">=</span> findIterable<span class="token punctuation">.</span><span class="token function">iterator</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>  
+         <span class="token keyword">while</span><span class="token punctuation">(</span>mongoCursor<span class="token punctuation">.</span><span class="token function">hasNext</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">{</span>  
+            System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>mongoCursor<span class="token punctuation">.</span><span class="token function">next</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>  
+         <span class="token punctuation">}</span>  
+
+      <span class="token punctuation">}</span><span class="token keyword">catch</span><span class="token punctuation">(</span>Exception e<span class="token punctuation">)</span><span class="token punctuation">{</span>
+         System<span class="token punctuation">.</span>err<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span> e<span class="token punctuation">.</span><span class="token function">getClass</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">getName</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">+</span> <span class="token string">": "</span> <span class="token operator">+</span> e<span class="token punctuation">.</span><span class="token function">getMessage</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">)</span><span class="token punctuation">;</span>
+      <span class="token punctuation">}</span>
+   <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<h2 id="MongoDB-删除第一个文档"><a href="#MongoDB-删除第一个文档" class="headerlink" title="MongoDB 删除第一个文档"></a>MongoDB 删除第一个文档</h2><blockquote>
+<p>要删除集合中的第一个文档，首先你需要使用com.mongodb.DBCollection类中的 findOne()方法来获取第一个文档，然后使用remove 方法删除。</p>
+</blockquote>
+<pre class=" language-java"><code class="language-java"><span class="token keyword">import</span> org<span class="token punctuation">.</span>bson<span class="token punctuation">.</span>Document<span class="token punctuation">;</span>
+<span class="token keyword">import</span> com<span class="token punctuation">.</span>mongodb<span class="token punctuation">.</span>MongoClient<span class="token punctuation">;</span>
+<span class="token keyword">import</span> com<span class="token punctuation">.</span>mongodb<span class="token punctuation">.</span>client<span class="token punctuation">.</span>FindIterable<span class="token punctuation">;</span>
+<span class="token keyword">import</span> com<span class="token punctuation">.</span>mongodb<span class="token punctuation">.</span>client<span class="token punctuation">.</span>MongoCollection<span class="token punctuation">;</span>
+<span class="token keyword">import</span> com<span class="token punctuation">.</span>mongodb<span class="token punctuation">.</span>client<span class="token punctuation">.</span>MongoCursor<span class="token punctuation">;</span>
+<span class="token keyword">import</span> com<span class="token punctuation">.</span>mongodb<span class="token punctuation">.</span>client<span class="token punctuation">.</span>MongoDatabase<span class="token punctuation">;</span>
+<span class="token keyword">import</span> com<span class="token punctuation">.</span>mongodb<span class="token punctuation">.</span>client<span class="token punctuation">.</span>model<span class="token punctuation">.</span>Filters<span class="token punctuation">;</span>
+
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">MongoDBJDBC</span><span class="token punctuation">{</span>
+   <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">main</span><span class="token punctuation">(</span> String args<span class="token punctuation">[</span><span class="token punctuation">]</span> <span class="token punctuation">)</span><span class="token punctuation">{</span>
+      <span class="token keyword">try</span><span class="token punctuation">{</span>   
+         <span class="token comment" spellcheck="true">// 连接到 mongodb 服务</span>
+         MongoClient mongoClient <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">MongoClient</span><span class="token punctuation">(</span> <span class="token string">"localhost"</span> <span class="token punctuation">,</span> <span class="token number">27017</span> <span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+         <span class="token comment" spellcheck="true">// 连接到数据库</span>
+         MongoDatabase mongoDatabase <span class="token operator">=</span> mongoClient<span class="token punctuation">.</span><span class="token function">getDatabase</span><span class="token punctuation">(</span><span class="token string">"mycol"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>  
+         System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"Connect to database successfully"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+         MongoCollection<span class="token operator">&lt;</span>Document<span class="token operator">></span> collection <span class="token operator">=</span> mongoDatabase<span class="token punctuation">.</span><span class="token function">getCollection</span><span class="token punctuation">(</span><span class="token string">"test"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+         System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"集合 test 选择成功"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+         <span class="token comment" spellcheck="true">//删除符合条件的第一个文档  </span>
+         collection<span class="token punctuation">.</span><span class="token function">deleteOne</span><span class="token punctuation">(</span>Filters<span class="token punctuation">.</span><span class="token function">eq</span><span class="token punctuation">(</span><span class="token string">"likes"</span><span class="token punctuation">,</span> <span class="token number">200</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>  
+         <span class="token comment" spellcheck="true">//删除所有符合条件的文档  </span>
+         collection<span class="token punctuation">.</span><span class="token function">deleteMany</span> <span class="token punctuation">(</span>Filters<span class="token punctuation">.</span><span class="token function">eq</span><span class="token punctuation">(</span><span class="token string">"likes"</span><span class="token punctuation">,</span> <span class="token number">200</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>  
+         <span class="token comment" spellcheck="true">//检索查看结果  </span>
+         FindIterable<span class="token operator">&lt;</span>Document<span class="token operator">></span> findIterable <span class="token operator">=</span> collection<span class="token punctuation">.</span><span class="token function">find</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>  
+         MongoCursor<span class="token operator">&lt;</span>Document<span class="token operator">></span> mongoCursor <span class="token operator">=</span> findIterable<span class="token punctuation">.</span><span class="token function">iterator</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>  
+         <span class="token keyword">while</span><span class="token punctuation">(</span>mongoCursor<span class="token punctuation">.</span><span class="token function">hasNext</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">{</span>  
+           System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>mongoCursor<span class="token punctuation">.</span><span class="token function">next</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>  
+         <span class="token punctuation">}</span>  
+
+      <span class="token punctuation">}</span><span class="token keyword">catch</span><span class="token punctuation">(</span>Exception e<span class="token punctuation">)</span><span class="token punctuation">{</span>
+        System<span class="token punctuation">.</span>err<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span> e<span class="token punctuation">.</span><span class="token function">getClass</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">getName</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">+</span> <span class="token string">": "</span> <span class="token operator">+</span> e<span class="token punctuation">.</span><span class="token function">getMessage</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">)</span><span class="token punctuation">;</span>
+     <span class="token punctuation">}</span>
+   <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>本文简单介绍了MongoDB和MongoDB的简单使用，后面会介绍MongoDB的一些高级用法.</p>
+<blockquote>
+<p>一盏灯， 一片昏黄； <strong>一简书</strong>， 一杯淡茶。 守着那一份淡定， 品读属于自己的寂寞。 保持淡定， 才能欣赏到最美丽的风景！ 保持淡定， 人生从此不再寂寞。</p>
+</blockquote>
+
+            </div>
+            <hr>
+
+            
+            <style>
+    #reward {
+        margin: 40px 0;
+        text-align: center;
+    }
+
+    #reward .reward-link {
+        font-size: 1.88rem;
+    }
+
+    #reward .btn-floating:hover {
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2), 0 5px 15px rgba(0, 0, 0, 0.2);
+    }
+
+    #rewardModal {
+        width: 320px;
+        height: 350px;
+    }
+
+    #rewardModal .reward-title {
+        margin: 15px auto;
+        padding-bottom: 5px;
+    }
+
+    #rewardModal .modal-content {
+        padding: 10px;
+    }
+
+    #rewardModal .close {
+        position: absolute;
+        right: 15px;
+        top: 15px;
+        color: rgba(0, 0, 0, 0.5);
+        font-size: 1.3rem;
+        line-height: 20px;
+        cursor: pointer;
+    }
+
+    #rewardModal .reward-tabs {
+        margin: 0 auto;
+        width: 210px;
+    }
+
+    .reward-tabs .tabs {
+        height: 38px;
+        margin: 10px auto;
+        padding-left: 0;
+    }
+
+    .reward-tabs .tabs .tab {
+        height: 38px;
+        line-height: 38px;
+    }
+
+    .reward-tabs .tab a {
+        color: #fff;
+        background-color: #ccc;
+    }
+
+    .reward-tabs .tab a:hover {
+        color: #fff;
+    }
+
+    .reward-tabs .wechat-tab .active {
+        color: #fff;
+        background-color: #22AB38;
+    }
+
+    .reward-tabs .alipay-tab .active {
+        color: #fff;
+        background-color: #019FE8;
+    }
+
+    .reward-tabs .reward-img {
+        width: 210px;
+        height: 210px;
+    }
+</style>
+
+<div id="reward">
+    <a class="reward-link btn-floating btn-large waves-effect waves-light red">赏</a>
+
+    <!-- Modal Structure -->
+    <div id="rewardModal" class="modal">
+        <div class="modal-content">
+            <a class="close"><i class="fa fa-close"></i></a>
+            <h4 class="reward-title">welcome your next coming！</h4>
+            <div class="reward-content">
+                <div class="reward-tabs">
+                    <ul class="tabs">
+                        <li class="tab wechat-tab waves-effect waves-light"><a class="active" href="#wechat">微信</a></li>
+                        <li class="tab alipay-tab waves-effect waves-light"><a href="#alipay">支付宝</a></li>
+                    </ul>
+                    <div id="wechat">
+                        <img src="/images/pay/weixin.png" class="reward-img" alt="微信打赏二维码">
+                    </div>
+                    <div id="alipay">
+                        <img src="/images/pay/alipay.png" class="reward-img" alt="支付宝打赏二维码">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function () {
+        $('#reward .reward-link').on('click', function () {
+            $('#rewardModal').openModal();
+        });
+
+        $('#rewardModal .close').on('click', function () {
+            $('#rewardModal').closeModal();
+        });
+    });
+</script>
+            
+
+            <link rel="stylesheet" type="text/css" href="/libs/share/css/share.min.css">
+
+<div id="article-share">
+    
+    <div class="social-share" data-disabled="qzone" data-wechat-qrcode-helper="<p>微信里Scan便可查看分享。</p>"></div>
+    
+</div>
+
+<script src="/libs/share/js/social-share.min.js"></script>
+
+            <div class="reprint">
+                <p>
+                    <span class="reprint-tip">转载请注明: </span>
+                    <a href="https://jackromer.github.io" class="b-link-green">Jack Romer</a>
+                    <i class="fa fa-angle-right fa-lg fa-fw text-color"></i>
+                    <a href="/2019/01/26/JAVA-MONGODB简单使用/" class="b-link-green">JAVA-MONGODB简单使用</a>
+                </p>
+            </div>
+        </div>
+    </div>
+
+    
+        <link rel="stylesheet" href="/libs/gitalk/gitalk.css">
+<link rel="stylesheet" href="/css/my-gitalk.css">
+
+<div class="card gitalk-card" data-aos="fade-up">
+    <div id="gitalk-container" class="card-content"></div>
+</div>
+
+<script src="/libs/gitalk/gitalk.min.js"></script>
+<script>
+    let gitalk = new Gitalk({
+        clientID: '1127667b07d1fb577d33',
+        clientSecret: 'e9ccb1aa6da4e6e06b74638240042cc316e5d234',
+        repo: 'jackromer.github.io',
+        owner: 'JACKROMER',
+        admin: "JACKROMER",
+        id: '2019-01-26T16-49-43',
+        distractionFreeMode: false  // Facebook-like distraction free mode
+    });
+
+    gitalk.render('gitalk-container');
+</script>
+    
+
+    
+
+    
+
+    
+
+    
+
+<article id="prenext-posts" class="prev-next articles">
+    <div class="row article-row">
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge left-badge text-color">本篇</div>
+            <div class="card">
+                <a href="/2019/01/26/JAVA-MONGODB简单使用/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/scienceFiction/8.jpg" class="responsive-img" alt="JAVA-MONGODB简单使用">
+                        
+                        <span class="card-title">JAVA-MONGODB简单使用</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary">概述
+本文主要介绍MongoDB和java简单使用MongoDB，MongoDB作为流行的 NOT ONLY SQL 数据库，和关系型数据库mysql，oracle等的ACID不同，非关系型数据库为分布式系统和大数据的应用提供了良好的支持.</div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="fa fa-clock-o fa-fw icon-date"></i>2019-01-26
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fa fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/JAVA/" class="post-category" target="_blank">
+                                    JAVA
+                                </a>
+                            
+                            <a href="/categories/JAVA/MongoDb/" class="post-category" target="_blank">
+                                    MongoDb
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/Java/" target="_blank">
+                        <span class="chip bg-color">Java</span>
+                    </a>
+                    
+                    <a href="/tags/MongoDb/" target="_blank">
+                        <span class="chip bg-color">MongoDb</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">下一篇</div>
+            <div class="card">
+                <a href="/2019/01/26/linux自动打包脚本/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/banner/18.jpg" class="responsive-img" alt="linux自动打包脚本">
+                        
+                        <span class="card-title">linux自动打包脚本</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary">概述
+本文主要介绍如何使用一些linux脚本
+
+linux启动项目脚本
+启动脚本名startup.bash
+
+#!/bin/bash
+start_monitor() {
+    nohup java -cp KafkaOffsetMonit</div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="fa fa-clock-o fa-fw icon-date"></i>2019-01-26
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fa fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/Linux/" class="post-category" target="_blank">
+                                    Linux
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/Linux/" target="_blank">
+                        <span class="chip bg-color">Linux</span>
+                    </a>
+                    
+                    <a href="/tags/脚本/" target="_blank">
+                        <span class="chip bg-color">脚本</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+    </div>
+</article>
+</div>
+    </div>
+    <div class="col l3 hide-on-med-and-down">
+        <div class="toc-widget">
+            <div class="toc-title">目录</div>
+            <div id="toc-content">
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="/libs/tocbot/tocbot.min.js"></script>
+<script>
+    $(function () {
+        tocbot.init({
+            tocSelector: '#toc-content',
+            contentSelector: '#articleContent',
+            headingSelector: 'h2, h3, h4'
+        });
+
+        // modify the toc link href to support Chinese.
+        let i = 0;
+        let tocHeading = 'toc-heading-';
+        $('#toc-content a').each(function () {
+            $(this).attr('href', '#' + tocHeading + (++i));
+        });
+
+        // modify the heading title id to support Chinese.
+        i = 0;
+        $('#articleContent').children('h2, h3, h4').each(function () {
+            $(this).attr('id', tocHeading + (++i));
+        });
+
+        // Set scroll toc fixed.
+        let tocHeight = parseInt($(window).height() * 0.4 - 64);
+        let $tocWidget = $('.toc-widget');
+        $(window).scroll(function () {
+            let scroll = $(window).scrollTop();
+            /* add post toc fixed. */
+            if (scroll > tocHeight) {
+                $tocWidget.addClass('toc-fixed');
+            } else {
+                $tocWidget.removeClass('toc-fixed');
+            }
+        });
+    });
+</script>
+    
+
+</main>
+
+<footer class="page-footer bg-color">
+    <div class="container row center-align">
+        <div class="col s12 m8 l8 copy-right">
+            本站由&copy;<a href="https://jackromer.github.io/" target="_blank">Jack Romer</a>基于
+            <a href="https://hexo.io/" target="_blank">Hexo</a> 采用
+            <a href="https://jackromer.github.io/" target="_blank">hexo-theme-matery</a>主题搭建.
+        </div>
+        <div class="col s12 m4 l4 social-link"><a href="https://github.com/JACKROMER" class="tooltipped" target="_blank" data-tooltip="访问我的GitHub" data-position="top" data-delay="50">
+    <i class="fa fa-github"></i>
+</a>
+<a href="mailto:jackromer@163.com" class="tooltipped" target="_blank" data-tooltip="邮件联系我" data-position="top" data-delay="50">
+    <i class="fa fa-envelope-open"></i>
+</a>
+<a href="#!" class="tooltipped" data-tooltip="QQ联系我: 943655387" data-position="top" data-delay="50">
+    <i class="fa fa-qq"></i>
+</a>
+
+<a href="/atom.xml" class="tooltipped" target="_blank" data-tooltip="RSS 订阅" data-position="top" data-delay="50">
+    <i class="fa fa-rss"></i>
+</a>
+</div>
+    </div>
+</footer>
+
+<div class="progress-bar"></div>
+
+
+<!-- 搜索遮罩框 -->
+<div id="searchModal" class="modal">
+    <div class="modal-content">
+        <div class="search-header">
+            <span class="title">搜索</span>
+            <input type="search" id="searchInput" name="s" placeholder="请输入搜索的关键字" class="search-input" autofocus>
+        </div>
+        <div id="searchResult"></div>
+    </div>
+</div>
+
+<script src="/js/search.js"></script>
+<script type="text/javascript">
+    searchFunc("/" + "search.xml", 'searchInput', 'searchResult');
+</script>
+<!-- 回到顶部按钮 -->
+<div id="backTop" class="top-scroll">
+    <a class="btn-floating btn-large waves-effect waves-light" href="#!">
+        <i class="fa fa-angle-up"></i>
+    </a>
+</div>
+
+
+<script src="/libs/materialize/js/materialize.min.js"></script>
+<script src="/libs/masonry/masonry.pkgd.min.js"></script>
+<script src="/libs/aos/aos.js"></script>
+<script src="/libs/scrollprogress/scrollProgress.min.js"></script>
+<script src="/libs/lightGallery/js/lightgallery-all.min.js"></script>
+<script src="/js/matery.js"></script>
+</body>
+</html>
