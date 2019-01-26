@@ -252,7 +252,7 @@ Apache Storm是自由开源的分布式实时计算系统，擅长处理海量�
 
 
 
-<div class="bg-cover post-cover" style="background-image: url('/medias/banner/2.jpg')">
+<div class="bg-cover post-cover" style="background-image: url('/medias/scienceFiction/7.jpg')">
     <div class="container">
         <div class="row">
             <div class="col s12 m12 l12">
@@ -412,15 +412,15 @@ Apache Storm是自由开源的分布式实时计算系统，擅长处理海量�
 <h2 id="什么是storm"><a href="#什么是storm" class="headerlink" title="什么是storm"></a>什么是storm</h2><blockquote>
 <p>Apache Storm是自由开源的分布式实时计算系统，擅长处理海量数据，适用于数据实时处理而非批处理。<br>批处理使用的大多是鼎鼎大名的hadoop或者hive，作为一个批处理系统，hadoop以其吞吐量大、自动容错等优点，在海量数据处理上得到了广泛的使用。但是，hadoop不擅长实时计算，因为它天然就是为批处理而生的，这也是业界一致的共识。否则最近几年也不会有s4,storm,puma这些实时计算系统如雨后春笋般冒出来啦。STORM就是为了处理及时的消费者请求而生，在用户给出需求时及时的处理数据并给出响应的结果。</p>
 </blockquote>
-<h2 id="storm处理流程"><a href="#storm处理流程" class="headerlink" title="storm处理流程"></a>storm处理流程</h2><p><img src="/images/storm.jpg" alt=""></p>
+<h2 id="storm处理流程"><a href="#storm处理流程" class="headerlink" title="storm处理流程"></a>storm处理流程</h2><p><img src="/images/storm/storm.jpg" alt=""></p>
 <blockquote>
 <p>可以看出storm的数据处理是交给ZK处理分发的，由nimbus管理supervisor，supervis管理worker，worker才是真正做数据处理的进程，worker提交TASK，类似多线程提交任务，整个流程达到消息的实时处理能力。</p>
 </blockquote>
 <h2 id="spout和bolt"><a href="#spout和bolt" class="headerlink" title="spout和bolt"></a>spout和bolt</h2><h3 id="spout"><a href="#spout" class="headerlink" title="spout"></a>spout</h3><blockquote>
-<p>spout是数据源，例如spout可以调用 Twitter API 得到一个微博数据流，就是从外部数据源（队列、数据库等）中读取数据，封装成元组，形成STREAM数据流。<br><img src="/images/spout1.png" alt=""></p>
+<p>spout是数据源，例如spout可以调用 Twitter API 得到一个微博数据流，就是从外部数据源（队列、数据库等）中读取数据，封装成元组，形成STREAM数据流。<br><img src="/images/storm/spout1.png" alt=""></p>
 </blockquote>
 <h3 id="bolt"><a href="#bolt" class="headerlink" title="bolt"></a>bolt</h3><blockquote>
-<p>bolt是用来处理数据的，可以对一些数据流（不只一个数据流）进行处理，可能会产生新的STREAM数据流。对一些复杂的数据流变换，<br>比如从一个微博流中计算一个热门话题流，就需要很多步骤，因此就有多个bolt，因此bolt中就有很多处理，比如运行函数，做流式聚合，流式链接，访问数据库等等。<br><img src="/images/tuple.jpg" alt=""><br>不同的bolt可以订阅相同的spout来达到消息共享的目的，比如来了一条数据，bolt1是做数据入库处理，bolt2只是做简单的日志记录，bolt3….<br><img src="/images/spout-bolt.png" alt=""></p>
+<p>bolt是用来处理数据的，可以对一些数据流（不只一个数据流）进行处理，可能会产生新的STREAM数据流。对一些复杂的数据流变换，<br>比如从一个微博流中计算一个热门话题流，就需要很多步骤，因此就有多个bolt，因此bolt中就有很多处理，比如运行函数，做流式聚合，流式链接，访问数据库等等。<br><img src="/images/storm/tuple.jpg" alt=""><br>不同的bolt可以订阅相同的spout来达到消息共享的目的，比如来了一条数据，bolt1是做数据入库处理，bolt2只是做简单的日志记录，bolt3….<br><img src="/images/storm/spout-bolt.png" alt=""></p>
 </blockquote>
 <h3 id="topology"><a href="#topology" class="headerlink" title="topology"></a>topology</h3><blockquote>
 <p>如上图所示 topology就是spout 和 bolt组成的网络拓扑图，Topology就是最高层的逻辑抽象，可以直接送到 Storm 集群去执行。一个Topology图就是流式转换，每个节点是 spout 或者 bolt，图中的每条边就是 bolt 订阅了流，当一个 spout或者 bolt 产生一个元组到一个流时，它就发送元组到订阅了流的每个 bolt。</p>
@@ -566,7 +566,7 @@ Apache Storm是自由开源的分布式实时计算系统，擅长处理海量�
   # 类似JAVA -JAR 方式启动JAR包，后面的bootstrap-servers根据业务而定，可要可不要.
     bin/storm jar topology/topology-1.0.0.jar  com.company.ApplicationLoader --bootstrap-serverIp1=ip1:9092,serverIp2:9092,serverIp3:9092
 </code></pre>
-<h3 id="4-通过nimbus的UI端口查看topology的运行情况，以及异常情况"><a href="#4-通过nimbus的UI端口查看topology的运行情况，以及异常情况" class="headerlink" title="4.通过nimbus的UI端口查看topology的运行情况，以及异常情况"></a>4.通过nimbus的UI端口查看topology的运行情况，以及异常情况</h3><p><img src="/images/stormui.png" alt=""></p>
+<h3 id="4-通过nimbus的UI端口查看topology的运行情况，以及异常情况"><a href="#4-通过nimbus的UI端口查看topology的运行情况，以及异常情况" class="headerlink" title="4.通过nimbus的UI端口查看topology的运行情况，以及异常情况"></a>4.通过nimbus的UI端口查看topology的运行情况，以及异常情况</h3><p><img src="/images/storm/stormui.png" alt=""></p>
 <h2 id="storm-核心逻辑"><a href="#storm-核心逻辑" class="headerlink" title="storm 核心逻辑"></a>storm 核心逻辑</h2><blockquote>
 <p>Nimbus：Storm集群主节点，负责资源分配和任务调度。我们提交任务和截止任务都是在Nimbus上操作的。一个Storm集群只有一个Nimbus节点。<br>Supervisor：Storm集群工作节点，接受Nimbus分配任务，管理所有Worker。<br>Worker：工作进程，每个工作进程中都有多个Task。<br>Task：任务，每个Spout和Bolt都是一个任务，每个任务都是一个线程。<br>Topology：计算拓扑，包含了应用程序的逻辑。<br>Stream：消息流，关键抽象，是没有边界的Tuple序列。<br>Spout：消息流的源头，Topology的消息生产者。<br>Bolt：消息处理单元，可以过滤、聚合、查询数据库。<br>Stream grouping：消息分发策略，一共6种，定义每个Bolt接受何种输入。<br>Reliability：可靠性，Storm保证每个Tuple都会被处理。</p>
 </blockquote>
@@ -727,10 +727,10 @@ storm supervisor &
                         <li class="tab alipay-tab waves-effect waves-light"><a href="#alipay">支付宝</a></li>
                     </ul>
                     <div id="wechat">
-                        <img src="/images/weixin.png" class="reward-img" alt="微信打赏二维码">
+                        <img src="/images/pay/weixin.png" class="reward-img" alt="微信打赏二维码">
                     </div>
                     <div id="alipay">
-                        <img src="/images/alipay.png" class="reward-img" alt="支付宝打赏二维码">
+                        <img src="/images/pay/alipay.png" class="reward-img" alt="支付宝打赏二维码">
                     </div>
                 </div>
             </div>
@@ -814,7 +814,7 @@ storm supervisor &
                     <div class="card-image">
                         
                         
-                        <img src="/medias/banner/3.jpg" class="responsive-img" alt="使用Hibernate.jdbc.Work高性能处理批量数据">
+                        <img src="/medias/banner/11.jpg" class="responsive-img" alt="使用Hibernate.jdbc.Work高性能处理批量数据">
                         
                         <span class="card-title">使用Hibernate.jdbc.Work高性能处理批量数据</span>
                     </div>
@@ -865,17 +865,14 @@ storm supervisor &
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/23.jpg" class="responsive-img" alt="Netty-Nio">
+                        <img src="/medias/banner/7.jpg" class="responsive-img" alt="Netty-Nio">
                         
                         <span class="card-title">Netty-Nio</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
-                    <div class="summary">hello 小姐姐！this is my page for you. good afternoon.
-
-
-
-一盏灯， 一片昏黄； 一简书， 一杯淡茶。 守着那一份淡定， 品读属于自己的寂寞。 保持淡定， 才能欣赏到最美丽的风景！ 保持淡定，</div>
+                    <div class="summary">什么是netty
+Netty是一个NIO网络编程框架，快速开发高性能、高可靠性的网络服务器/客户端程序。 极大地简化了TCP和UDP等网络编程。是一个异步事件驱动的网络框架，快速、高性能。RPC（pigeon、dubbo、HSF）Hadoo</div>
                     <div class="publish-info">
                             <span class="publish-date">
                                 <i class="fa fa-clock-o fa-fw icon-date"></i>2018-10-29

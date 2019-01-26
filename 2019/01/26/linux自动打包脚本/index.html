@@ -5,10 +5,16 @@
 
 <head><meta name="generator" content="Hexo 3.8.0">
     <meta charset="utf-8">
-    <meta name="keywords" content="java支持https, Romer">
-    <meta name="description" content="概述本文主要介绍JAVA对https的支持，为何使用https呢，https相当于是http的升级版本，具有http不具备的安全性.
-什么是https
-HTTPS（全称：Hyper Text Transfer Protocol over S">
+    <meta name="keywords" content="linux自动打包脚本, Romer">
+    <meta name="description" content="概述
+本文主要介绍如何使用一些linux脚本
+
+linux启动项目脚本
+启动脚本名startup.bash
+
+#!/bin/bash
+start_monitor() {
+    nohup java -cp KafkaOffsetMonit">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="renderer" content="webkit|ie-stand|ie-comp">
@@ -16,7 +22,7 @@ HTTPS（全称：Hyper Text Transfer Protocol over S">
     <meta name="format-detection" content="telephone=no">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <title>java支持https | Jack Romer</title>
+    <title>linux自动打包脚本 | Jack Romer</title>
     <link rel="icon" type="image/png" href="/images/mine.jpg">
 
     <link rel="stylesheet" type="text/css" href="/libs/awesome/css/font-awesome.min.css">
@@ -251,13 +257,13 @@ HTTPS（全称：Hyper Text Transfer Protocol over S">
 
 
 
-<div class="bg-cover post-cover" style="background-image: url('/medias/banner/15.jpg')">
+<div class="bg-cover post-cover" style="background-image: url('/medias/banner/18.jpg')">
     <div class="container">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
                     <div class="description center-align post-title">
-                        java支持https
+                        linux自动打包脚本
                     </div>
                 </div>
             </div>
@@ -368,12 +374,12 @@ HTTPS（全称：Hyper Text Transfer Protocol over S">
             
             <div class="article-tag">
                 
-                <a href="/tags/Java/" target="_blank">
-                    <span class="chip bg-color">Java</span>
+                <a href="/tags/Linux/" target="_blank">
+                    <span class="chip bg-color">Linux</span>
                 </a>
                 
-                <a href="/tags/Https/" target="_blank">
-                    <span class="chip bg-color">Https</span>
+                <a href="/tags/脚本/" target="_blank">
+                    <span class="chip bg-color">脚本</span>
                 </a>
                 
             </div>
@@ -383,80 +389,213 @@ HTTPS（全称：Hyper Text Transfer Protocol over S">
                 <span class="post-cate">
                     <i class="fa fa-bookmark fa-fw icon-category"></i>
                     
-                    <a href="/categories/JAVA/" class="post-category" target="_blank">
-                        JAVA
-                    </a>
-                    
-                    <a href="/categories/JAVA/Https/" class="post-category" target="_blank">
-                        Https
+                    <a href="/categories/Linux/" class="post-category" target="_blank">
+                        Linux
                     </a>
                     
                 </span>
                 
 
                 <span class="post-date">
-                    <i class="fa fa-clock-o fa-fw"></i>2019-01-24
+                    <i class="fa fa-clock-o fa-fw"></i>2019-01-26
                 </span>
             </div>
         </div>
         <hr>
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>本文主要介绍JAVA对https的支持，为何使用https呢，https相当于是http的升级版本，具有http不具备的安全性.</p>
-<h2 id="什么是https"><a href="#什么是https" class="headerlink" title="什么是https"></a>什么是https</h2><blockquote>
-<p>HTTPS（全称：Hyper Text Transfer Protocol over Secure Socket Layer 或 Hypertext Transfer Protocol Secure，超文本传输安全协议），是以安全为目标的HTTP通道，简单讲是HTTP的安全版，即HTTP下加入SSL层，HTTPS的安全基础是SSL，因此加密的详细内容就需要SSL。<br>HTTP协议传输的数据都是未加密的，也就是明文的，因此使用HTTP协议传输隐私信息非常不安全，为了保证这些隐私数据能加密传输，于是网景公司设计了SSL（Secure Sockets Layer）协议用于对HTTP协议传输的数据进行加密，从而就诞生了HTTPS。简单来说，HTTPS协议是由SSL+HTTP协议构建的可进行加密传输、身份认证的网络协议，要比http协议安全。</p>
+                <h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><blockquote>
+<p>本文主要介绍如何使用一些linux脚本</p>
 </blockquote>
-<h2 id="http和https的区别"><a href="#http和https的区别" class="headerlink" title="http和https的区别"></a>http和https的区别</h2><blockquote>
-<p>1、https协议需要到ca申请证书，一般免费证书较少，因而需要一定费用。</p>
+<h2 id="linux启动项目脚本"><a href="#linux启动项目脚本" class="headerlink" title="linux启动项目脚本"></a>linux启动项目脚本</h2><blockquote>
+<p>启动脚本名startup.bash</p>
 </blockquote>
-<blockquote>
-<p>2、http是超文本传输协议，信息是明文传输，https则是具有安全性的ssl加密传输协议。</p>
-</blockquote>
-<blockquote>
-<p>3、http和https使用的是完全不同的连接方式，用的端口也不一样，前者是80，后者是443。</p>
-</blockquote>
-<blockquote>
-<p>4、http的连接很简单，是无状态的；HTTPS协议是由SSL+HTTP协议构建的可进行加密传输、身份认证的网络协议，比http协议安全。</p>
-</blockquote>
-<h2 id="Https协议的特点"><a href="#Https协议的特点" class="headerlink" title="Https协议的特点"></a>Https协议的特点</h2><blockquote>
-<p>Https的通信端口由SSL和TSL代替了，它是一种应用层协议，一般的情况下http直接和Tcp进行通信，当使用了SSL之后，就会变成先和SSL通信，SSL再和Tcp进行通信，如下图<br><img src="/images/https-ssl.png" alt=""><br>采用了SSL协议之后，Http协议就具备了加密、证书、完整性保护三大功能，SSL是独立于Http存在的，它是现存的广泛使用的网络安全技术。</p>
-</blockquote>
-<h2 id="Https协议采用的加密技术"><a href="#Https协议采用的加密技术" class="headerlink" title="Https协议采用的加密技术"></a>Https协议采用的加密技术</h2><blockquote>
-<p>https协议加密技术按类型分为两类，对称加密和非对称加密</p>
-</blockquote>
-<h3 id="https对称加密技术SSL"><a href="#https对称加密技术SSL" class="headerlink" title="https对称加密技术SSL"></a>https对称加密技术SSL</h3><p>为什么说SSL是对称加密呢，因为SSL也叫共享密钥加密，当客户端传递消息给服务端时其消息和密钥都是加密了的，但是其中的密钥一但被监听，消息也可能被破解.是一种看似安全，但存在一定风险的消息传输技术.<br><img src="/images/SSL.png" alt=""></p>
-<pre class=" language-java"><code class="language-java">client<span class="token operator">--</span><span class="token operator">--</span><span class="token operator">-</span>publicKey<span class="token operator">--</span><span class="token operator">--</span><span class="token operator">></span> server #通过publicKey加密解密过程
-client<span class="token operator">&lt;</span><span class="token operator">--</span><span class="token operator">--</span>publicKey<span class="token operator">--</span><span class="token operator">--</span><span class="token operator">-</span> server #通过publicKey加密解密过程
+<pre class=" language-linux"><code class="language-linux">#!/bin/bash
+start_monitor() {
+    nohup java -cp KafkaOffsetMonitor-assembly-0.4.1-SNAPSHOT.jar com.quantifind.kafka.offsetapp.OffsetGetterWeb \
+    --offsetStorage kafka \
+    --kafkaBrokers 131.10.10.50:9092,131.10.10.51:9092,131.10.10.52:9092 \
+    --zk 131.10.10.50:2181,131.10.10.51:2181,131.10.10.52:2181 \
+    --port 8090 \
+    --refresh 30.seconds \
+    --retain 7.days >monitor.out 2>&1 < /dev/null &
+}
+
+start_zk() {
+    cd /opt/cluster/zookeeper
+  # 调用另一个启动命令启动ZK
+    bin/zkServer.sh start 
+    sleep 5
+
+    cd ->/dev/null
+}
+
+start_kafka() {
+    cd /opt/cluster/kafka
+  # 调用另一个启动命令启动KAFKA
+    bin/kafka-server-start.sh -daemon config/server.properties
+    sleep 10
+
+    cd ->/dev/null
+}
+
+start_connect() {
+    cd /opt/cluster/kafka
+  # 调用另一个启动命令启动CONNECT
+    bin/connect-distributed.sh -daemon config/connect-distributed.properties
+    sleep 10
+
+    cd ->/dev/null
+}
+
+# nohup命令主要用于重定向输出日志文件，且使程序在后台运行，默认输出文件为nohup.out
+start_storm() {
+    cd /opt/cluster/storm
+
+    if read -n 1 -p '是否为 nimbus 主机？[Y/N]:' op; then
+        if [[ $op == [Yy] ]]; then #判断输入是否为y
+            echo -e "\n\e[0;31;1m nimbus is starting...\e[0m"
+            nohup bin/storm nimbus >nimbus.out 2>&1 < /dev/null &
+            sleep 5
+            echo -e "\n\e[0;31;1m ui is starting...\e[0m"
+            nohup bin/storm ui >ui.out 2>&1 < /dev/null &
+            sleep 5
+        elif [[ $op == [Nn] ]]; then
+            echo -e "\n\e[0;31;1m supervisor is starting...\e[0m"
+            nohup bin/storm supervisor >supervisor.out 2>&1 < /dev/null &
+            sleep 5
+        else
+            echo -e "\n\e[0;33;1m input error,exit...\e[0m"
+            return
+        fi
+    fi
+
+    result=$(ps -ef|grep java|grep logviewer)
+    if [ "x$result" == "x" ]; then        
+        echo -e "\n\e[0;31;1m logviewer is starting...\e[0m"
+        nohup bin/storm logviewer >logviewer.out 2>&1 < /dev/null &
+        sleep 5
+    fi
+
+    cd ->/dev/null
+}
+
+start_top() {
+    if read -n 1 -p 'Topology是否初次提交到Storm？[Y/N]:' op; then
+        if [[ $op == [Nn] ]]; then
+            echo -e "\n\e[0;31;1mExit\e[0m"
+            return
+        elif [[ $op == [Yy] ]]; then
+            echo -e "\n\e[0;32;1mSubmitting\e[0m"
+        else
+            echo -e "\n\e[0;33;1mError\e[0m"
+            return
+        fi
+    fi
+
+    cd /opt/cluster/storm
+
+    bin/storm kill ThingsShadowTopologyDistributed #调用storm kill命令结束ThingsShadowTopologyDistributed进程
+    sleep 5
+    bin/storm jar topology/iot-data-storm-controller-1.0.0.jar  com.company.ApplicationLoader --bootstrap-servers=131.10.10.202:9092,131.10.10.203:9092,131.10.10.204:9092
+
+    cd ->/dev/null
+}
+
+start_mqtt() {
+    cd apache-activemq-5.14.5
+    bin/activemq start
+    sleep 2
+
+    cd ->/dev/null
+}
+
+start_mqtt_mosqtuitto() {
+    cd ../mosquitto-1.4.11/sbin
+    ./mosquitto -c mosquitto.conf -d
+    sleep 2
+
+    cd ->/dev/null
+}
+
+start_mongodb() {
+    systemctl start mongod
+    sleep 2
+    systemctl status mongod
+}
+
+modify_hosts() {
+    echo -e "127.0.0.1\tlocalhost\n131.10.10.aa\tserver.cluster\n131.10.10.bb\tclusterbb\n131.10.10.cc\tclustercc\n131.10.10.dd\tclusterdd\n131.10.10.ee\tclusteree\n131.10.10.ff\tclusterff">/etc/hosts
+}
+
+case $1 in
+monitor)
+    start_monitor;;
+zk)
+    start_zk;;
+kafka)
+    start_kafka;;
+connect)
+    start_connect;;
+storm)
+    start_storm;;
+top)
+    start_top;;
+mqtt)
+    start_mqtt;;
+mongodb)
+    start_mongodb;;
+hosts)
+    modify_hosts;;
+*)
+    echo "usage: mqtt, mongodb, zk, kafka, monitor, connect, storm, top, hosts";;
+esac
+
 </code></pre>
-<h3 id="https非对称加密技术"><a href="#https非对称加密技术" class="headerlink" title="https非对称加密技术"></a>https非对称加密技术</h3><blockquote>
-<p>“非对称加密”使用的时候有两把锁，一把叫做“私有密钥”，一把是“公开密钥”。<br>运行原理:服务器首先告诉客户端按照自己给定的公开密钥进行加密处理，客户端按照公开密钥加密以后，服务器接受到信息再通过自己的私有密钥进行解密，这样做的好处就是解密的钥匙根本就不会进行传输，因此也就避免了被挟持的风险。就算公开密钥被窃听者拿到了，它也很难进行解密，因为解密过程是对离散对数求值，这可不是轻而易举就能做到的事。以下是非对称加密的原理图：<br><img src="/images/https-fdc.png" alt=""></p>
-<pre class=" language-java"><code class="language-java">client<span class="token operator">--</span><span class="token operator">--</span><span class="token operator">-</span>publicKey<span class="token operator">--</span><span class="token operator">--</span><span class="token operator">></span> server use privateKey #先通过publicKey加密解密再通过privateKey解密
-client<span class="token operator">&lt;</span><span class="token operator">--</span><span class="token operator">--</span>publicKey<span class="token operator">--</span><span class="token operator">--</span><span class="token operator">-</span> server use privateKey #先通过publicKey加密解密再通过privateKey解密
+<h2 id="linux自动打包脚本"><a href="#linux自动打包脚本" class="headerlink" title="linux自动打包脚本"></a>linux自动打包脚本</h2><blockquote>
+<p>这是package项目并提取需要JAR到指定目录的自动化打包脚本</p>
+</blockquote>
+<h3 id="注意事项"><a href="#注意事项" class="headerlink" title="注意事项"></a>注意事项</h3><h3 id="shopt-s-extgolb-开启后的效果"><a href="#shopt-s-extgolb-开启后的效果" class="headerlink" title="shopt -s extgolb 开启后的效果"></a>shopt -s extgolb 开启后的效果</h3><pre class=" language-linux"><code class="language-linux">开启之后，以下5个模式匹配操作符将被识别：
+?(pattern-list) - 所给模式匹配0次或1次；
+*(pattern-list) - 所给模式匹配0次以上包括0次；
++(pattern-list) - 所给模式匹配1次以上包括1次；
+@(pattern-list) - 所给模式仅仅匹配1次；
+!(pattern-list) - 不匹配括号内的所给模式。
 </code></pre>
-</blockquote>
-<h3 id="非称加密方式的缺点："><a href="#非称加密方式的缺点：" class="headerlink" title="非称加密方式的缺点："></a>非称加密方式的缺点：</h3><blockquote>
-<p>第一个是：如何保证接收端向发送端发出公开秘钥的时候，发送端确保收到的是预先要发送的，而不会被挟持。只要是发送密钥，就有可能有被挟持的风险。</p>
-</blockquote>
-<blockquote>
-<p>第二个是：非对称加密的方式效率比较低，它处理起来更为复杂，通信过程中使用就有一定的效率问题而影响通信速度<br>非称加密方式的缺点</p>
-</blockquote>
-<h3 id="Https的安全通信机制"><a href="#Https的安全通信机制" class="headerlink" title="Https的安全通信机制"></a>Https的安全通信机制</h3><blockquote>
-<p>基于上述单个加密方式的不足,Https采用混合机制的加密方式,https则综合了公开密钥加密和共享密钥加密的两种方式，充分利用两者的优势，在最初的连接的时候使用非对称密钥的加密方式保证连接的安全性，之后稳定的通讯采用对称加密的方式，稳定的通讯是指确保交换的密钥是安全的。</p>
-</blockquote>
-<blockquote>
-<p>公钥很可能存在被挟持的情况，无法保证客户端收到的公开密钥就是服务器发行的公开密钥。此时就引出了公开密钥证书机制。数字证书认证机构是客户端与服务器都可信赖的第三方机构。证书的具体传播过程如下：<br><img src="/images/https-zhongheSSL.png" alt=""></p>
-</blockquote>
-<blockquote>
-<ol>
-<li>服务器的开发者携带公开密钥，向数字证书认证机构提出公开密钥的申请，数字证书认证机构在认清申请者的身份，审核通过以后，会对开发者申请的公开密钥做数字签名，然后分配这个已签名的公开密钥，并将密钥放在证书里面，绑定在一起</li>
-<li>服务器将这份数字证书发送给客户端，因为客户端也认可证书机构，客户端可以通过数字证书中的数字签名来验证公钥的真伪，来确保服务器传过来的公开密钥是真实的。一般情况下，证书的数字签名是很难被伪造的，这取决于认证机构的公信力。一旦确认信息无误之后，客户端就会通过公钥对报文进行加密发送，服务器接收到以后用自己的私钥进行解密.</li>
-</ol>
-</blockquote>
-<h2 id="为什么还有很多网站不使用Https"><a href="#为什么还有很多网站不使用Https" class="headerlink" title="为什么还有很多网站不使用Https"></a>为什么还有很多网站不使用Https</h2><blockquote>
-<p>1：加密通信会消耗一定的cpu和服务器资源,如果每次通信都加密，就会消耗更多的资源.<br>2: 如果所有的信息都采用https加密，这无疑是一种浪费。非敏感信息就算被窃取了，也无伤大雅。可以在其传输敏感信息的时候，采用https协议进行加密.<br>3：向认证机构购买证书的开销也是一笔很大的费用。</p>
-</blockquote>
+<h3 id="自动打包打包脚本"><a href="#自动打包打包脚本" class="headerlink" title="自动打包打包脚本"></a>自动打包打包脚本</h3><pre class=" language-linux"><code class="language-linux">
+#!/bin/bash
+cd /opt/cluster/iotTag/
+echo 解压tag缩包...
+tar -zxvf iot.tar.gz
+
+echo 更名为iot...
+mv iot.git iot
+
+echo 打包项目...
+cd opt/cluster/iotTag/iot/
+mvn clean package -Dmaven.test.skip=true
+
+echo 复制jar到指定目录
+rm -rf jars
+mkdir  jars
+echo 找到并复制jar到指定目录
+find iot -name "iot-*.jar" -exec cp '{}' /opt/cluster/iotTag/jars/ \;
+echo 删除不需要的jar
+cd /opt/cluster/iotTag/jars
+#shopt命令用于显示和设置shell中的行为选项，通过这些选项以增强shell易用性。
+shopt -s extgolb
+shopt -s extglob
+#只保留需要的jar，其他jar删除
+rm -rf !(iot-base-management-rpc-read-1.0.0.jar|iot-base-management-rpc-cud-1.0.0.jar|iot-base-management-rest-api-1.0.0.jar
+|iot-shadow-rest-api-1.0.0.jar|iot-shadow-rpc-cud-1.0.0.jar|iot-shadow-rpc-read-1.0.0.jar
+|iot-app-management-rest-api-1.0.0.jar|iot-app-management-rpc-cud-1.0.0.jar|iot-app-management-rpc-read-1.0.0.jar|iot-app-provider-rest-api-1.0.0.jar
+|iot-status-management-rest-api-1.0.0.jar|iot-status-management-rpc-cud-1.0.0.jar|iot-status-management-rpc-read-1.0.0.jar
+|iot-log-management-rpc-cud-1.0.0.jar|iot-log-management-rpc-read-1.0.0.jar
+|iot-data-statistic-rest-api-1.0.0.jar|iot-data-storm-controller-1.0.0.jar|iot-data-storm-pusher-1.0.0.jar)
+
+</code></pre>
 <h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><blockquote>
-<p>本文主要介绍了HTTPS和其通信机制，现在更加注重信息安全，预计未来https的应用场景将会更广.</p>
+<p>linux 自动化脚本可以帮助我们大大减轻部署发布的时间，虽然前期的编写过程比较麻烦，但是用起来却非常方便，试想有很多歌项目环境，如果全部挨个部署岂不是费心又费力呢，所以加入linux脚本阵容是时不我待的.</p>
 </blockquote>
 
             </div>
@@ -557,10 +696,10 @@ client<span class="token operator">&lt;</span><span class="token operator">--</s
                         <li class="tab alipay-tab waves-effect waves-light"><a href="#alipay">支付宝</a></li>
                     </ul>
                     <div id="wechat">
-                        <img src="/images/weixin.png" class="reward-img" alt="微信打赏二维码">
+                        <img src="/images/pay/weixin.png" class="reward-img" alt="微信打赏二维码">
                     </div>
                     <div id="alipay">
-                        <img src="/images/alipay.png" class="reward-img" alt="支付宝打赏二维码">
+                        <img src="/images/pay/alipay.png" class="reward-img" alt="支付宝打赏二维码">
                     </div>
                 </div>
             </div>
@@ -596,7 +735,7 @@ client<span class="token operator">&lt;</span><span class="token operator">--</s
                     <span class="reprint-tip">转载请注明: </span>
                     <a href="https://jackromer.github.io" class="b-link-green">Jack Romer</a>
                     <i class="fa fa-angle-right fa-lg fa-fw text-color"></i>
-                    <a href="/2019/01/24/java支持https/" class="b-link-green">java支持https</a>
+                    <a href="/2019/01/26/linux自动打包脚本/" class="b-link-green">linux自动打包脚本</a>
                 </p>
             </div>
         </div>
@@ -618,7 +757,7 @@ client<span class="token operator">&lt;</span><span class="token operator">--</s
         repo: 'jackromer.github.io',
         owner: 'JACKROMER',
         admin: "JACKROMER",
-        id: '2019-01-24T15-58-31',
+        id: '2019-01-26T11-14-19',
         distractionFreeMode: false  // Facebook-like distraction free mode
     });
 
@@ -640,33 +779,35 @@ client<span class="token operator">&lt;</span><span class="token operator">--</s
         <div class="article col s12 m6" data-aos="fade-up">
             <div class="article-badge left-badge text-color">本篇</div>
             <div class="card">
-                <a href="/2019/01/24/java支持https/">
+                <a href="/2019/01/26/linux自动打包脚本/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/banner/15.jpg" class="responsive-img" alt="java支持https">
+                        <img src="/medias/banner/18.jpg" class="responsive-img" alt="linux自动打包脚本">
                         
-                        <span class="card-title">java支持https</span>
+                        <span class="card-title">linux自动打包脚本</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
-                    <div class="summary">概述本文主要介绍JAVA对https的支持，为何使用https呢，https相当于是http的升级版本，具有http不具备的安全性.
-什么是https
-HTTPS（全称：Hyper Text Transfer Protocol over S</div>
+                    <div class="summary">概述
+本文主要介绍如何使用一些linux脚本
+
+linux启动项目脚本
+启动脚本名startup.bash
+
+#!/bin/bash
+start_monitor() {
+    nohup java -cp KafkaOffsetMonit</div>
                     <div class="publish-info">
                             <span class="publish-date">
-                                <i class="fa fa-clock-o fa-fw icon-date"></i>2019-01-24
+                                <i class="fa fa-clock-o fa-fw icon-date"></i>2019-01-26
                             </span>
                         <span class="publish-author">
                             
                             <i class="fa fa-bookmark fa-fw icon-category"></i>
                             
-                            <a href="/categories/JAVA/" class="post-category" target="_blank">
-                                    JAVA
-                                </a>
-                            
-                            <a href="/categories/JAVA/Https/" class="post-category" target="_blank">
-                                    Https
+                            <a href="/categories/Linux/" class="post-category" target="_blank">
+                                    Linux
                                 </a>
                             
                             
@@ -677,12 +818,12 @@ HTTPS（全称：Hyper Text Transfer Protocol over S</div>
                 
                 <div class="card-action article-tags">
                     
-                    <a href="/tags/Java/" target="_blank">
-                        <span class="chip bg-color">Java</span>
+                    <a href="/tags/Linux/" target="_blank">
+                        <span class="chip bg-color">Linux</span>
                     </a>
                     
-                    <a href="/tags/Https/" target="_blank">
-                        <span class="chip bg-color">Https</span>
+                    <a href="/tags/脚本/" target="_blank">
+                        <span class="chip bg-color">脚本</span>
                     </a>
                     
                 </div>
@@ -694,27 +835,35 @@ HTTPS（全称：Hyper Text Transfer Protocol over S</div>
         <div class="article col s12 m6" data-aos="fade-up">
             <div class="article-badge right-badge text-color">下一篇</div>
             <div class="card">
-                <a href="/2019/01/24/python-installer使用/">
+                <a href="/2019/01/25/JAVA调用https接口/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/banner/19.jpg" class="responsive-img" alt="python-PyInstaller安装和使用">
+                        <img src="/medias/scienceFiction/2.jpg" class="responsive-img" alt="JAVA调用https接口">
                         
-                        <span class="card-title">python-PyInstaller安装和使用</span>
+                        <span class="card-title">JAVA调用https接口</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
-                    <div class="summary">概述本文主要介绍pyinstaller的安装和使用，目前Python的打包工具主要有py2exe、cxfreeze、PyInstaller三种，经过测试py2exe和cxfreeze的安装过程比较麻烦，且对高版本PYTHON3.7支持不好，</div>
+                    <div class="summary">概述
+本文主要介绍JAVA实现https接口调用包括忽略本地证书方式和加载本地证书方式两种.
+
+第一种：忽略本地证书方式
+忽略本地证书方式就是服务器不对客户端证书做校验的网站比如 www.baidu.com,和其他https网站不一样，其他</div>
                     <div class="publish-info">
                             <span class="publish-date">
-                                <i class="fa fa-clock-o fa-fw icon-date"></i>2019-01-24
+                                <i class="fa fa-clock-o fa-fw icon-date"></i>2019-01-25
                             </span>
                         <span class="publish-author">
                             
                             <i class="fa fa-bookmark fa-fw icon-category"></i>
                             
-                            <a href="/categories/Python/" class="post-category" target="_blank">
-                                    Python
+                            <a href="/categories/Java/" class="post-category" target="_blank">
+                                    Java
+                                </a>
+                            
+                            <a href="/categories/Java/Https/" class="post-category" target="_blank">
+                                    Https
                                 </a>
                             
                             
@@ -724,12 +873,12 @@ HTTPS（全称：Hyper Text Transfer Protocol over S</div>
                 
                 <div class="card-action article-tags">
                     
-                    <a href="/tags/Python/" target="_blank">
-                        <span class="chip bg-color">Python</span>
+                    <a href="/tags/Java/" target="_blank">
+                        <span class="chip bg-color">Java</span>
                     </a>
                     
-                    <a href="/tags/PyInstaller/" target="_blank">
-                        <span class="chip bg-color">PyInstaller</span>
+                    <a href="/tags/Https/" target="_blank">
+                        <span class="chip bg-color">Https</span>
                     </a>
                     
                 </div>

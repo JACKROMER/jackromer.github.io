@@ -6,11 +6,8 @@
 <head><meta name="generator" content="Hexo 3.8.0">
     <meta charset="utf-8">
     <meta name="keywords" content="Netty-Nio, Romer">
-    <meta name="description" content="hello 小姐姐！this is my page for you. good afternoon.
-
-
-
-一盏灯， 一片昏黄； 一简书， 一杯淡茶。 守着那一份淡定， 品读属于自己的寂寞。 保持淡定， 才能欣赏到最美丽的风景！ 保持淡定，">
+    <meta name="description" content="什么是netty
+Netty是一个NIO网络编程框架，快速开发高性能、高可靠性的网络服务器/客户端程序。 极大地简化了TCP和UDP等网络编程。是一个异步事件驱动的网络框架，快速、高性能。RPC（pigeon、dubbo、HSF）Hadoo">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="renderer" content="webkit|ie-stand|ie-comp">
@@ -253,7 +250,7 @@
 
 
 
-<div class="bg-cover post-cover" style="background-image: url('/medias/featureimages/23.jpg')">
+<div class="bg-cover post-cover" style="background-image: url('/medias/banner/7.jpg')">
     <div class="container">
         <div class="row">
             <div class="col s12 m12 l12">
@@ -404,9 +401,458 @@
         <hr>
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <p>hello 小姐姐！this is my page for you. good afternoon.</p>
-<a id="more"></a>
-<p><img src="/images/mine.jpg" alt=""></p>
+                <h2 id="什么是netty"><a href="#什么是netty" class="headerlink" title="什么是netty"></a>什么是netty</h2><blockquote>
+<p>Netty是一个NIO网络编程框架，快速开发高性能、高可靠性的网络服务器/客户端程序。 极大地简化了TCP和UDP等网络编程。是一个异步事件驱动的网络框架，快速、高性能。<br>RPC（pigeon、dubbo、HSF）Hadoop、Spark MQ（swallow、RocketMQ）Zookeeper等, 几乎所有的基于java的分布式中间件都是采用netty作为通信工具的，使用的是epoll模型</p>
+</blockquote>
+<h2 id="epoll-io-模型"><a href="#epoll-io-模型" class="headerlink" title="epoll io 模型"></a>epoll io 模型</h2><h3 id="epoll-原理"><a href="#epoll-原理" class="headerlink" title="epoll 原理"></a>epoll 原理</h3><blockquote>
+<p>相对于select和poll来说，epoll更加灵活，没有描述符限制，epoll使用一个文件描述符管理多个描述符，将用户关系的文件描述符的事件存放到内核的一个事件表中，这样在用户空间和内核空间的copy只需一次。</p>
+</blockquote>
+<pre class=" language-java"><code class="language-java"><span class="token comment" spellcheck="true">//创建一个epoll的句柄，size用来告诉内核这个监听的数目一共有多大</span>
+<span class="token keyword">int</span> <span class="token function">epoll_create</span><span class="token punctuation">(</span><span class="token keyword">int</span> size<span class="token punctuation">)</span>；
+<span class="token comment" spellcheck="true">//对指定描述符fd执行op操作。epfd：是epoll_create()的返回值，op：表示op操作，fd：是需要监听的fd，epoll_event：是告诉内核需要监听什么事</span>
+<span class="token keyword">int</span> <span class="token function">epoll_ctl</span><span class="token punctuation">(</span><span class="token keyword">int</span> epfd<span class="token punctuation">,</span> <span class="token keyword">int</span> op<span class="token punctuation">,</span> <span class="token keyword">int</span> fd<span class="token punctuation">,</span> struct epoll_event <span class="token operator">*</span>event<span class="token punctuation">)</span>；
+<span class="token comment" spellcheck="true">//等待epfd上的io事件，最多返回maxevents个事件。</span>
+<span class="token keyword">int</span> <span class="token function">epoll_wait</span><span class="token punctuation">(</span><span class="token keyword">int</span> epfd<span class="token punctuation">,</span> struct epoll_event <span class="token operator">*</span> events<span class="token punctuation">,</span> <span class="token keyword">int</span> maxevents<span class="token punctuation">,</span> <span class="token keyword">int</span> timeout<span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre>
+<blockquote>
+<p>在select/poll中，进程只有在调用一定的方法后，内核才对所有监视的文件描述符进行扫描，而epoll事先通过epoll_ctl()来注册一 个文件描述符，一旦基于某个文件描述符就绪时，内核会采用类似callback的回调机制，迅速激活这个文件描述符，当进程调用epoll_wait() 时便得到通知。</p>
+</blockquote>
+<h3 id="epoll-优点"><a href="#epoll-优点" class="headerlink" title="epoll 优点"></a>epoll 优点</h3><blockquote>
+<p>epoll监视的描述符数量不受限制，它所支持的FD上限是最大可以打开文件的数目,IO的效率不会随着监视fd的数量的增长而下降。<br>epoll不同于select和poll轮询的方式，而是通过每个fd定义的回调函数来实现的,只有就绪的fd才会执行回调函数,随着监视的描述符数量的增长，其效率也不会出现线性下降。</p>
+</blockquote>
+<h2 id="netty-的几个核心组件"><a href="#netty-的几个核心组件" class="headerlink" title="netty 的几个核心组件"></a>netty 的几个核心组件</h2><blockquote>
+<ol>
+<li>Bootstrap：netty的辅助启动器，netty客户端和服务器的入口，Bootstrap是创建客户端连接的启动器，ServerBootstrap是监听服务端端口的启动器，跟tomcat的Bootstrap类似，程序的入口。</li>
+</ol>
+</blockquote>
+<blockquote>
+<ol start="2">
+<li>Channel：关联jdk原生socket的组件，常用的是NioServerSocketChannel和NioSocketChannel，NioServerSocketChannel负责监听一个tcp端口，有连接进来通过boss reactor创建一个NioSocketChannel将其绑定到worker reactor，然后worker reactor负责这个NioSocketChannel的读写等io事件。</li>
+</ol>
+</blockquote>
+<blockquote>
+<ol start="3">
+<li>EventLoop：netty最核心的几大组件之一，就是我们常说的reactor，人为划分为boss reactor和worker reactor。通过EventLoopGroup（Bootstrap启动时会设置EventLoopGroup）生成，最常用的是nio的NioEventLoop，就如同EventLoop的名字，EventLoop内部有一个无限循环，维护了一个selector，处理所有注册到selector上的io操作，在这里实现了一个线程维护多条连接的工作。</li>
+</ol>
+</blockquote>
+<blockquote>
+<ol start="4">
+<li>ChannelPipeline：netty最核心的几大组件之一，ChannelHandler的容器，netty处理io操作的通道，与ChannelHandler组成责任链。write、read、connect等所有的io操作都会通过这个ChannelPipeline，依次通过ChannelPipeline上面的ChannelHandler处理，这就是netty事件模型的核心。ChannelPipeline内部有两个节点，head和tail，分别对应着ChannelHandler链的头和尾。</li>
+</ol>
+</blockquote>
+<blockquote>
+<ol start="5">
+<li>ChannelHandler：netty最核心的几大组件之一，netty处理io事件真正的处理单元，开发者可以创建自己的ChannelHandler来处理自己的逻辑，完全控制事件的处理方式。ChannelHandler和ChannelPipeline组成责任链，使得一组ChannelHandler像一条链一样执行下去。ChannelHandler分为inBound和outBound，分别对应io的read和write的执行链。ChannelHandler用ChannelHandlerContext包裹着，有prev和next节点，可以获取前后ChannelHandler，read时从ChannelPipeline的head执行到tail，write时从tail执行到head，所以head既是read事件的起点也是write事件的终点，与io交互最紧密。</li>
+</ol>
+</blockquote>
+<blockquote>
+<ol start="6">
+<li>Unsafe：顾名思义这个类就是不安全的意思，但并不是说这个类本身不安全，而是不要在应用程序里面直接使用Unsafe以及他的衍生类对象，实际上Unsafe操作都是在reactor线程中被执行。Unsafe是Channel的内部类，并且是protected修饰的，所以在类的设计上已经保证了不被用户代码调用。Unsafe的操作都是和jdk底层相关。EventLoop轮询到read或accept事件时，会调用unsafe.read()，unsafe再调用ChannelPipeline去处理事件；当发生write事件时，所有写事件都会放在EventLoop的task中，然后从ChannelPipeline的tail传播到head，通过Unsafe写到网络中。</li>
+</ol>
+</blockquote>
+<h2 id="如何创建TCP-netty-server-服务器"><a href="#如何创建TCP-netty-server-服务器" class="headerlink" title="如何创建TCP netty server 服务器"></a>如何创建TCP netty server 服务器</h2><h3 id="1-initTcpServer"><a href="#1-initTcpServer" class="headerlink" title="1. initTcpServer"></a>1. initTcpServer</h3><pre class=" language-java"><code class="language-java">    <span class="token comment" spellcheck="true">/**
+     * 初始化TCP server
+    * @Description:
+    * @param gatewayInitParameter
+    * @param isLast
+     */</span>
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">initTcpServer</span><span class="token punctuation">(</span>GatewayDataChannelParameter gatewayInitParameter<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+
+        EventLoopGroup         acceptor       <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">NioEventLoopGroup</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token comment" spellcheck="true">// 用于设置服务器端接受客户端的连接</span>
+        EventLoopGroup         worker           <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">NioEventLoopGroup</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token comment" spellcheck="true">// 用于网络事件处理</span>
+        EventExecutorGroup     worker2     <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">DefaultEventExecutorGroup</span><span class="token punctuation">(</span><span class="token number">16</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        ServerBootstrap     bootstrap     <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">ServerBootstrap</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token comment" spellcheck="true">// bootstrap用于设置服务端的启动相关参数</span>
+
+        bootstrap<span class="token punctuation">.</span><span class="token function">option</span><span class="token punctuation">(</span>ChannelOption<span class="token punctuation">.</span>SO_BACKLOG<span class="token punctuation">,</span> <span class="token number">1024</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        bootstrap<span class="token punctuation">.</span><span class="token function">group</span><span class="token punctuation">(</span>acceptor<span class="token punctuation">,</span> worker<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        bootstrap<span class="token punctuation">.</span><span class="token function">channel</span><span class="token punctuation">(</span>NioServerSocketChannel<span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        TcpServerChannelInitializer initializer <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">TcpServerChannelInitializer</span><span class="token punctuation">(</span>gatewayInitParameter<span class="token punctuation">,</span> worker2<span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token comment" spellcheck="true">// 初始化数据通道list</span>
+        bootstrap<span class="token punctuation">.</span><span class="token function">childHandler</span><span class="token punctuation">(</span>initializer<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">int</span> port  <span class="token operator">=</span> gatewayInitParameter<span class="token punctuation">.</span><span class="token function">getGatewayBaseData</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">getPort</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        <span class="token keyword">try</span> <span class="token punctuation">{</span>
+            ChannelFuture channelFuture <span class="token operator">=</span> bootstrap<span class="token punctuation">.</span><span class="token function">bind</span><span class="token punctuation">(</span>port<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">sync</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">addListener</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">ChannelFutureListener</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span><span class="token comment" spellcheck="true">// 绑定端口启动服务事件</span>
+                <span class="token annotation punctuation">@Override</span>
+                <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">operationComplete</span><span class="token punctuation">(</span>ChannelFuture future<span class="token punctuation">)</span> <span class="token keyword">throws</span> Exception <span class="token punctuation">{</span>
+                    logger<span class="token punctuation">.</span><span class="token function">info</span><span class="token punctuation">(</span><span class="token string">"tcp port is bound!"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+                <span class="token punctuation">}</span>
+            <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+            channelFuture<span class="token punctuation">.</span><span class="token function">channel</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">closeFuture</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">sync</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">addListener</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">ChannelFutureListener</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span><span class="token comment" spellcheck="true">//此处sync()会阻塞main方法</span>
+                <span class="token annotation punctuation">@Override</span>
+                <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">operationComplete</span><span class="token punctuation">(</span>ChannelFuture future<span class="token punctuation">)</span> <span class="token keyword">throws</span> Exception <span class="token punctuation">{</span>
+                    logger<span class="token punctuation">.</span><span class="token function">info</span><span class="token punctuation">(</span><span class="token string">"all threads end ,main thread end！"</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token comment" spellcheck="true">// 正常状态此打印信息不执行上一行代码会阻塞MAIN函数</span>
+                <span class="token punctuation">}</span>
+            <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+            acceptor<span class="token punctuation">.</span><span class="token function">shutdownGracefully</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token comment" spellcheck="true">//netty server关闭时才会执行</span>
+            worker<span class="token punctuation">.</span><span class="token function">shutdownGracefully</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            worker2<span class="token punctuation">.</span><span class="token function">shutdownGracefully</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+          logger<span class="token punctuation">.</span><span class="token function">info</span><span class="token punctuation">(</span><span class="token string">"TCP netty closed！"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span> <span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">InterruptedException</span> e<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            e<span class="token punctuation">.</span><span class="token function">printStackTrace</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+
+</code></pre>
+<h3 id="2-TcpServerChannelInitializer"><a href="#2-TcpServerChannelInitializer" class="headerlink" title="2. TcpServerChannelInitializer"></a>2. TcpServerChannelInitializer</h3><pre class=" language-java"><code class="language-java"><span class="token keyword">import</span> java<span class="token punctuation">.</span>util<span class="token punctuation">.</span>concurrent<span class="token punctuation">.</span>TimeUnit<span class="token punctuation">;</span>
+
+<span class="token keyword">import</span> com<span class="token punctuation">.</span>sefon<span class="token punctuation">.</span>gateway<span class="token punctuation">.</span>baseModule<span class="token punctuation">.</span>gatewayServer<span class="token punctuation">.</span>gatewayBase<span class="token punctuation">.</span>GatewayDataChannelParameter<span class="token punctuation">;</span>
+
+<span class="token keyword">import</span> io<span class="token punctuation">.</span>netty<span class="token punctuation">.</span>channel<span class="token punctuation">.</span>ChannelInboundHandlerAdapter<span class="token punctuation">;</span>
+<span class="token keyword">import</span> io<span class="token punctuation">.</span>netty<span class="token punctuation">.</span>channel<span class="token punctuation">.</span>ChannelInitializer<span class="token punctuation">;</span>
+<span class="token keyword">import</span> io<span class="token punctuation">.</span>netty<span class="token punctuation">.</span>channel<span class="token punctuation">.</span>ChannelPipeline<span class="token punctuation">;</span>
+<span class="token keyword">import</span> io<span class="token punctuation">.</span>netty<span class="token punctuation">.</span>channel<span class="token punctuation">.</span>socket<span class="token punctuation">.</span>SocketChannel<span class="token punctuation">;</span>
+<span class="token keyword">import</span> io<span class="token punctuation">.</span>netty<span class="token punctuation">.</span>handler<span class="token punctuation">.</span>codec<span class="token punctuation">.</span>string<span class="token punctuation">.</span>StringDecoder<span class="token punctuation">;</span>
+<span class="token keyword">import</span> io<span class="token punctuation">.</span>netty<span class="token punctuation">.</span>handler<span class="token punctuation">.</span>codec<span class="token punctuation">.</span>string<span class="token punctuation">.</span>StringEncoder<span class="token punctuation">;</span>
+<span class="token keyword">import</span> io<span class="token punctuation">.</span>netty<span class="token punctuation">.</span>handler<span class="token punctuation">.</span>timeout<span class="token punctuation">.</span>IdleStateHandler<span class="token punctuation">;</span>
+<span class="token keyword">import</span> io<span class="token punctuation">.</span>netty<span class="token punctuation">.</span>util<span class="token punctuation">.</span>concurrent<span class="token punctuation">.</span>EventExecutorGroup<span class="token punctuation">;</span>
+
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">TcpServerChannelInitializer2</span> <span class="token keyword">extends</span>  <span class="token class-name">ChannelInitializer</span><span class="token operator">&lt;</span>SocketChannel<span class="token operator">></span>  <span class="token punctuation">{</span><span class="token comment" spellcheck="true">//tcp此处为socketChannel</span>
+
+    <span class="token keyword">private</span> GatewayDataChannelParameter gatewayInitParameter<span class="token punctuation">;</span>
+
+    <span class="token keyword">private</span> EventExecutorGroup group <span class="token punctuation">;</span>
+
+    <span class="token comment" spellcheck="true">/**
+     * @param gatewayInitParameter
+     * @param group
+     */</span>
+    <span class="token keyword">public</span> <span class="token function">TcpServerChannelInitializer2</span><span class="token punctuation">(</span>GatewayDataChannelParameter gatewayInitParameter<span class="token punctuation">,</span> EventExecutorGroup group<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">super</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>gatewayInitParameter <span class="token operator">=</span> gatewayInitParameter<span class="token punctuation">;</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>group <span class="token operator">=</span> group<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token annotation punctuation">@Override</span>
+    <span class="token keyword">protected</span> <span class="token keyword">void</span> <span class="token function">initChannel</span><span class="token punctuation">(</span>SocketChannel arg0<span class="token punctuation">)</span> <span class="token keyword">throws</span> Exception <span class="token punctuation">{</span>
+
+        ChannelPipeline pipeline <span class="token operator">=</span> arg0<span class="token punctuation">.</span><span class="token function">pipeline</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token comment" spellcheck="true">//pipeline 相当于ChannelHandler的容器，下面的stringDecoder也是一个handler</span>
+        pipeline<span class="token punctuation">.</span><span class="token function">addLast</span><span class="token punctuation">(</span><span class="token string">"docode"</span><span class="token punctuation">,</span><span class="token keyword">new</span> <span class="token class-name">StringDecoder</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token comment" spellcheck="true">//添加的顺序非常重要</span>
+        pipeline<span class="token punctuation">.</span><span class="token function">addLast</span><span class="token punctuation">(</span><span class="token string">"encode"</span><span class="token punctuation">,</span><span class="token keyword">new</span> <span class="token class-name">StringEncoder</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        pipeline<span class="token punctuation">.</span><span class="token function">addLast</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">IdleStateHandler</span><span class="token punctuation">(</span><span class="token number">60</span> <span class="token operator">*</span> <span class="token number">1000</span><span class="token punctuation">,</span> <span class="token number">60</span> <span class="token operator">*</span> <span class="token number">1000</span> <span class="token punctuation">,</span> <span class="token number">60</span> <span class="token operator">*</span> <span class="token number">1000</span> <span class="token punctuation">,</span>TimeUnit<span class="token punctuation">.</span>SECONDS<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token comment" spellcheck="true">//设置channel超时时间180秒</span>
+        ChannelInboundHandlerAdapter adapter <span class="token operator">=</span> gatewayInitParameter<span class="token punctuation">.</span><span class="token function">getSimpleChannelInboundHandler</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token comment" spellcheck="true">//此adapter是具体处理消息的handler类</span>
+        pipeline<span class="token punctuation">.</span><span class="token function">addLast</span><span class="token punctuation">(</span>group<span class="token punctuation">,</span> <span class="token string">"server"</span><span class="token punctuation">,</span> adapter<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+<span class="token punctuation">}</span>
+</code></pre>
+<h3 id="3-TCP处理数据的handler"><a href="#3-TCP处理数据的handler" class="headerlink" title="3. TCP处理数据的handler"></a>3. TCP处理数据的handler</h3><pre class=" language-java"><code class="language-java"><span class="token keyword">import</span> io<span class="token punctuation">.</span>netty<span class="token punctuation">.</span>buffer<span class="token punctuation">.</span>ByteBuf<span class="token punctuation">;</span>
+<span class="token keyword">import</span> io<span class="token punctuation">.</span>netty<span class="token punctuation">.</span>buffer<span class="token punctuation">.</span>Unpooled<span class="token punctuation">;</span>
+<span class="token keyword">import</span> io<span class="token punctuation">.</span>netty<span class="token punctuation">.</span>channel<span class="token punctuation">.</span>ChannelHandler<span class="token punctuation">.</span>Sharable<span class="token punctuation">;</span>
+<span class="token keyword">import</span> io<span class="token punctuation">.</span>netty<span class="token punctuation">.</span>channel<span class="token punctuation">.</span>ChannelHandlerContext<span class="token punctuation">;</span>
+<span class="token keyword">import</span> io<span class="token punctuation">.</span>netty<span class="token punctuation">.</span>channel<span class="token punctuation">.</span>SimpleChannelInboundHandler<span class="token punctuation">;</span>
+<span class="token keyword">import</span> io<span class="token punctuation">.</span>netty<span class="token punctuation">.</span>handler<span class="token punctuation">.</span>codec<span class="token punctuation">.</span>CharSequenceValueConverter<span class="token punctuation">;</span>
+<span class="token keyword">import</span> io<span class="token punctuation">.</span>netty<span class="token punctuation">.</span>handler<span class="token punctuation">.</span>timeout<span class="token punctuation">.</span>IdleStateEvent<span class="token punctuation">;</span>
+<span class="token keyword">import</span> io<span class="token punctuation">.</span>netty<span class="token punctuation">.</span>util<span class="token punctuation">.</span>CharsetUtil<span class="token punctuation">;</span>
+
+<span class="token comment" spellcheck="true">/**
+* @Description:    处理netty的handler
+* @author: jackromer
+* @version: 1.0, Jul 24, 2018
+*/</span>
+
+<span class="token annotation punctuation">@Sharable</span><span class="token comment" spellcheck="true">//可共享的CHANNEL</span>
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">TcpChannelHandler2</span> <span class="token keyword">extends</span> <span class="token class-name">SimpleChannelInboundHandler</span><span class="token operator">&lt;</span>String<span class="token operator">></span> <span class="token punctuation">{</span>
+
+    <span class="token comment" spellcheck="true">//数据到达</span>
+    <span class="token annotation punctuation">@Override</span>
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">channelRead</span><span class="token punctuation">(</span>ChannelHandlerContext ctx<span class="token punctuation">,</span> Object msg<span class="token punctuation">)</span> <span class="token keyword">throws</span> Exception <span class="token punctuation">{</span>
+            <span class="token keyword">if</span> <span class="token punctuation">(</span>ctx<span class="token punctuation">.</span><span class="token function">channel</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">isOpen</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+                CharSequence initialResult <span class="token operator">=</span> CharSequenceValueConverter<span class="token punctuation">.</span>INSTANCE<span class="token punctuation">.</span><span class="token function">convertObject</span><span class="token punctuation">(</span>msg<span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token comment" spellcheck="true">// MSG先转为charSequence</span>
+                ByteBuf result <span class="token operator">=</span> Unpooled<span class="token punctuation">.</span><span class="token function">copiedBuffer</span><span class="token punctuation">(</span>initialResult<span class="token punctuation">,</span> CharsetUtil<span class="token punctuation">.</span>UTF_8<span class="token punctuation">)</span><span class="token punctuation">;</span>            <span class="token comment" spellcheck="true">// 再转为byteBuf</span>
+                <span class="token keyword">if</span> <span class="token punctuation">(</span>result<span class="token punctuation">.</span><span class="token function">isReadable</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">&amp;&amp;</span> ctx<span class="token punctuation">.</span><span class="token function">channel</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">isActive</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+                    String reportStr     <span class="token operator">=</span> result<span class="token punctuation">.</span><span class="token function">toString</span><span class="token punctuation">(</span>CharsetUtil<span class="token punctuation">.</span>UTF_8<span class="token punctuation">)</span><span class="token punctuation">;</span>
+                    result<span class="token punctuation">.</span><span class="token function">release</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>       <span class="token comment" spellcheck="true">// reportStr使用后立马释放资源</span>
+          String tcpReplyMsg <span class="token operator">=</span> <span class="token string">"hello client , i am tcp server."</span><span class="token punctuation">;</span>
+          Channel <span class="token operator">=</span> ctx<span class="token punctuation">.</span><span class="token function">channel</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+          channel<span class="token punctuation">.</span><span class="token function">writeAndFlush</span><span class="token punctuation">(</span>tcpReplyMsg<span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token comment" spellcheck="true">//给客户端写消息</span>
+                <span class="token punctuation">}</span> 
+            <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token comment" spellcheck="true">// 当新连接接入</span>
+    <span class="token annotation punctuation">@Override</span>
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">handlerAdded</span><span class="token punctuation">(</span>ChannelHandlerContext ctx<span class="token punctuation">)</span> <span class="token keyword">throws</span> Exception <span class="token punctuation">{</span><span class="token punctuation">}</span>
+
+    <span class="token comment" spellcheck="true">//channel事件超时</span>
+    <span class="token annotation punctuation">@Override</span>
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">userEventTriggered</span><span class="token punctuation">(</span>ChannelHandlerContext ctx<span class="token punctuation">,</span> Object evt<span class="token punctuation">)</span> <span class="token keyword">throws</span> Exception <span class="token punctuation">{</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>evt <span class="token keyword">instanceof</span> <span class="token class-name">IdleStateEvent</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            IdleStateEvent idleStateEvent <span class="token operator">=</span> <span class="token punctuation">(</span>IdleStateEvent<span class="token punctuation">)</span> evt<span class="token punctuation">;</span>
+            <span class="token keyword">switch</span> <span class="token punctuation">(</span>idleStateEvent<span class="token punctuation">.</span><span class="token function">state</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+                <span class="token keyword">case</span> READER_IDLE<span class="token operator">:</span><span class="token operator">/</span><span class="token operator">/</span>读空闲
+                    <span class="token keyword">break</span><span class="token punctuation">;</span>
+                <span class="token keyword">case</span> WRITER_IDLE<span class="token operator">:</span><span class="token operator">/</span><span class="token operator">/</span>写空闲
+                    <span class="token keyword">break</span><span class="token punctuation">;</span>
+                <span class="token keyword">case</span> ALL_IDLE<span class="token operator">:</span><span class="token operator">/</span><span class="token operator">/</span>读写空闲
+                    <span class="token keyword">break</span><span class="token punctuation">;</span>
+            <span class="token punctuation">}</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token comment" spellcheck="true">// 当连接断开</span>
+    <span class="token annotation punctuation">@Override</span>
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">handlerRemoved</span><span class="token punctuation">(</span>ChannelHandlerContext ctx<span class="token punctuation">)</span> <span class="token keyword">throws</span> Exception <span class="token punctuation">{</span><span class="token punctuation">}</span>
+
+    <span class="token comment" spellcheck="true">//客户端连接</span>
+    <span class="token annotation punctuation">@Override</span>
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">channelActive</span><span class="token punctuation">(</span>ChannelHandlerContext ctx<span class="token punctuation">)</span> <span class="token keyword">throws</span> Exception <span class="token punctuation">{</span><span class="token punctuation">}</span>
+
+    <span class="token comment" spellcheck="true">//连接断开</span>
+    <span class="token annotation punctuation">@Override</span>
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">channelInactive</span><span class="token punctuation">(</span>ChannelHandlerContext ctx<span class="token punctuation">)</span> <span class="token keyword">throws</span> Exception <span class="token punctuation">{</span><span class="token punctuation">}</span>
+
+    <span class="token comment" spellcheck="true">//异常</span>
+    <span class="token annotation punctuation">@Override</span>
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">exceptionCaught</span><span class="token punctuation">(</span>ChannelHandlerContext ctx<span class="token punctuation">,</span> Throwable cause<span class="token punctuation">)</span> <span class="token keyword">throws</span> Exception <span class="token punctuation">{</span><span class="token punctuation">}</span>
+
+    <span class="token annotation punctuation">@Override</span>
+    <span class="token keyword">protected</span> <span class="token keyword">void</span> <span class="token function">channelRead0</span><span class="token punctuation">(</span>ChannelHandlerContext ctx<span class="token punctuation">,</span> String msg<span class="token punctuation">)</span> <span class="token keyword">throws</span> Exception <span class="token punctuation">{</span><span class="token punctuation">}</span>
+
+<span class="token punctuation">}</span>
+</code></pre>
+<h2 id="如何创建UDP-NETTY-SERVER"><a href="#如何创建UDP-NETTY-SERVER" class="headerlink" title="如何创建UDP NETTY SERVER"></a>如何创建UDP NETTY SERVER</h2><h3 id="1-initUdpServer"><a href="#1-initUdpServer" class="headerlink" title="1. initUdpServer"></a>1. initUdpServer</h3><blockquote>
+<p>注意事项：<br>UDP使用的bootstrap 而不是ServerBootstrap。<br>UDP channelHandler使用的是SimpleChannelInboundHandler<niodatagramchannel>，TCP使用的是其他的。<br>且UDP是无连接的，因此不需要调用channel.close()方法,如果调用会触发UDP server 的绑定关闭事件导致UDP服务器关闭。</niodatagramchannel></p>
+</blockquote>
+<pre class=" language-java"><code class="language-java">    <span class="token comment" spellcheck="true">/**
+     * 初始化TCP server
+    * @Description:
+    * @param gatewayInitParameter
+    * @param isLast
+     */</span>
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">initUdpServer</span><span class="token punctuation">(</span>GatewayDataChannelParameter gatewayInitParameter<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+
+        EventLoopGroup         acceptor     <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">NioEventLoopGroup</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token comment" spellcheck="true">// 用于设置服务器端接受客户端的连接</span>
+        EventExecutorGroup     worker         <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">DefaultEventExecutorGroup</span><span class="token punctuation">(</span><span class="token number">16</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        Bootstrap             bootstrap     <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Bootstrap</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token comment" spellcheck="true">// bootstrap用于设置服务端的启动相关参数，此处需要用Bootstrap和tcp不同</span>
+        bootstrap<span class="token punctuation">.</span><span class="token function">option</span><span class="token punctuation">(</span>ChannelOption<span class="token punctuation">.</span>SO_BACKLOG<span class="token punctuation">,</span> <span class="token number">1024</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        bootstrap<span class="token punctuation">.</span><span class="token function">group</span><span class="token punctuation">(</span>acceptor<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        bootstrap<span class="token punctuation">.</span><span class="token function">channel</span><span class="token punctuation">(</span>NioDatagramChannel<span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        UdpServerChannelInitializer initializer <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">UdpServerChannelInitializer</span><span class="token punctuation">(</span>gatewayInitParameter<span class="token punctuation">,</span> worker<span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token comment" spellcheck="true">// 初始化数据通道list</span>
+        bootstrap<span class="token punctuation">.</span><span class="token function">handler</span><span class="token punctuation">(</span>initializer<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        <span class="token keyword">int</span> port  <span class="token operator">=</span> gatewayInitParameter<span class="token punctuation">.</span><span class="token function">getGatewayBaseData</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">getPort</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        <span class="token keyword">try</span> <span class="token punctuation">{</span>
+            ChannelFuture channelFuture <span class="token operator">=</span> bootstrap<span class="token punctuation">.</span><span class="token function">bind</span><span class="token punctuation">(</span>port<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">sync</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">addListener</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">ChannelFutureListener</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span><span class="token comment" spellcheck="true">// 绑定端口启动服务事件</span>
+                <span class="token annotation punctuation">@Override</span>
+                <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">operationComplete</span><span class="token punctuation">(</span>ChannelFuture future<span class="token punctuation">)</span> <span class="token keyword">throws</span> Exception <span class="token punctuation">{</span>
+                    logger<span class="token punctuation">.</span><span class="token function">info</span><span class="token punctuation">(</span><span class="token string">"tcp port is bound!"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+                <span class="token punctuation">}</span>
+            <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+            channelFuture<span class="token punctuation">.</span><span class="token function">channel</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">closeFuture</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">sync</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">addListener</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">ChannelFutureListener</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span><span class="token comment" spellcheck="true">//此处sync()会阻塞main方法</span>
+                <span class="token annotation punctuation">@Override</span>
+                <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">operationComplete</span><span class="token punctuation">(</span>ChannelFuture future<span class="token punctuation">)</span> <span class="token keyword">throws</span> Exception <span class="token punctuation">{</span>
+                    logger<span class="token punctuation">.</span><span class="token function">info</span><span class="token punctuation">(</span><span class="token string">"all threads end ,main thread end！"</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token comment" spellcheck="true">// 正常状态此打印信息不执行上一行代码会阻塞MAIN函数</span>
+                <span class="token punctuation">}</span>
+            <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+            acceptor<span class="token punctuation">.</span><span class="token function">shutdownGracefully</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token comment" spellcheck="true">//netty server关闭时才会执行</span>
+            worker<span class="token punctuation">.</span><span class="token function">shutdownGracefully</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            worker2<span class="token punctuation">.</span><span class="token function">shutdownGracefully</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span> <span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">InterruptedException</span> e<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            e<span class="token punctuation">.</span><span class="token function">printStackTrace</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+
+</code></pre>
+<h3 id="2-TcpServerChannelInitializer-1"><a href="#2-TcpServerChannelInitializer-1" class="headerlink" title="2. TcpServerChannelInitializer"></a>2. TcpServerChannelInitializer</h3><pre class=" language-java"><code class="language-java"><span class="token keyword">import</span> java<span class="token punctuation">.</span>util<span class="token punctuation">.</span>concurrent<span class="token punctuation">.</span>TimeUnit<span class="token punctuation">;</span>
+
+<span class="token keyword">import</span> com<span class="token punctuation">.</span>sefon<span class="token punctuation">.</span>gateway<span class="token punctuation">.</span>baseModule<span class="token punctuation">.</span>gatewayServer<span class="token punctuation">.</span>gatewayBase<span class="token punctuation">.</span>GatewayDataChannelParameter<span class="token punctuation">;</span>
+
+<span class="token keyword">import</span> io<span class="token punctuation">.</span>netty<span class="token punctuation">.</span>channel<span class="token punctuation">.</span>ChannelInboundHandlerAdapter<span class="token punctuation">;</span>
+<span class="token keyword">import</span> io<span class="token punctuation">.</span>netty<span class="token punctuation">.</span>channel<span class="token punctuation">.</span>ChannelInitializer<span class="token punctuation">;</span>
+<span class="token keyword">import</span> io<span class="token punctuation">.</span>netty<span class="token punctuation">.</span>channel<span class="token punctuation">.</span>ChannelPipeline<span class="token punctuation">;</span>
+<span class="token keyword">import</span> io<span class="token punctuation">.</span>netty<span class="token punctuation">.</span>channel<span class="token punctuation">.</span>socket<span class="token punctuation">.</span>SocketChannel<span class="token punctuation">;</span>
+<span class="token keyword">import</span> io<span class="token punctuation">.</span>netty<span class="token punctuation">.</span>handler<span class="token punctuation">.</span>codec<span class="token punctuation">.</span>string<span class="token punctuation">.</span>StringDecoder<span class="token punctuation">;</span>
+<span class="token keyword">import</span> io<span class="token punctuation">.</span>netty<span class="token punctuation">.</span>handler<span class="token punctuation">.</span>codec<span class="token punctuation">.</span>string<span class="token punctuation">.</span>StringEncoder<span class="token punctuation">;</span>
+<span class="token keyword">import</span> io<span class="token punctuation">.</span>netty<span class="token punctuation">.</span>handler<span class="token punctuation">.</span>timeout<span class="token punctuation">.</span>IdleStateHandler<span class="token punctuation">;</span>
+<span class="token keyword">import</span> io<span class="token punctuation">.</span>netty<span class="token punctuation">.</span>util<span class="token punctuation">.</span>concurrent<span class="token punctuation">.</span>EventExecutorGroup<span class="token punctuation">;</span>
+
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">UdpServerChannelInitializer</span> <span class="token keyword">extends</span>  <span class="token class-name">ChannelInitializer</span><span class="token operator">&lt;</span>NioDatagramChannel<span class="token operator">></span>  <span class="token punctuation">{</span><span class="token comment" spellcheck="true">//udp此处为NioDatagramChannel</span>
+
+    <span class="token keyword">private</span> GatewayDataChannelParameter gatewayInitParameter<span class="token punctuation">;</span>
+
+    <span class="token keyword">private</span> EventExecutorGroup group <span class="token punctuation">;</span>
+
+    <span class="token comment" spellcheck="true">/**
+     * @param gatewayInitParameter
+     * @param group
+     */</span>
+    <span class="token keyword">public</span> <span class="token function">TcpServerChannelInitializer2</span><span class="token punctuation">(</span>GatewayDataChannelParameter gatewayInitParameter<span class="token punctuation">,</span> EventExecutorGroup group<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">super</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>gatewayInitParameter <span class="token operator">=</span> gatewayInitParameter<span class="token punctuation">;</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>group <span class="token operator">=</span> group<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token annotation punctuation">@Override</span>
+    <span class="token keyword">protected</span> <span class="token keyword">void</span> <span class="token function">initChannel</span><span class="token punctuation">(</span>SocketChannel arg0<span class="token punctuation">)</span> <span class="token keyword">throws</span> Exception <span class="token punctuation">{</span>
+
+        ChannelPipeline pipeline <span class="token operator">=</span> arg0<span class="token punctuation">.</span><span class="token function">pipeline</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token comment" spellcheck="true">//pipeline 相当于ChannelHandler的容器，下面的stringDecoder也是一个handler</span>
+        pipeline<span class="token punctuation">.</span><span class="token function">addLast</span><span class="token punctuation">(</span><span class="token string">"docode"</span><span class="token punctuation">,</span><span class="token keyword">new</span> <span class="token class-name">StringDecoder</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token comment" spellcheck="true">//添加的顺序非常重要</span>
+        pipeline<span class="token punctuation">.</span><span class="token function">addLast</span><span class="token punctuation">(</span><span class="token string">"encode"</span><span class="token punctuation">,</span><span class="token keyword">new</span> <span class="token class-name">StringEncoder</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token comment" spellcheck="true">//pipeline.addLast(new IdleStateHandler(60 * 1000, 60 * 1000 , 60 * 1000 ,TimeUnit.SECONDS));//UDP是无状态连接不需要设置</span>
+        ChannelInboundHandlerAdapter adapter <span class="token operator">=</span> gatewayInitParameter<span class="token punctuation">.</span><span class="token function">getSimpleChannelInboundHandler</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token comment" spellcheck="true">//此adapter是具体处理消息的handler类</span>
+        pipeline<span class="token punctuation">.</span><span class="token function">addLast</span><span class="token punctuation">(</span>group<span class="token punctuation">,</span> <span class="token string">"server"</span><span class="token punctuation">,</span> adapter<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+<span class="token punctuation">}</span>
+</code></pre>
+<h3 id="3-UDP处理数据的handler"><a href="#3-UDP处理数据的handler" class="headerlink" title="3. UDP处理数据的handler"></a>3. UDP处理数据的handler</h3><pre class=" language-java"><code class="language-java"><span class="token keyword">import</span> org<span class="token punctuation">.</span>slf4j<span class="token punctuation">.</span>Logger<span class="token punctuation">;</span>
+<span class="token keyword">import</span> org<span class="token punctuation">.</span>slf4j<span class="token punctuation">.</span>LoggerFactory<span class="token punctuation">;</span>
+<span class="token keyword">import</span> org<span class="token punctuation">.</span>springframework<span class="token punctuation">.</span>util<span class="token punctuation">.</span>StringUtils<span class="token punctuation">;</span>
+
+<span class="token keyword">import</span> com<span class="token punctuation">.</span>sefon<span class="token punctuation">.</span>gateway<span class="token punctuation">.</span>baseModule<span class="token punctuation">.</span>exceptions<span class="token punctuation">.</span>CheckChannelMsgException<span class="token punctuation">;</span>
+<span class="token keyword">import</span> com<span class="token punctuation">.</span>sefon<span class="token punctuation">.</span>gateway<span class="token punctuation">.</span>baseModule<span class="token punctuation">.</span>gatewayServer<span class="token punctuation">.</span>checkChannelMsg<span class="token punctuation">.</span>ChannelMsgChecker<span class="token punctuation">;</span>
+<span class="token keyword">import</span> com<span class="token punctuation">.</span>sefon<span class="token punctuation">.</span>gateway<span class="token punctuation">.</span>baseModule<span class="token punctuation">.</span>gatewayServer<span class="token punctuation">.</span>gatewayBase<span class="token punctuation">.</span>GatewayBaseData<span class="token punctuation">;</span>
+<span class="token keyword">import</span> com<span class="token punctuation">.</span>sefon<span class="token punctuation">.</span>gateway<span class="token punctuation">.</span>baseModule<span class="token punctuation">.</span>poolsAndThreads<span class="token punctuation">.</span>messageProcessors<span class="token punctuation">.</span>TcpOrUdpMsgProcessor<span class="token punctuation">;</span>
+<span class="token keyword">import</span> com<span class="token punctuation">.</span>sefon<span class="token punctuation">.</span>gateway<span class="token punctuation">.</span>baseModule<span class="token punctuation">.</span>poolsAndThreads<span class="token punctuation">.</span>processorPool<span class="token punctuation">.</span>TcpOrUdpMessagePool<span class="token punctuation">;</span>
+
+<span class="token keyword">import</span> io<span class="token punctuation">.</span>netty<span class="token punctuation">.</span>channel<span class="token punctuation">.</span>ChannelHandler<span class="token punctuation">.</span>Sharable<span class="token punctuation">;</span>
+<span class="token keyword">import</span> io<span class="token punctuation">.</span>netty<span class="token punctuation">.</span>channel<span class="token punctuation">.</span>ChannelHandlerContext<span class="token punctuation">;</span>
+<span class="token keyword">import</span> io<span class="token punctuation">.</span>netty<span class="token punctuation">.</span>channel<span class="token punctuation">.</span>SimpleChannelInboundHandler<span class="token punctuation">;</span>
+<span class="token keyword">import</span> io<span class="token punctuation">.</span>netty<span class="token punctuation">.</span>channel<span class="token punctuation">.</span>socket<span class="token punctuation">.</span>DatagramPacket<span class="token punctuation">;</span>
+<span class="token keyword">import</span> io<span class="token punctuation">.</span>netty<span class="token punctuation">.</span>util<span class="token punctuation">.</span>CharsetUtil<span class="token punctuation">;</span>
+
+<span class="token comment" spellcheck="true">/**
+* @Description:    处理通用设备协议的TCP包数据
+* @author: jackromer
+* @version: 1.0, Jul 24, 2018
+*/</span>
+
+<span class="token annotation punctuation">@Sharable</span><span class="token comment" spellcheck="true">//可共享的CHANNEL</span>
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">UdpChannelHandler</span> <span class="token keyword">extends</span> <span class="token class-name">SimpleChannelInboundHandler</span><span class="token operator">&lt;</span>DatagramPacket<span class="token operator">></span> <span class="token punctuation">{</span><span class="token comment" spellcheck="true">//此处需要用DatagramPacket</span>
+
+    <span class="token annotation punctuation">@Override</span>
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">channelRead0</span><span class="token punctuation">(</span>ChannelHandlerContext ctx<span class="token punctuation">,</span> DatagramPacket  dataPacket<span class="token punctuation">)</span> <span class="token keyword">throws</span> Exception <span class="token punctuation">{</span>
+        String result <span class="token operator">=</span> dataPacket<span class="token punctuation">.</span><span class="token function">content</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">toString</span><span class="token punctuation">(</span>CharsetUtil<span class="token punctuation">.</span>UTF_8<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    <span class="token comment" spellcheck="true">//udp发送数据给客户端</span>
+    String udpReplyMsg <span class="token operator">=</span> <span class="token string">"hello client , i am udp server."</span><span class="token punctuation">;</span>
+    DatagramPacket pac <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">DatagramPacket</span><span class="token punctuation">(</span>Unpooled<span class="token punctuation">.</span><span class="token function">copiedBuffer</span><span class="token punctuation">(</span>udpReplyMsg<span class="token punctuation">,</span> CharsetUtil<span class="token punctuation">.</span>UTF_8<span class="token punctuation">)</span><span class="token punctuation">,</span> packet<span class="token punctuation">.</span><span class="token function">sender</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>    
+        hannelFuture channelFuture <span class="token operator">=</span> channel<span class="token punctuation">.</span><span class="token function">writeAndFlush</span><span class="token punctuation">(</span>pac<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+<span class="token punctuation">}</span>
+</code></pre>
+<h2 id="netty-ctx-的fire相关方法"><a href="#netty-ctx-的fire相关方法" class="headerlink" title="netty ctx 的fire相关方法"></a>netty ctx 的fire相关方法</h2><blockquote>
+<p>file 方法<br><code>`</code>java<br>    /**</p>
+<pre><code> * A {@link Channel} is active now, which means it is connected.
+ *
+ * This will result in having the  {@link ChannelInboundHandler#channelActive(ChannelHandlerContext)} method
+ * called of the next  {@link ChannelInboundHandler} contained in the  {@link ChannelPipeline} of the
+ * {@link Channel}.
+ */
+</code></pre></blockquote>
+<pre><code>ChannelInboundInvoker fireChannelActive();//调用pipline中的handler列表中的下一个handler的channelActive方法，后面的方法类似
+@Override
+ChannelHandlerContext fireChannelRegistered();
+
+@Override
+ChannelHandlerContext fireChannelUnregistered();
+
+@Override
+ChannelHandlerContext fireChannelActive();
+
+@Override
+ChannelHandlerContext fireChannelInactive();
+
+@Override
+ChannelHandlerContext fireExceptionCaught(Throwable cause);
+
+@Override
+ChannelHandlerContext fireUserEventTriggered(Object evt);
+
+@Override
+ChannelHandlerContext fireChannelRead(Object msg);
+
+@Override
+ChannelHandlerContext fireChannelReadComplete();
+
+@Override
+ChannelHandlerContext fireChannelWritabilityChanged();
+</code></pre><pre><code>## netty 的http和https支持
+&gt;http 和https和netty的tcp比较类似，不同处在于：
+&gt;1.ChannelInitializer&lt;SocketChannel&gt; 的initChannel方法重写不一样.
+2.handler数据处理方式不一样.
+### 重写@Override initChannel 方法
+```java
+@Override
+protected void initChannel(SocketChannel ch) throws Exception {
+
+    ChannelPipeline ph = ch.pipeline();
+    添加sslhandler
+    SSLEngine sslEngine = context.createSSLEngine();
+    sslEngine.setUseClientMode(false);
+    sslEngine.setNeedClientAuth(true);  //双向认证
+    ph.addFirst(new SslHandler(sslEngine));
+    //处理http服务的关键handler
+    ph.addLast(&quot;codec&quot;, new HttpServerCodec());
+    ph.addLast(&quot;compressor&quot;, new HttpContentCompressor());
+    ph.addLast(&quot;decoder&quot;,new HttpRequestDecoder());
+    ph.addLast(&quot;encoder&quot;,new HttpResponseEncoder());
+    ph.addLast(&quot;aggregator&quot;, new HttpObjectAggregator(10 * 1024 * 1024));
+    ChannelInboundHandlerAdapter adapter = gatewayInitParameter.getHttpsSimpleChannelInboundHandler();
+    ch.pipeline().addLast(group, &quot;httpsServer&quot;, adapter);// 处理空指针异常,必须保证观察者中只返回一个对象
+}
+</code></pre><h3 id="handler处理数据"><a href="#handler处理数据" class="headerlink" title="handler处理数据"></a>handler处理数据</h3><pre class=" language-java"><code class="language-java"><span class="token annotation punctuation">@Override</span>
+<span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">channelRead</span><span class="token punctuation">(</span>ChannelHandlerContext ctx<span class="token punctuation">,</span> Object msg<span class="token punctuation">)</span> <span class="token keyword">throws</span> Exception <span class="token punctuation">{</span>
+  <span class="token function">send</span><span class="token punctuation">(</span>ctx<span class="token punctuation">,</span> <span class="token string">"OK"</span><span class="token punctuation">,</span> HttpResponseStatus<span class="token punctuation">.</span>OK<span class="token punctuation">)</span><span class="token punctuation">;</span>
+  String result <span class="token operator">=</span> <span class="token string">""</span><span class="token punctuation">;</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token operator">!</span><span class="token punctuation">(</span>msg <span class="token keyword">instanceof</span> <span class="token class-name">FullHttpRequest</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        result <span class="token operator">=</span> <span class="token string">"未知请求!"</span><span class="token punctuation">;</span>
+        <span class="token function">send</span><span class="token punctuation">(</span>ctx<span class="token punctuation">,</span> result<span class="token punctuation">,</span> HttpResponseStatus<span class="token punctuation">.</span>BAD_REQUEST<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token comment" spellcheck="true">//return;</span>
+    <span class="token punctuation">}</span>
+    FullHttpRequest httpRequest <span class="token operator">=</span> <span class="token punctuation">(</span>FullHttpRequest<span class="token punctuation">)</span> msg<span class="token punctuation">;</span>
+    <span class="token keyword">try</span> <span class="token punctuation">{</span>
+        String path <span class="token operator">=</span> httpRequest<span class="token punctuation">.</span><span class="token function">uri</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>          <span class="token comment" spellcheck="true">//获取路径</span>
+        System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"url is ："</span> <span class="token operator">+</span> path<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        String body <span class="token operator">=</span> <span class="token function">getBody</span><span class="token punctuation">(</span>httpRequest<span class="token punctuation">)</span><span class="token punctuation">;</span>       <span class="token comment" spellcheck="true">//获取参数</span>
+        HttpMethod method <span class="token operator">=</span> httpRequest<span class="token punctuation">.</span><span class="token function">method</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">//获取请求方法</span>
+        System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"接收到:"</span> <span class="token operator">+</span> method <span class="token operator">+</span> <span class="token string">" 请求"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token comment" spellcheck="true">//如果是GET请求</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>HttpMethod<span class="token punctuation">.</span>GET<span class="token punctuation">.</span><span class="token function">equals</span><span class="token punctuation">(</span>method<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token comment" spellcheck="true">//接受到的消息，做业务逻辑处理...</span>
+            System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"body:"</span> <span class="token operator">+</span> body<span class="token punctuation">)</span><span class="token punctuation">;</span>
+            result <span class="token operator">=</span> <span class="token string">"GET请求"</span><span class="token punctuation">;</span>
+            <span class="token function">send</span><span class="token punctuation">(</span>ctx<span class="token punctuation">,</span> result<span class="token punctuation">,</span> HttpResponseStatus<span class="token punctuation">.</span>OK<span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token comment" spellcheck="true">//return;</span>
+        <span class="token punctuation">}</span>
+
+        <span class="token comment" spellcheck="true">//如果是POST请求</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>HttpMethod<span class="token punctuation">.</span>POST<span class="token punctuation">.</span><span class="token function">equals</span><span class="token punctuation">(</span>method<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token comment" spellcheck="true">//接受到的消息，做业务逻辑处理...</span>
+            System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"body:"</span> <span class="token operator">+</span> body<span class="token punctuation">)</span><span class="token punctuation">;</span>
+            result <span class="token operator">=</span> <span class="token string">"POST请求"</span><span class="token punctuation">;</span>
+            <span class="token function">send</span><span class="token punctuation">(</span>ctx<span class="token punctuation">,</span> result<span class="token punctuation">,</span> HttpResponseStatus<span class="token punctuation">.</span>OK<span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token comment" spellcheck="true">//return;</span>
+        <span class="token punctuation">}</span>
+
+        ctx<span class="token punctuation">.</span><span class="token function">flush</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span> <span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">Exception</span> e<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"处理请求失败!"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        e<span class="token punctuation">.</span><span class="token function">printStackTrace</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span> <span class="token keyword">finally</span> <span class="token punctuation">{</span>
+        <span class="token comment" spellcheck="true">//释放请求</span>
+        httpRequest<span class="token punctuation">.</span><span class="token function">release</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        ctx<span class="token punctuation">.</span><span class="token function">flush</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<h2 id="注意事项"><a href="#注意事项" class="headerlink" title="注意事项"></a>注意事项</h2><blockquote>
+<p>netty服务的关闭在官网写的很明确,就是当EventLoopGroups关闭时会触发服务关闭,TCP和UDP不同，当调用udp的ctx.channel.close()方法时会导致udp服务EventLoopGroups关闭,而调用tcp的ctx.channel.close()方法时只会关闭连接上的当前channel.</p>
+</blockquote>
+<pre class=" language-linux"><code class="language-linux">Shutting Down Your Application
+Shutting down a Netty application is usually as simple as shutting down all EventLoopGroups you created via shutdownGracefully(). 
+It returns a Future that notifies you when the EventLoopGroup has been terminated completely and all Channels that belong to the group have been closed.
+
+</code></pre>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><blockquote>
+<p>netty NIO机制支持高并发，在很多JAVA的分布式框架中都有使用.在数据处理方面TCP和UDP不同，由于TCP是有连接的在数据传输过程中可能出现粘包阻包问题，处理数据的时候需要根据协议单独处理，保证数据的完整性,而UDP是无连接的所以不需要处理粘包阻包问题，收到什么数据就是什么数据.同时NETTY也可以集成http和https,具体实现可参照官方文档。<br><!-- ![](/images/mine.jpg) --></p>
+</blockquote>
 <blockquote>
 <p>一盏灯， 一片昏黄； <strong>一简书</strong>， 一杯淡茶。 守着那一份淡定， 品读属于自己的寂寞。 保持淡定， 才能欣赏到最美丽的风景！ 保持淡定， 人生从此不再寂寞。</p>
 </blockquote>
@@ -509,10 +955,10 @@
                         <li class="tab alipay-tab waves-effect waves-light"><a href="#alipay">支付宝</a></li>
                     </ul>
                     <div id="wechat">
-                        <img src="/images/weixin.png" class="reward-img" alt="微信打赏二维码">
+                        <img src="/images/pay/weixin.png" class="reward-img" alt="微信打赏二维码">
                     </div>
                     <div id="alipay">
-                        <img src="/images/alipay.png" class="reward-img" alt="支付宝打赏二维码">
+                        <img src="/images/pay/alipay.png" class="reward-img" alt="支付宝打赏二维码">
                     </div>
                 </div>
             </div>
@@ -596,7 +1042,7 @@
                     <div class="card-image">
                         
                         
-                        <img src="/medias/banner/2.jpg" class="responsive-img" alt="Storm介绍、集群搭建以及topology使用">
+                        <img src="/medias/scienceFiction/7.jpg" class="responsive-img" alt="Storm介绍、集群搭建以及topology使用">
                         
                         <span class="card-title">Storm介绍、集群搭建以及topology使用</span>
                     </div>
@@ -654,7 +1100,7 @@ Apache Storm是自由开源的分布式实时计算系统，擅长处理海量�
                     <div class="card-image">
                         
                         
-                        <img src="/medias/banner/6.jpg" class="responsive-img" alt="Spring-transactional-事务理解和使用">
+                        <img src="/medias/banner/2.jpg" class="responsive-img" alt="Spring-transactional-事务理解和使用">
                         
                         <span class="card-title">Spring-transactional-事务理解和使用</span>
                     </div>

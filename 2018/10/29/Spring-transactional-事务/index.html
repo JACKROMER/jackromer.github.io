@@ -253,7 +253,7 @@ SPRING transactional 简介
 
 
 
-<div class="bg-cover post-cover" style="background-image: url('/medias/banner/6.jpg')">
+<div class="bg-cover post-cover" style="background-image: url('/medias/banner/2.jpg')">
     <div class="container">
         <div class="row">
             <div class="col s12 m12 l12">
@@ -430,7 +430,7 @@ SPRING transactional 简介
 <blockquote>
 <p>2.UnCheckedException未检查异常 ，UnCheckedException继承自RuntimeException，一般是程序的逻辑问题引起的异常，不需要捕获，也不需要处理, 比如空指针异常等。<br>包括运行时异常（RuntimeException与其子类）和错误（Error）。<br>运行时异常：都是RuntimeException类及其子类异常，如NullPointerException(空指针异常)、IndexOutOfBoundsException(下标越界异常)等，<br>这些异常是不检查异常，程序中可以选择捕&gt;获处理，也可以不处理。这些异常一般是由程序逻辑错误引起的，程序应该从逻辑角度尽可能避免这类异常的发生。<br>运行时异常的特点是Java编译器不会检查它，也就是说，当程序中可能出现这类异常，即使没有用try-catch语句捕获它，也没有用throws子句声明抛出它，也会编译通过。<br>非运行时异常 （编译异常）：是RuntimeException以外的异常，类型上都属于Exception类及其子类。从程序语法角度讲是必须进行处理的异常，如果不处理，程序就不能编译通过。<br>如IOException、SQLException等以及用户自定义的Exception异常，一般情况下不自定义检查异常。</p>
 </blockquote>
-<h3 id="异常的继承结构"><a href="#异常的继承结构" class="headerlink" title="异常的继承结构"></a>异常的继承结构</h3><p><img src="/images/exception.png" alt=""></p>
+<h3 id="异常的继承结构"><a href="#异常的继承结构" class="headerlink" title="异常的继承结构"></a>异常的继承结构</h3><p><img src="/images/transaction/exception.png" alt=""></p>
 <blockquote>
 <p>当方法抛出runtimeException 或者error时 事务会回滚.</p>
 </blockquote>
@@ -628,10 +628,10 @@ SPRING transactional 简介
                         <li class="tab alipay-tab waves-effect waves-light"><a href="#alipay">支付宝</a></li>
                     </ul>
                     <div id="wechat">
-                        <img src="/images/weixin.png" class="reward-img" alt="微信打赏二维码">
+                        <img src="/images/pay/weixin.png" class="reward-img" alt="微信打赏二维码">
                     </div>
                     <div id="alipay">
-                        <img src="/images/alipay.png" class="reward-img" alt="支付宝打赏二维码">
+                        <img src="/images/pay/alipay.png" class="reward-img" alt="支付宝打赏二维码">
                     </div>
                 </div>
             </div>
@@ -715,17 +715,14 @@ SPRING transactional 简介
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/23.jpg" class="responsive-img" alt="Netty-Nio">
+                        <img src="/medias/banner/7.jpg" class="responsive-img" alt="Netty-Nio">
                         
                         <span class="card-title">Netty-Nio</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
-                    <div class="summary">hello 小姐姐！this is my page for you. good afternoon.
-
-
-
-一盏灯， 一片昏黄； 一简书， 一杯淡茶。 守着那一份淡定， 品读属于自己的寂寞。 保持淡定， 才能欣赏到最美丽的风景！ 保持淡定，</div>
+                    <div class="summary">什么是netty
+Netty是一个NIO网络编程框架，快速开发高性能、高可靠性的网络服务器/客户端程序。 极大地简化了TCP和UDP等网络编程。是一个异步事件驱动的网络框架，快速、高性能。RPC（pigeon、dubbo、HSF）Hadoo</div>
                     <div class="publish-info">
                         <span class="publish-date">
                             <i class="fa fa-clock-o fa-fw icon-date"></i>2018-10-29
