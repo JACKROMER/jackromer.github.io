@@ -1,0 +1,971 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head>
+    
+
+<head><meta name="generator" content="Hexo 3.8.0">
+    <meta charset="utf-8">
+    <meta name="keywords" content="设计模式-观察者模式, Romer">
+    <meta name="description" content="概述
+本文主要介绍观察者模式，通过栗子和代码简明的说明其原理.
+
+引文
+java 有很多种设计模式，主要的有GOF的23种，关于设计模式其实我们不必感到彷徨，觉得不懂、高端，其实这些规律都来源于我们的生活.设计模式其实是very的easy的">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="renderer" content="webkit|ie-stand|ie-comp">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <title>设计模式-观察者模式 | Jack Romer</title>
+    <link rel="icon" type="image/png" href="/images/mine.jpg">
+
+    <link rel="stylesheet" type="text/css" href="/libs/awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/materialize/css/materialize.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/aos/aos.css">
+    <link rel="stylesheet" type="text/css" href="/libs/animate/animate.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/lightGallery/css/lightgallery.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/matery.css">
+    <link rel="stylesheet" type="text/css" href="/css/my.css">
+
+    <script src="/libs/jquery/jquery-2.2.0.min.js"></script>
+<link rel="stylesheet" href="/css/prism-tomorrow.css" type="text/css"></head>
+
+</head>
+
+<body>
+
+<header class="navbar-fixed">
+    <nav id="headNav" class="bg-color nav-transparent">
+        <div id="navContainer" class="container">
+            <div class="nav-wrapper">
+                <div class="brand-logo">
+                    <a href="/" class="waves-effect waves-light">
+                        
+                        <img src="/images/mine.jpg" class="logo-img hide-on-small-only">
+                        
+                        <span class="logo-span">Jack Romer</span>
+                    </a>
+                </div>
+                <a href="#" data-activates="mobile-nav" class="button-collapse"><i class="fa fa-navicon"></i></a>
+<ul class="right">
+    
+    <li class="hide-on-med-and-down">
+        <a href="/" class="waves-effect waves-light">
+            
+            <i class="fa fa-home"></i>
+            
+            <span>主页</span>
+        </a>
+    </li>
+    
+    <li class="hide-on-med-and-down">
+        <a href="/tags" class="waves-effect waves-light">
+            
+            <i class="fa fa-tags"></i>
+            
+            <span>标签</span>
+        </a>
+    </li>
+    
+    <li class="hide-on-med-and-down">
+        <a href="/categories" class="waves-effect waves-light">
+            
+            <i class="fa fa-bookmark"></i>
+            
+            <span>分类</span>
+        </a>
+    </li>
+    
+    <li class="hide-on-med-and-down">
+        <a href="/archives" class="waves-effect waves-light">
+            
+            <i class="fa fa-archive"></i>
+            
+            <span>归档</span>
+        </a>
+    </li>
+    
+    <li class="hide-on-med-and-down">
+        <a href="/about" class="waves-effect waves-light">
+            
+            <i class="fa fa-user-circle-o"></i>
+            
+            <span>关于</span>
+        </a>
+    </li>
+    
+    <li>
+        <a id="toggleSearch" class="waves-effect waves-light">
+            <i id="searchIcon" class="mdi-action-search"></i>
+        </a>
+    </li>
+
+</ul>
+
+<div class="side-nav" id="mobile-nav">
+
+    <div class="mobile-head bg-color">
+        
+        <img src="/images/mine.jpg" class="logo-img circle responsive-img">
+        
+        <div class="logo-name">Jack Romer</div>
+        <div class="logo-desc">
+            
+            Jack Romer&#39;s blog
+            
+        </div>
+    </div>
+
+    <ul class="menu-list mobile-menu-list">
+        
+        <li>
+            <a href="/" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-home"></i>
+                
+                主页
+            </a>
+        </li>
+        
+        <li>
+            <a href="/tags" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-tags"></i>
+                
+                标签
+            </a>
+        </li>
+        
+        <li>
+            <a href="/categories" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-bookmark"></i>
+                
+                分类
+            </a>
+        </li>
+        
+        <li>
+            <a href="/archives" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-archive"></i>
+                
+                归档
+            </a>
+        </li>
+        
+        <li>
+            <a href="/about" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-user-circle-o"></i>
+                
+                关于
+            </a>
+        </li>
+        
+        
+        <li><div class="divider"></div></li>
+        <li>
+            <a href="https://github.com/JACKROMER" class="waves-effect waves-light" target="_blank">
+                <i class="fa fa-github-square fa-fw"></i>Fork Me
+            </a>
+        </li>
+        
+    </ul>
+
+    <div class="social-link"><a href="https://github.com/JACKROMER" class="tooltipped" target="_blank" data-tooltip="访问我的GitHub" data-position="top" data-delay="50">
+    <i class="fa fa-github"></i>
+</a>
+<a href="mailto:jackromer@163.com" class="tooltipped" target="_blank" data-tooltip="邮件联系我" data-position="top" data-delay="50">
+    <i class="fa fa-envelope-open"></i>
+</a>
+<a href="#!" class="tooltipped" data-tooltip="QQ联系我: 943655387" data-position="top" data-delay="50">
+    <i class="fa fa-qq"></i>
+</a>
+
+<a href="/atom.xml" class="tooltipped" target="_blank" data-tooltip="RSS 订阅" data-position="top" data-delay="50">
+    <i class="fa fa-rss"></i>
+</a>
+</div>
+</div>
+
+            </div>
+        </div>
+
+        
+        <style>
+    .nav-transparent .github-corner {
+        display: none !important;
+    }
+
+    .github-corner {
+        position: absolute;
+        z-index: 10;
+        top: 0;
+        right: 0;
+        border: 0;
+        transform: scale(1.1);
+    }
+
+    .github-corner svg {
+        color: #0f9d58;
+        fill: #fff;
+        height: 64px;
+        width: 64px;
+    }
+
+    .github-corner:hover .octo-arm {
+        animation: a 0.56s ease-in-out;
+    }
+
+    .github-corner .octo-arm {
+        animation: none;
+    }
+
+    @keyframes a {
+        0%,
+        to {
+            transform: rotate(0);
+        }
+        20%,
+        60% {
+            transform: rotate(-25deg);
+        }
+        40%,
+        80% {
+            transform: rotate(10deg);
+        }
+    }
+</style>
+
+<a href="https://github.com/JACKROMER" class="github-corner tooltipped hide-on-med-and-down" target="_blank" data-tooltip="Fork Me" data-position="left" data-delay="50">
+    <svg viewbox="0 0 250 250" aria-hidden="true">
+        <path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"/>
+        <path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"/>
+        <path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"/>
+    </svg>
+</a>
+        
+    </nav>
+</header>
+
+
+
+<div class="bg-cover post-cover" style="background-image: url('/medias/banner/6.jpg')">
+    <div class="container">
+        <div class="row">
+            <div class="col s12 m12 l12">
+                <div class="brand">
+                    <div class="description center-align post-title">
+                        设计模式-观察者模式
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<main class="post-container content">
+
+    
+    <link rel="stylesheet" href="/libs/tocbot/tocbot.css">
+<style>
+    #articleContent h1,
+    #articleContent h2,
+    #articleContent h3,
+    #articleContent h4,
+    #articleContent h5,
+    #articleContent h6 {
+        padding-top: 76px;
+        margin-top: -76px;
+    }
+
+    #articleContent h1 {
+        line-height: 3.5rem;
+    }
+
+    #articleContent h2 {
+        line-height: 3.2rem;
+    }
+
+    #articleContent h3 {
+        line-height: 2.8rem;
+    }
+
+    #articleContent h4 {
+        line-height: 2.5rem;
+    }
+
+    #articleContent h5 {
+        line-height: 2.2rem;
+    }
+
+    #articleContent h6 {
+        line-height: 1.9rem;
+    }
+
+    #articleContent :focus {
+        outline: none;
+    }
+
+    .toc-fixed {
+        position: fixed;
+        top: 64px;
+    }
+
+    .toc-widget {
+        padding-left: 20px;
+    }
+
+    .toc-widget .toc-title {
+        margin: 35px 0 15px 0;
+        padding-left: 17px;
+        font-size: 1.5rem;
+        font-weight: bold;
+        line-height: 1.5rem;
+    }
+
+    .toc-widget ol {
+        padding: 0;
+        list-style: none;
+    }
+
+    #toc-content ol {
+        padding-left: 10px;
+    }
+
+    #toc-content ol li {
+        padding-left: 10px;
+    }
+
+    #toc-content .toc-link:hover {
+        color: #42b983;
+        font-weight: 700;
+        text-decoration: underline;
+    }
+
+    #toc-content .toc-link::before {
+        background-color: transparent;
+        max-height: 25px;
+    }
+
+    #toc-content .is-active-link {
+        color: #42b983;
+    }
+
+    #toc-content .is-active-link::before {
+        background-color: #42b983;
+    }
+</style>
+<div class="row">
+    <div class="col s12 m12 l9">
+        <!-- 文章内容详情 -->
+<div id="artDetail">
+    <div class="card">
+        <div class="card-content article-info">
+            
+            <div class="article-tag">
+                
+                <a href="/tags/Java/" target="_blank">
+                    <span class="chip bg-color">Java</span>
+                </a>
+                
+                <a href="/tags/设计模式/" target="_blank">
+                    <span class="chip bg-color">设计模式</span>
+                </a>
+                
+                <a href="/tags/观察者模式/" target="_blank">
+                    <span class="chip bg-color">观察者模式</span>
+                </a>
+                
+            </div>
+            
+            <div class="post-info">
+                
+                <span class="post-cate">
+                    <i class="fa fa-bookmark fa-fw icon-category"></i>
+                    
+                    <a href="/categories/Java/" class="post-category" target="_blank">
+                        Java
+                    </a>
+                    
+                    <a href="/categories/Java/Gof/" class="post-category" target="_blank">
+                        Gof
+                    </a>
+                    
+                </span>
+                
+
+                <span class="post-date">
+                    <i class="fa fa-clock-o fa-fw"></i>2019-01-28
+                </span>
+            </div>
+        </div>
+        <hr>
+        <div class="card-content article-card-content">
+            <div id="articleContent">
+                <h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><blockquote>
+<p>本文主要介绍观察者模式，通过栗子和代码简明的说明其原理.</p>
+</blockquote>
+<h2 id="引文"><a href="#引文" class="headerlink" title="引文"></a>引文</h2><blockquote>
+<p>java 有很多种设计模式，主要的有GOF的23种，关于设计模式其实我们不必感到彷徨，觉得不懂、高端，其实这些规律都来源于我们的生活.<br>设计模式其实是very的easy的，今天要讲的是观察者模式，如果你是一个developer，但是不太明白什么是观察者模式,听完这个故事你就明白了.</p>
+</blockquote>
+<h2 id="故事之观察者模式-相对论"><a href="#故事之观察者模式-相对论" class="headerlink" title="故事之观察者模式-相对论"></a>故事之观察者模式-相对论</h2><blockquote>
+<p>我想想举个什么栗子合适呢….waiting…，ok ，比如中国的皇帝总是让子民提供好东西，皇帝需要18岁的妹纸当后宫储备，或者18岁的男性当侍卫储备…或者山珍海味，但是下层的人民只有知道皇帝需要什么才会去准备，没有的自然就提供不了；这时候皇帝会发诏书给下层官员，下层官员又下发命令给人民。这里有两个过程皇帝下令给官员，官员下发命令给人民，这样就有了观察者模式。</p>
+</blockquote>
+<blockquote>
+<p>观察者和被观察者，观察者就是一直等着被观察者发布命令，比如官员相对皇帝，官员是观察者，皇帝是被观察者，官员等着皇帝的命令；人民相对官员，人民是观察者，官员是被观察者，人民等着官员发布命令，这样一个故事中就包含了两个观察者模式，观察者和被观察者是相对的。</p>
+</blockquote>
+<blockquote>
+<p>观察者始终等待着被观察者发布命令，此时被观察者的下属都会受到这个消息，至于执不执行这个消息，由观察者自己定.如果你是开发人员，请再看一个实际栗子。</p>
+</blockquote>
+<blockquote>
+<p>假设CLASS A 是接收数据的（数据类型有B C D两种），CLASS B C是处理数据，但是B C 不一样,B只处理B类型数据，C只处理C类型数据，此时用观察者模式来实现就是CLASS A 作为被观察者，CLASS B C 作为观察者，当A中MESSAGE消息到达时， B C 都会受到消息MESSAGE,但具体是忽略这个消息还是处理这个消息都是由B C 自己决定.这就是一个观察者模式的简单实现.</p>
+</blockquote>
+<h2 id="代码实例"><a href="#代码实例" class="headerlink" title="代码实例"></a>代码实例</h2><h3 id="1-定义主题接口-皇帝"><a href="#1-定义主题接口-皇帝" class="headerlink" title="1. 定义主题接口-皇帝"></a>1. 定义主题接口-皇帝</h3><pre class=" language-java"><code class="language-java"><span class="token keyword">package</span> observer<span class="token punctuation">;</span>
+
+<span class="token keyword">public</span> <span class="token keyword">interface</span> <span class="token class-name">Subject</span> <span class="token punctuation">{</span>
+    <span class="token comment" spellcheck="true">//添加观察者</span>
+    <span class="token keyword">void</span> <span class="token function">addObserver</span><span class="token punctuation">(</span>Observer obj<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token comment" spellcheck="true">//移除观察者</span>
+    <span class="token keyword">void</span> <span class="token function">deleteObserver</span><span class="token punctuation">(</span>Observer obj<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token comment" spellcheck="true">//当主题方法改变时,这个方法被调用,通知所有的观察者</span>
+    <span class="token keyword">void</span> <span class="token function">notifyObserver</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<h3 id="2-定义观察者接口-皇帝下属的官员"><a href="#2-定义观察者接口-皇帝下属的官员" class="headerlink" title="2. 定义观察者接口-皇帝下属的官员"></a>2. 定义观察者接口-皇帝下属的官员</h3><pre class=" language-java"><code class="language-java"><span class="token keyword">package</span> observer<span class="token punctuation">;</span>
+
+<span class="token keyword">public</span> <span class="token keyword">interface</span> <span class="token class-name">Observer</span> <span class="token punctuation">{</span>
+    <span class="token comment" spellcheck="true">//当主题状态改变时,更新通知</span>
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">update</span><span class="token punctuation">(</span>String kingName<span class="token punctuation">,</span> String kingDemand<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<h3 id="3-主题的实现类-中国的皇帝"><a href="#3-主题的实现类-中国的皇帝" class="headerlink" title="3. 主题的实现类-中国的皇帝"></a>3. 主题的实现类-中国的皇帝</h3><blockquote>
+<p>官员由皇帝管理.</p>
+</blockquote>
+<pre class=" language-java"><code class="language-java"><span class="token keyword">package</span> observer<span class="token punctuation">;</span>
+
+<span class="token keyword">import</span> java<span class="token punctuation">.</span>util<span class="token punctuation">.</span>ArrayList<span class="token punctuation">;</span>
+<span class="token keyword">import</span> java<span class="token punctuation">.</span>util<span class="token punctuation">.</span>List<span class="token punctuation">;</span>
+
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">ChinaKingDemandSubject</span> <span class="token keyword">implements</span> <span class="token class-name">Subject</span><span class="token punctuation">{</span>
+    <span class="token comment" spellcheck="true">//存放订阅者</span>
+    <span class="token keyword">private</span> List<span class="token operator">&lt;</span>Observer<span class="token operator">></span> observers <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">ArrayList</span><span class="token operator">&lt;</span>Observer<span class="token operator">></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token comment" spellcheck="true">//皇帝的需求</span>
+    <span class="token keyword">private</span> String kingDemand<span class="token punctuation">;</span>
+    <span class="token comment" spellcheck="true">//皇帝的名字</span>
+    <span class="token keyword">private</span> String kingName<span class="token punctuation">;</span>
+
+
+    <span class="token keyword">public</span> <span class="token function">ChinaKingDemandSubject</span><span class="token punctuation">(</span>String kingName<span class="token punctuation">)</span><span class="token punctuation">{</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>kingName <span class="token operator">=</span> kingName<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">public</span> String <span class="token function">getKingName</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
+      <span class="token keyword">return</span> <span class="token keyword">this</span><span class="token punctuation">.</span>kingName<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+    <span class="token annotation punctuation">@Override</span>
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">addObserver</span><span class="token punctuation">(</span>Observer obj<span class="token punctuation">)</span> <span class="token punctuation">{</span><span class="token comment" spellcheck="true">//将观察者和被观察者绑定,也可以理解为订阅</span>
+        observers<span class="token punctuation">.</span><span class="token function">add</span><span class="token punctuation">(</span>obj<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token annotation punctuation">@Override</span>
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">deleteObserver</span><span class="token punctuation">(</span>Observer obj<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">int</span> i <span class="token operator">=</span> observers<span class="token punctuation">.</span><span class="token function">indexOf</span><span class="token punctuation">(</span>obj<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>i <span class="token operator">>=</span> <span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
+            observers<span class="token punctuation">.</span><span class="token function">remove</span><span class="token punctuation">(</span>obj<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token annotation punctuation">@Override</span>
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">notifyObserver</span><span class="token punctuation">(</span>String kingName<span class="token punctuation">,</span> String kingDemand<span class="token punctuation">)</span> <span class="token punctuation">{</span><span class="token comment" spellcheck="true">//**注意** 此方法会循环调用ArrayList，通知所有的观察者，有消息来了.</span>
+        <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">int</span> i<span class="token operator">=</span><span class="token number">0</span><span class="token punctuation">;</span>i<span class="token operator">&lt;</span>observers<span class="token punctuation">.</span><span class="token function">size</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>i<span class="token operator">++</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            Observer o <span class="token operator">=</span> <span class="token punctuation">(</span>Observer<span class="token punctuation">)</span>observers<span class="token punctuation">.</span><span class="token function">get</span><span class="token punctuation">(</span>i<span class="token punctuation">)</span><span class="token punctuation">;</span>
+            o<span class="token punctuation">.</span><span class="token function">update</span><span class="token punctuation">(</span>kingName<span class="token punctuation">,</span> kingDemand<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token comment" spellcheck="true">//皇帝发布新命令，征集美女或者壮士</span>
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">publish</span><span class="token punctuation">(</span>String kingName<span class="token punctuation">,</span> String kingDemand<span class="token punctuation">)</span><span class="token punctuation">{</span>
+        <span class="token comment" spellcheck="true">//新版本</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>kingDemand <span class="token operator">=</span> kingDemand<span class="token punctuation">;</span>
+        <span class="token comment" spellcheck="true">//**注意** 信息更新完毕，通知所有观察者，比如官员去执行命令找到合适的人并送进宫中</span>
+        <span class="token function">notifyObserver</span><span class="token punctuation">(</span>kingName<span class="token punctuation">,</span> kingDemand<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<h3 id="4-观察者实现类-中国皇帝的下属官员"><a href="#4-观察者实现类-中国皇帝的下属官员" class="headerlink" title="4. 观察者实现类-中国皇帝的下属官员"></a>4. 观察者实现类-中国皇帝的下属官员</h3><blockquote>
+<p>官员给皇帝找需要的东西.</p>
+</blockquote>
+<pre class=" language-java"><code class="language-java"><span class="token keyword">package</span> observer<span class="token punctuation">;</span>
+
+<span class="token comment" spellcheck="true">// 此时的观察者就是官员，官员有很多，各地的地方官都有</span>
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">ChinaOfficialObserver</span> <span class="token keyword">implements</span> <span class="token class-name">Observer</span><span class="token punctuation">{</span>
+    <span class="token comment" spellcheck="true">//订阅者名字</span>
+    <span class="token keyword">private</span> String name<span class="token punctuation">;</span>
+    <span class="token keyword">private</span> String kingDemand<span class="token punctuation">;</span>
+
+    <span class="token keyword">public</span> <span class="token function">ChinaOfficialObserver</span><span class="token punctuation">(</span>String name<span class="token punctuation">)</span><span class="token punctuation">{</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>name <span class="token operator">=</span> name<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token annotation punctuation">@Override</span>
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">update</span><span class="token punctuation">(</span>String kingName<span class="token punctuation">,</span> String kingDemand<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>kingDemand <span class="token operator">=</span> kingDemand<span class="token punctuation">;</span>
+        System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>kingName <span class="token operator">+</span> <span class="token string">"来了命令，找"</span> <span class="token operator">+</span> kingDemand<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token function">found</span><span class="token punctuation">(</span>kingDemand<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">found</span><span class="token punctuation">(</span>String kingName<span class="token punctuation">,</span> String kingDemand<span class="token punctuation">)</span><span class="token punctuation">{</span>
+        System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"官员"</span> <span class="token operator">+</span> name <span class="token operator">+</span> <span class="token string">"找到了"</span> <span class="token operator">+</span> kingName <span class="token operator">+</span> <span class="token string">"需要的"</span> <span class="token operator">+</span> kingDemand<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+<span class="token punctuation">}</span>
+</code></pre>
+<h3 id="5-中国皇帝的需求"><a href="#5-中国皇帝的需求" class="headerlink" title="5. 中国皇帝的需求"></a>5. 中国皇帝的需求</h3><pre class=" language-java"><code class="language-java"><span class="token keyword">package</span> observer<span class="token punctuation">;</span>
+
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">Main</span><span class="token punctuation">{</span>
+    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">main</span><span class="token punctuation">(</span>String<span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token comment" spellcheck="true">//创建主题(被观察者)</span>
+        ChinaKingDemandSubject chinaKingDemand <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">ChinaKingDemandSubject</span><span class="token punctuation">(</span><span class="token string">"中国皇帝"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token comment" spellcheck="true">//创建三个不同的观察者</span>
+        ChinaOfficialObserver a <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">ChinaOfficialObserver</span><span class="token punctuation">(</span><span class="token string">"长安地方官"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        ChinaOfficialObserver b <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">ChinaOfficialObserver</span><span class="token punctuation">(</span><span class="token string">"台湾地方官"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        ChinaOfficialObserver c <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">ChinaOfficialObserver</span><span class="token punctuation">(</span><span class="token string">"广州地方官"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token comment" spellcheck="true">//将观察者注册到主题中</span>
+        chinaKingDemand<span class="token punctuation">.</span><span class="token function">addObserver</span><span class="token punctuation">(</span>a<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        chinaKingDemand<span class="token punctuation">.</span><span class="token function">addObserver</span><span class="token punctuation">(</span>b<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        chinaKingDemand<span class="token punctuation">.</span><span class="token function">addObserver</span><span class="token punctuation">(</span>c<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        <span class="token comment" spellcheck="true">//更新主题的数据，当数据更新后，会自动通知所有已注册的观察者</span>
+        chinaKingDemand<span class="token punctuation">.</span><span class="token function">publish</span><span class="token punctuation">(</span>chinaKingDemand<span class="token punctuation">.</span><span class="token function">getKingName</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token string">"大于18岁单身的绝世美女"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"----------hold on ... king need -----------"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        chinaKingDemand<span class="token punctuation">.</span><span class="token function">publish</span><span class="token punctuation">(</span>chinaKingDemand<span class="token punctuation">.</span><span class="token function">getKingName</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token string">"大于18岁力能扛鼎的壮汉"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<h3 id="6-运行结果"><a href="#6-运行结果" class="headerlink" title="6. 运行结果"></a>6. 运行结果</h3><blockquote>
+<p>中国皇帝来了命令，找大于18岁单身的绝世美女.<br>官员长安地方官找到了中国皇帝需要的大于18岁单身的绝世美女.<br>中国皇帝来了命令，找大于18岁单身的绝世美女.<br>官员台湾地方官找到了中国皇帝皇帝需要的大于18岁单身的绝世美女.<br>中国皇帝来了命令，找大于18岁单身的绝世美女.<br>官员广州地方官找到了中国皇帝皇帝需要的大于18岁单身的绝世美女.<br>———-hold on … king need ———–<br>中国皇帝来了命令，找大于18岁力能扛鼎的壮汉.<br>官员长安地方官找到了中国皇帝皇帝需要的大于18岁力能扛鼎的壮汉.<br>中国皇帝来了命令，找大于18岁力能扛鼎的壮汉.<br>官员台湾地方官找到了中国皇帝皇帝需要的大于18岁力能扛鼎的壮汉.<br>中国皇帝来了命令，找大于18岁力能扛鼎的壮汉.<br>官员广州地方官找到了中国皇帝皇帝需要的大于18岁力能扛鼎的壮汉.</p>
+</blockquote>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>无论是观察者模式还是其他设计模式都是人们对真实生活应用场景的总结，细细品味，便会发现其中的精髓.</p>
+
+            </div>
+            <hr>
+
+            
+            <style>
+    #reward {
+        margin: 40px 0;
+        text-align: center;
+    }
+
+    #reward .reward-link {
+        font-size: 1.88rem;
+    }
+
+    #reward .btn-floating:hover {
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2), 0 5px 15px rgba(0, 0, 0, 0.2);
+    }
+
+    #rewardModal {
+        width: 320px;
+        height: 350px;
+    }
+
+    #rewardModal .reward-title {
+        margin: 15px auto;
+        padding-bottom: 5px;
+    }
+
+    #rewardModal .modal-content {
+        padding: 10px;
+    }
+
+    #rewardModal .close {
+        position: absolute;
+        right: 15px;
+        top: 15px;
+        color: rgba(0, 0, 0, 0.5);
+        font-size: 1.3rem;
+        line-height: 20px;
+        cursor: pointer;
+    }
+
+    #rewardModal .reward-tabs {
+        margin: 0 auto;
+        width: 210px;
+    }
+
+    .reward-tabs .tabs {
+        height: 38px;
+        margin: 10px auto;
+        padding-left: 0;
+    }
+
+    .reward-tabs .tabs .tab {
+        height: 38px;
+        line-height: 38px;
+    }
+
+    .reward-tabs .tab a {
+        color: #fff;
+        background-color: #ccc;
+    }
+
+    .reward-tabs .tab a:hover {
+        color: #fff;
+    }
+
+    .reward-tabs .wechat-tab .active {
+        color: #fff;
+        background-color: #22AB38;
+    }
+
+    .reward-tabs .alipay-tab .active {
+        color: #fff;
+        background-color: #019FE8;
+    }
+
+    .reward-tabs .reward-img {
+        width: 210px;
+        height: 210px;
+    }
+</style>
+
+<div id="reward">
+    <a class="reward-link btn-floating btn-large waves-effect waves-light red">赏</a>
+
+    <!-- Modal Structure -->
+    <div id="rewardModal" class="modal">
+        <div class="modal-content">
+            <a class="close"><i class="fa fa-close"></i></a>
+            <h4 class="reward-title">welcome your next coming！</h4>
+            <div class="reward-content">
+                <div class="reward-tabs">
+                    <ul class="tabs">
+                        <li class="tab wechat-tab waves-effect waves-light"><a class="active" href="#wechat">微信</a></li>
+                        <li class="tab alipay-tab waves-effect waves-light"><a href="#alipay">支付宝</a></li>
+                    </ul>
+                    <div id="wechat">
+                        <img src="/images/pay/weixin.png" class="reward-img" alt="微信打赏二维码">
+                    </div>
+                    <div id="alipay">
+                        <img src="/images/pay/alipay.png" class="reward-img" alt="支付宝打赏二维码">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function () {
+        $('#reward .reward-link').on('click', function () {
+            $('#rewardModal').openModal();
+        });
+
+        $('#rewardModal .close').on('click', function () {
+            $('#rewardModal').closeModal();
+        });
+    });
+</script>
+            
+
+            <link rel="stylesheet" type="text/css" href="/libs/share/css/share.min.css">
+
+<div id="article-share">
+    
+    <div class="social-share" data-disabled="qzone" data-wechat-qrcode-helper="<p>微信里Scan便可查看分享。</p>"></div>
+    
+</div>
+
+<script src="/libs/share/js/social-share.min.js"></script>
+
+            <div class="reprint">
+                <p>
+                    <span class="reprint-tip">转载请注明: </span>
+                    <a href="https://jackromer.github.io" class="b-link-green">Jack Romer</a>
+                    <i class="fa fa-angle-right fa-lg fa-fw text-color"></i>
+                    <a href="/2019/01/28/设计模式-观察者模式/" class="b-link-green">设计模式-观察者模式</a>
+                </p>
+            </div>
+        </div>
+    </div>
+
+    
+        <link rel="stylesheet" href="/libs/gitalk/gitalk.css">
+<link rel="stylesheet" href="/css/my-gitalk.css">
+
+<div class="card gitalk-card" data-aos="fade-up">
+    <div id="gitalk-container" class="card-content"></div>
+</div>
+
+<script src="/libs/gitalk/gitalk.min.js"></script>
+<script>
+    let gitalk = new Gitalk({
+        clientID: '1127667b07d1fb577d33',
+        clientSecret: 'e9ccb1aa6da4e6e06b74638240042cc316e5d234',
+        repo: 'jackromer.github.io',
+        owner: 'JACKROMER',
+        admin: "JACKROMER",
+        id: '2019-01-28T11-27-00',
+        distractionFreeMode: false  // Facebook-like distraction free mode
+    });
+
+    gitalk.render('gitalk-container');
+</script>
+    
+
+    
+
+    
+
+    
+
+    
+
+<article id="prenext-posts" class="prev-next articles">
+    <div class="row article-row">
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge left-badge text-color">本篇</div>
+            <div class="card">
+                <a href="/2019/01/28/设计模式-观察者模式/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/banner/6.jpg" class="responsive-img" alt="设计模式-观察者模式">
+                        
+                        <span class="card-title">设计模式-观察者模式</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary">概述
+本文主要介绍观察者模式，通过栗子和代码简明的说明其原理.
+
+引文
+java 有很多种设计模式，主要的有GOF的23种，关于设计模式其实我们不必感到彷徨，觉得不懂、高端，其实这些规律都来源于我们的生活.设计模式其实是very的easy的</div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="fa fa-clock-o fa-fw icon-date"></i>2019-01-28
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fa fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/Java/" class="post-category" target="_blank">
+                                    Java
+                                </a>
+                            
+                            <a href="/categories/Java/Gof/" class="post-category" target="_blank">
+                                    Gof
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/Java/" target="_blank">
+                        <span class="chip bg-color">Java</span>
+                    </a>
+                    
+                    <a href="/tags/设计模式/" target="_blank">
+                        <span class="chip bg-color">设计模式</span>
+                    </a>
+                    
+                    <a href="/tags/观察者模式/" target="_blank">
+                        <span class="chip bg-color">观察者模式</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">下一篇</div>
+            <div class="card">
+                <a href="/2019/01/28/JAVA-LISTENER的使用/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/banner/2.jpg" class="responsive-img" alt="JAVA-LISTENER的使用">
+                        
+                        <span class="card-title">JAVA-LISTENER的使用</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary">概述
+敬请期待…
+
+有序列表
+文本1
+文本2
+文本3引用图片
+
+
+引用链接
+引用图片
+
+一盏灯， 一片昏黄； 一简书， 一杯淡茶。 守着那一份淡定， 品读属于自己的寂寞。 保持淡定， 才能欣赏到最美丽的风景！ 保持淡定， 人生从此不再寂寞。</div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="fa fa-clock-o fa-fw icon-date"></i>2019-01-28
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fa fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/Java/" class="post-category" target="_blank">
+                                    Java
+                                </a>
+                            
+                            <a href="/categories/Java/Diary/" class="post-category" target="_blank">
+                                    Diary
+                                </a>
+                            
+                            <a href="/categories/Java/Diary/Life/" class="post-category" target="_blank">
+                                    Life
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/Java/" target="_blank">
+                        <span class="chip bg-color">Java</span>
+                    </a>
+                    
+                    <a href="/tags/Listener/" target="_blank">
+                        <span class="chip bg-color">Listener</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+    </div>
+</article>
+</div>
+    </div>
+    <div class="col l3 hide-on-med-and-down">
+        <div class="toc-widget">
+            <div class="toc-title">目录</div>
+            <div id="toc-content">
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="/libs/tocbot/tocbot.min.js"></script>
+<script>
+    $(function () {
+        tocbot.init({
+            tocSelector: '#toc-content',
+            contentSelector: '#articleContent',
+            headingSelector: 'h2, h3, h4'
+        });
+
+        // modify the toc link href to support Chinese.
+        let i = 0;
+        let tocHeading = 'toc-heading-';
+        $('#toc-content a').each(function () {
+            $(this).attr('href', '#' + tocHeading + (++i));
+        });
+
+        // modify the heading title id to support Chinese.
+        i = 0;
+        $('#articleContent').children('h2, h3, h4').each(function () {
+            $(this).attr('id', tocHeading + (++i));
+        });
+
+        // Set scroll toc fixed.
+        let tocHeight = parseInt($(window).height() * 0.4 - 64);
+        let $tocWidget = $('.toc-widget');
+        $(window).scroll(function () {
+            let scroll = $(window).scrollTop();
+            /* add post toc fixed. */
+            if (scroll > tocHeight) {
+                $tocWidget.addClass('toc-fixed');
+            } else {
+                $tocWidget.removeClass('toc-fixed');
+            }
+        });
+    });
+</script>
+    
+
+</main>
+
+<footer class="page-footer bg-color">
+    <div class="container row center-align">
+        <div class="col s12 m8 l8 copy-right">
+            本站由&copy;<a href="https://jackromer.github.io/" target="_blank">Jack Romer</a>基于
+            <a href="https://hexo.io/" target="_blank">Hexo</a> 采用
+            <a href="https://jackromer.github.io/" target="_blank">hexo-theme-matery</a>主题搭建.
+        </div>
+        <div class="col s12 m4 l4 social-link"><a href="https://github.com/JACKROMER" class="tooltipped" target="_blank" data-tooltip="访问我的GitHub" data-position="top" data-delay="50">
+    <i class="fa fa-github"></i>
+</a>
+<a href="mailto:jackromer@163.com" class="tooltipped" target="_blank" data-tooltip="邮件联系我" data-position="top" data-delay="50">
+    <i class="fa fa-envelope-open"></i>
+</a>
+<a href="#!" class="tooltipped" data-tooltip="QQ联系我: 943655387" data-position="top" data-delay="50">
+    <i class="fa fa-qq"></i>
+</a>
+
+<a href="/atom.xml" class="tooltipped" target="_blank" data-tooltip="RSS 订阅" data-position="top" data-delay="50">
+    <i class="fa fa-rss"></i>
+</a>
+</div>
+    </div>
+</footer>
+
+<div class="progress-bar"></div>
+
+
+<!-- 搜索遮罩框 -->
+<div id="searchModal" class="modal">
+    <div class="modal-content">
+        <div class="search-header">
+            <span class="title">搜索</span>
+            <input type="search" id="searchInput" name="s" placeholder="请输入搜索的关键字" class="search-input" autofocus>
+        </div>
+        <div id="searchResult"></div>
+    </div>
+</div>
+
+<script src="/js/search.js"></script>
+<script type="text/javascript">
+    searchFunc("/" + "search.xml", 'searchInput', 'searchResult');
+</script>
+<!-- 回到顶部按钮 -->
+<div id="backTop" class="top-scroll">
+    <a class="btn-floating btn-large waves-effect waves-light" href="#!">
+        <i class="fa fa-angle-up"></i>
+    </a>
+</div>
+
+
+<script src="/libs/materialize/js/materialize.min.js"></script>
+<script src="/libs/masonry/masonry.pkgd.min.js"></script>
+<script src="/libs/aos/aos.js"></script>
+<script src="/libs/scrollprogress/scrollProgress.min.js"></script>
+<script src="/libs/lightGallery/js/lightgallery-all.min.js"></script>
+<script src="/js/matery.js"></script>
+</body>
+</html>
