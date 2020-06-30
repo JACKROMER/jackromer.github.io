@@ -4,8 +4,17 @@
 
 <head><meta name="generator" content="Hexo 3.9.0">
     <meta charset="utf-8">
-    <meta name="keywords" content="Hello World, Jack Romer">
-    <meta name="description" content="Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hex">
+    <meta name="keywords" content="使用swwager生成离线API文档, Jack Romer">
+    <meta name="description" content="概述
+本文主要介绍如何使用swagger生成离线API。
+
+项目架构
+spring-boot-2.0 + swagger-2.8.0 .
+
+需要哪些要素
+3个配置文件
+
+静态文件StaticResourceFile，将静态文件中的文件夹放到">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="renderer" content="webkit|ie-stand|ie-comp">
@@ -13,7 +22,7 @@
     <meta name="format-detection" content="telephone=no">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <title>Hello World | Jack Romer</title>
+    <title>使用swwager生成离线API文档 | Jack Romer</title>
     <link rel="icon" type="image/jpeg" href="/medias/mine.jpg">
 
     <link rel="stylesheet" type="text/css" href="/libs/awesome/css/font-awesome.min.css">
@@ -267,7 +276,7 @@
             <div class="col s12 m12 l12">
                 <div class="brand">
                     <div class="description center-align post-title">
-                        Hello World
+                        使用swwager生成离线API文档
                     </div>
                 </div>
             </div>
@@ -376,9 +385,17 @@
             <div class="row tag-cate">
                 <div class="col s7">
                     
-                          <div class="article-tag">
-                            <span class="chip bg-color">No tag</span>
-                          </div>
+                    <div class="article-tag">
+                        
+                            <a href="/tags/spring-boot/" target="_blank">
+                                <span class="chip bg-color">spring-boot</span>
+                            </a>
+                        
+                            <a href="/tags/swagger/" target="_blank">
+                                <span class="chip bg-color">swagger</span>
+                            </a>
+                        
+                    </div>
                     
                 </div>
                 <div class="col s5 right-align">
@@ -389,7 +406,7 @@
             <div class="post-info">
                 <div class="post-date info-break-policy">
                     <i class="fa fa-calendar-minus-o fa-fw"></i>Publish Date:&nbsp;&nbsp;
-                    2020-01-16
+                    2020-06-09
                 </div>
 
                 
@@ -405,15 +422,57 @@
         <hr class="clearfix">
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <p>Welcome to <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/" target="_blank" rel="noopener">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html" target="_blank" rel="noopener">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="noopener">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><pre class="line-numbers language-bash"><code class="language-bash">$ hexo new <span class="token string">"My New Post"</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-<p>More info: <a href="https://hexo.io/docs/writing.html" target="_blank" rel="noopener">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><pre class="line-numbers language-bash"><code class="language-bash">$ hexo server<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-<p>More info: <a href="https://hexo.io/docs/server.html" target="_blank" rel="noopener">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><pre class="line-numbers language-bash"><code class="language-bash">$ hexo generate<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-<p>More info: <a href="https://hexo.io/docs/generating.html" target="_blank" rel="noopener">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><pre class="line-numbers language-bash"><code class="language-bash">$ hexo deploy<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-<p>More info: <a href="https://hexo.io/docs/deployment.html" target="_blank" rel="noopener">Deployment</a></p>
+                <h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a><a href="#概述" title="概述"></a>概述</h2><blockquote>
+<p>本文主要介绍如何使用swagger生成离线API。</p>
+</blockquote>
+<h2 id="项目架构"><a href="#项目架构" class="headerlink" title="项目架构"></a>项目架构</h2><blockquote>
+<p>spring-boot-2.0 + swagger-2.8.0 .</p>
+</blockquote>
+<h2 id="需要哪些要素"><a href="#需要哪些要素" class="headerlink" title="需要哪些要素"></a>需要哪些要素</h2><blockquote>
+<p>3个配置文件</p>
+<ol>
+<li>静态文件StaticResourceFile，将静态文件中的文件夹放到/src目录下。</li>
+<li>pom.xml 文件增加文档生成配置。</li>
+<li>增加JUNIT测试类，用于在使用mvn test命令时生成swagger.json文件，和生成配置文件。</li>
+</ol>
+</blockquote>
+<h2 id="如何使用"><a href="#如何使用" class="headerlink" title="如何使用"></a>如何使用</h2><blockquote>
+<ol>
+<li>将静态文件中的文件夹放到/src目录下。</li>
+<li>增加pom.xml 配置和文档路径配置。</li>
+<li>增加Swagger2MarkupTest.java到test目录，并且Swagger2MarkupTest.java包名称和项目启动类包名称保持一致。</li>
+<li>运行run maven test命令即可。</li>
+</ol>
+</blockquote>
+<h2 id="文件目录结构如下"><a href="#文件目录结构如下" class="headerlink" title="文件目录结构如下"></a>文件目录结构如下</h2><blockquote>
+<p>这是项目结构，其中src中三个目录还有，测试类是必须的。<br><img src="/images/swagger/project.jpg" alt=""></p>
+</blockquote>
+<h2 id="实现原理"><a href="#实现原理" class="headerlink" title="实现原理"></a>实现原理</h2><blockquote>
+<p>使用MOCK调用接口，生成swagger.json以及swagger的其他参数，再通过swagger.json转化为接口文档</p>
+<ol>
+<li>先利用<code>SpringFox</code>库生成<code>RESTful API</code></li>
+<li>再利用<code>Swagger2Markup</code> Maven插件生成<code>asciidoc</code>文档</li>
+<li>最后利用<code>asciidoctor</code> Maven插件生成 html 或 pdf 文件</li>
+</ol>
+</blockquote>
+<h2 id="资源文件地址"><a href="#资源文件地址" class="headerlink" title="资源文件地址"></a>资源文件地址</h2><blockquote>
+<p><a href="https://pan.baidu.com/s/14KC3v92_jHjQpaGfyokXYA" target="_blank" rel="noopener">https://pan.baidu.com/s/14KC3v92_jHjQpaGfyokXYA</a><br>提取码：2xay</p>
+</blockquote>
+<h2 id="便利"><a href="#便利" class="headerlink" title="便利"></a>便利</h2><blockquote>
+<p>github上有一些项目基于swagger2.6以上做了文档自动生成，只需要生成文档目标项目swaggerapi接口地址即可生成相关接口文档。<br>项目名swagger2pdf</p>
+</blockquote>
+<h2 id="备注"><a href="#备注" class="headerlink" title="备注"></a>备注</h2><blockquote>
+<p>上面说明可以生成单个项目所需的离线文档，不是很方便，不建议将要生成文档的项目源码整合到本项目，这样做比较麻烦，需要每个项目都加。<br>比较好的做法是，新增一个项目用来单独生成swagger离线文档。</p>
+</blockquote>
+<ul>
+<li>首先你的项目要确保是<code>spring boot</code>的，并且集成了<code>swagger</code>，接口层和入参出参实体类加了<code>swagger</code>的相关注解，且能正确跑起来；</li>
+<li>然后将本项目的<code>src/test/java</code>下<code>com.example.swagger2pdf</code>中的<code>Swagger2PdfTest</code>类中的注释放开，将生成当前项目的<code>swagger.json</code>的代码注释掉。</li>
+<li>将<code>url</code>中的<code>ip</code>和<code>port</code>换成自己要生成文档的项目的<code>ip</code>和<code>port</code>，这里要确保这个<code>url</code>直接访问有数据返回，不然是无法生成文档的；</li>
+<li>最后按上面说的运行项目即可生成文档。</li>
+</ul>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><blockquote>
+<p>swagger2.6.1版本之后的生成规则有些不一样，暂时没去研究。</p>
+</blockquote>
 <script>
         document.querySelectorAll('.github-emoji')
           .forEach(el => {
@@ -590,9 +649,9 @@
             <br/>
             <span xmlns:dct="http://purl.org/dc/terms/" href="http://purl.org/dc/dcmitype/Text"
                   property="dct:title" rel="dct:type">
-                    《Hello World》
+                    《使用swwager生成离线API文档》
                 </span> by
-            <a xmlns:cc="http://creativecommons.org/ns#" href="/2020/01/16/hello-world/" property="cc:attributionName"
+            <a xmlns:cc="http://creativecommons.org/ns#" href="/2020/06/09/使用swwager生成离线API文档/" property="cc:attributionName"
                rel="cc:attributionURL">
                 jackromer
             </a> is licensed under a
@@ -633,7 +692,7 @@
         repo: 'jackromer.github.io',
         owner: 'jackromer',
         admin: "jackromer",
-        id: '2020-01-16T13-56-42',
+        id: '2020-06-09T10-40-12',
         distractionFreeMode: false  // Facebook-like distraction free mode
     });
 
@@ -659,24 +718,33 @@
                 <i class="fa fa-dot-circle-o"></i>&nbsp;Current
             </div>
             <div class="card">
-                <a href="/2020/01/16/hello-world/">
+                <a href="/2020/06/09/使用swwager生成离线API文档/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/scienceFiction/12.jpg" class="responsive-img" alt="Hello World">
+                        <img src="/medias/scienceFiction/12.jpg" class="responsive-img" alt="使用swwager生成离线API文档">
                         
-                        <span class="card-title">Hello World</span>
+                        <span class="card-title">使用swwager生成离线API文档</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hex
+                            概述
+本文主要介绍如何使用swagger生成离线API。
+
+项目架构
+spring-boot-2.0 + swagger-2.8.0 .
+
+需要哪些要素
+3个配置文件
+
+静态文件StaticResourceFile，将静态文件中的文件夹放到
                         
                     </div>
                     <div class="publish-info">
                             <span class="publish-date">
-                                <i class="fa fa-clock-o fa-fw icon-date"></i>2020-01-16
+                                <i class="fa fa-clock-o fa-fw icon-date"></i>2020-06-09
                             </span>
                         <span class="publish-author">
                             
@@ -688,6 +756,18 @@
                 </div>
 
                 
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/spring-boot/" target="_blank">
+                        <span class="chip bg-color">spring-boot</span>
+                    </a>
+                    
+                    <a href="/tags/swagger/" target="_blank">
+                        <span class="chip bg-color">swagger</span>
+                    </a>
+                    
+                </div>
+                
             </div>
         </div>
         
@@ -697,40 +777,37 @@
                 Next&nbsp;<i class="fa fa-chevron-right"></i>
             </div>
             <div class="card">
-                <a href="/2019/12/13/查询数据库表结构以及聚合拼接SQL查询/">
+                <a href="/2020/06/08/常用问题整理/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/scienceFiction/14.jpg" class="responsive-img" alt="查询数据库表结构以及聚合拼接SQL查询">
+                        <img src="/medias/scienceFiction/4.jpg" class="responsive-img" alt="常用问题整理">
                         
-                        <span class="card-title">查询数据库表结构以及聚合拼接SQL查询</span>
+                        <span class="card-title">常用问题整理</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            
-概述
-本文主要介绍如何查询表结构和如何多表聚合查询数据。
+                            概述
+近期关于开发过程中常见问题整理。
 
-表结构查询    SELECT
-        COLUMN_NAME 列名,
-        COLUMN_TYPE 数据类型,
-        DATA_TYPE 字段类型,
+consul 命令
+查看consul健康状态
+
+curl http://localhost:8500/v1/agent/health/service/name/safety-api
+
+删除无用con
                         
                     </div>
                     <div class="publish-info">
                             <span class="publish-date">
-                                <i class="fa fa-clock-o fa-fw icon-date"></i>2019-12-13
+                                <i class="fa fa-clock-o fa-fw icon-date"></i>2020-06-08
                             </span>
                         <span class="publish-author">
                             
-                            <i class="fa fa-bookmark fa-fw icon-category"></i>
-                            
-                            <a href="/categories/java/" class="post-category" target="_blank">
-                                    java
-                                </a>
-                            
+                            <i class="fa fa-user fa-fw"></i>
+                            jackromer
                             
                         </span>
                     </div>
@@ -740,10 +817,6 @@
                     
                     <a href="/tags/java/" target="_blank">
                         <span class="chip bg-color">java</span>
-                    </a>
-                    
-                    <a href="/tags/red-black-tree/" target="_blank">
-                        <span class="chip bg-color">red-black-tree</span>
                     </a>
                     
                 </div>
@@ -760,7 +833,7 @@
     </div>
     <div id="toc-aside" class="expanded col l3 hide-on-med-and-down">
         <div class="toc-widget">
-            <div class="toc-title"><i class="fa fa-list-alt"></i>&nbsp;&nbsp;TOC</div>
+            <div class="toc-title"><i class="fa fa-list-alt"></i>&nbsp;&nbsp;目录</div>
             <div id="toc-content"></div>
         </div>
     </div>

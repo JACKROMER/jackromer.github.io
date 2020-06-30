@@ -435,8 +435,30 @@ EXAMPLE使用    Example example = new Example(demo.cl">
       disputeDetail<span class="token punctuation">.</span><span class="token function">setMediateOrganization</span><span class="token punctuation">(</span>demo<span class="token punctuation">.</span><span class="token function">getDeptname</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
     <span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h2 id="mybatis-Generator使用"><a href="#mybatis-Generator使用" class="headerlink" title="mybatis Generator使用"></a>mybatis Generator使用</h2><blockquote>
-<p>mybatis Generator可以很方便的通过数据库生成mapper和相关domain文件, 只需要加一下配置即可，网上有很多教程。</p>
+<p>mybatis Generator可以很方便的通过数据库生成mapper和相关domain文件, 只需要加一下配置即可，网上有很多教程。<br>  ECLIPSE 推荐命令 mybatis-generator:generate </p>
 </blockquote>
+<h2 id="打包插件"><a href="#打包插件" class="headerlink" title="打包插件"></a>打包插件</h2><pre class="line-numbers language-XML"><code class="language-XML">    <plugin>
+            <groupId>org.mybatis.generator</groupId>
+            <artifactId>mybatis-generator-maven-plugin</artifactId>
+            <version>1.3.5</version>
+            <configuration>
+                <verbose>true</verbose>
+                <overwrite>true</overwrite>
+            </configuration>
+            <dependencies>
+                <!--MyBatis Generator及工具 -->
+                <dependency>
+                    <groupId>org.mybatis.generator</groupId>
+                    <artifactId>mybatis-generator-core</artifactId>
+                    <version>1.3.5</version>
+                </dependency>
+                <dependency>
+                    <groupId>tk.mybatis</groupId>
+                    <artifactId>mapper</artifactId>
+                    <version>3.4.6</version>
+                </dependency>
+            </dependencies>
+        </plugin><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h2 id="mabatis-常见使用说明"><a href="#mabatis-常见使用说明" class="headerlink" title="mabatis 常见使用说明"></a>mabatis 常见使用说明</h2><h3 id="result数据类型接收问题"><a href="#result数据类型接收问题" class="headerlink" title="result数据类型接收问题"></a>result数据类型接收问题</h3><blockquote>
 <p>resultType 和 resultMap的区别，如果是DTO接收数据则使用resultType,如果没有DTO则使用resultMAP接收。</p>
 </blockquote>
@@ -820,7 +842,7 @@ import java.ut
     </div>
     <div id="toc-aside" class="expanded col l3 hide-on-med-and-down">
         <div class="toc-widget">
-            <div class="toc-title"><i class="fa fa-list-alt"></i>&nbsp;&nbsp;TOC</div>
+            <div class="toc-title"><i class="fa fa-list-alt"></i>&nbsp;&nbsp;目录</div>
             <div id="toc-content"></div>
         </div>
     </div>

@@ -557,25 +557,34 @@ $(function () {
             
             <div class="article col s12 m6 l4" data-aos="zoom-in">
                 <div class="card">
-                    <a href="/2020/01/16/hello-world/">
+                    <a href="/2020/06/09/使用swwager生成离线API文档/">
                         <div class="card-image">
                             
                             
-                            <img src="/medias/scienceFiction/12.jpg" class="responsive-img" alt="Hello World">
+                            <img src="/medias/scienceFiction/12.jpg" class="responsive-img" alt="使用swwager生成离线API文档">
                             
-                            <span class="card-title">Hello World</span>
+                            <span class="card-title">使用swwager生成离线API文档</span>
                         </div>
                     </a>
 
                     <div class="card-content article-content">
                         <div class="summary block-with-text">
                             
-                                Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hex
+                                概述
+本文主要介绍如何使用swagger生成离线API。
+
+项目架构
+spring-boot-2.0 + swagger-2.8.0 .
+
+需要哪些要素
+3个配置文件
+
+静态文件StaticResourceFile，将静态文件中的文件夹放到
                             
                         </div>
                         <div class="publish-info">
                             <span class="publish-date">
-                                <i class="fa fa-clock-o fa-fw icon-date"></i>2020-01-16
+                                <i class="fa fa-clock-o fa-fw icon-date"></i>2020-06-09
                             </span>
                             <span class="publish-author">
                                 
@@ -586,6 +595,243 @@ $(function () {
                         </div>
                     </div>
 
+                    
+                    <div class="card-action article-tags">
+                        
+                        <a href="/tags/spring-boot/" target="_blank">
+                            <span class="chip bg-color">spring-boot</span>
+                        </a>
+                        
+                        <a href="/tags/swagger/" target="_blank">
+                            <span class="chip bg-color">swagger</span>
+                        </a>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+            
+            <div class="article col s12 m6 l4" data-aos="zoom-in">
+                <div class="card">
+                    <a href="/2020/06/08/常用问题整理/">
+                        <div class="card-image">
+                            
+                            
+                            <img src="/medias/scienceFiction/4.jpg" class="responsive-img" alt="常用问题整理">
+                            
+                            <span class="card-title">常用问题整理</span>
+                        </div>
+                    </a>
+
+                    <div class="card-content article-content">
+                        <div class="summary block-with-text">
+                            
+                                概述
+近期关于开发过程中常见问题整理。
+
+consul 命令
+查看consul健康状态
+
+curl http://localhost:8500/v1/agent/health/service/name/safety-api
+
+删除无用con
+                            
+                        </div>
+                        <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="fa fa-clock-o fa-fw icon-date"></i>2020-06-08
+                            </span>
+                            <span class="publish-author">
+                                
+                                <i class="fa fa-user fa-fw"></i>
+                                jackromer
+                                
+                            </span>
+                        </div>
+                    </div>
+
+                    
+                    <div class="card-action article-tags">
+                        
+                        <a href="/tags/java/" target="_blank">
+                            <span class="chip bg-color">java</span>
+                        </a>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+            
+            <div class="article col s12 m6 l4" data-aos="zoom-in">
+                <div class="card">
+                    <a href="/2020/05/06/mybatis-plus自定义分页/">
+                        <div class="card-image">
+                            
+                            
+                            <img src="/medias/scienceFiction/14.jpg" class="responsive-img" alt="mybatis-plus实现自定义分页">
+                            
+                            <span class="card-title">mybatis-plus实现自定义分页</span>
+                        </div>
+                    </a>
+
+                    <div class="card-content article-content">
+                        <div class="summary block-with-text">
+                            
+                                概述
+本文主要介绍如何使用mybatis-plus实现复杂自定义分页
+
+使用说明
+接口定义
+
+/**
+   * 分页查询
+   * // 此处最好返回IPAGE
+   */
+  APIResult&lt;IPage&lt;ResDTO>> 
+                            
+                        </div>
+                        <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="fa fa-clock-o fa-fw icon-date"></i>2020-05-06
+                            </span>
+                            <span class="publish-author">
+                                
+                                <i class="fa fa-user fa-fw"></i>
+                                jackromer
+                                
+                            </span>
+                        </div>
+                    </div>
+
+                    
+                    <div class="card-action article-tags">
+                        
+                        <a href="/tags/spring-boot/" target="_blank">
+                            <span class="chip bg-color">spring boot</span>
+                        </a>
+                        
+                        <a href="/tags/mybatis-plus/" target="_blank">
+                            <span class="chip bg-color">mybatis-plus</span>
+                        </a>
+                        
+                        <a href="/tags/pagehelper/" target="_blank">
+                            <span class="chip bg-color">pagehelper</span>
+                        </a>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+            
+            <div class="article col s12 m6 l4" data-aos="zoom-in">
+                <div class="card">
+                    <a href="/2020/03/19/spring-boot使用junit-Test/">
+                        <div class="card-image">
+                            
+                            
+                            <img src="/medias/scienceFiction/2.jpg" class="responsive-img" alt="spring boot使用junit Test">
+                            
+                            <span class="card-title">spring boot使用junit Test</span>
+                        </div>
+                    </a>
+
+                    <div class="card-content article-content">
+                        <div class="summary block-with-text">
+                            
+                                概述
+本文主要介绍如何在spring boot项目中使用junit测试模块功能
+
+方法一/使用spring-boot自带的junit测试功能
+引入maven依赖
+
+        &lt;!-- Test  start-->
+       
+                            
+                        </div>
+                        <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="fa fa-clock-o fa-fw icon-date"></i>2020-03-19
+                            </span>
+                            <span class="publish-author">
+                                
+                                <i class="fa fa-user fa-fw"></i>
+                                jackromer
+                                
+                            </span>
+                        </div>
+                    </div>
+
+                    
+                    <div class="card-action article-tags">
+                        
+                        <a href="/tags/java/" target="_blank">
+                            <span class="chip bg-color">java</span>
+                        </a>
+                        
+                        <a href="/tags/spring-boot/" target="_blank">
+                            <span class="chip bg-color">spring boot</span>
+                        </a>
+                        
+                        <a href="/tags/junit/" target="_blank">
+                            <span class="chip bg-color">junit</span>
+                        </a>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+            
+            <div class="article col s12 m6 l4" data-aos="zoom-in">
+                <div class="card">
+                    <a href="/2020/03/17/触发器实现业务日志等功能/">
+                        <div class="card-image">
+                            
+                            
+                            <img src="/medias/scienceFiction/15.jpg" class="responsive-img" alt="触发器实现业务日志等功能">
+                            
+                            <span class="card-title">触发器实现业务日志等功能</span>
+                        </div>
+                    </a>
+
+                    <div class="card-content article-content">
+                        <div class="summary block-with-text">
+                            
+                                
+mysql
+触发器
+
+概述
+本文主要介绍如何使用触发器实现业务功能。
+
+一个简单的触发器
+此触发器实现单条记录在插入前的数据更改和链接操作
+
+    BEGIN
+
+                DECLARE newRoomId BIG
+                            
+                        </div>
+                        <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="fa fa-clock-o fa-fw icon-date"></i>2020-03-17
+                            </span>
+                            <span class="publish-author">
+                                
+                                <i class="fa fa-user fa-fw"></i>
+                                jackromer
+                                
+                            </span>
+                        </div>
+                    </div>
+
+                    
+                    <div class="card-action article-tags">
+                        
+                        <a href="/tags/触发器/" target="_blank">
+                            <span class="chip bg-color">触发器</span>
+                        </a>
+                        
+                    </div>
                     
                 </div>
             </div>
@@ -975,223 +1221,6 @@ import jav
                 </div>
             </div>
             
-            <div class="article col s12 m6 l4" data-aos="zoom-in">
-                <div class="card">
-                    <a href="/2019/09/03/coneyEdit使用笔记/">
-                        <div class="card-image">
-                            
-                            
-                            <img src="/medias/scienceFiction/11.jpg" class="responsive-img" alt="coneyEdit使用笔记">
-                            
-                            <span class="card-title">coneyEdit使用笔记</span>
-                        </div>
-                    </a>
-
-                    <div class="card-content article-content">
-                        <div class="summary block-with-text">
-                            
-                                简介coney edit 是一个很好的协助开发的软件尤其是数据批量处理上有很强大的功能
-使用
-conney edit的一些常使用的示例
-
-字符串列表转大写（驼峰）    setempId
-    setempName
-    setjob
-
-                            
-                        </div>
-                        <div class="publish-info">
-                            <span class="publish-date">
-                                <i class="fa fa-clock-o fa-fw icon-date"></i>2019-09-03
-                            </span>
-                            <span class="publish-author">
-                                
-                                <i class="fa fa-bookmark fa-fw icon-category"></i>
-                                
-                                <a href="/categories/conyEdit/" class="post-category" target="_blank">
-                                    conyEdit
-                                </a>
-                                
-                                
-                            </span>
-                        </div>
-                    </div>
-
-                    
-                    <div class="card-action article-tags">
-                        
-                        <a href="/tags/conyEdit/" target="_blank">
-                            <span class="chip bg-color">conyEdit</span>
-                        </a>
-                        
-                    </div>
-                    
-                </div>
-            </div>
-            
-            <div class="article col s12 m6 l4" data-aos="zoom-in">
-                <div class="card">
-                    <a href="/2019/09/03/mybatis-使用/">
-                        <div class="card-image">
-                            
-                            
-                            <img src="/medias/scienceFiction/13.jpg" class="responsive-img" alt="mybatis-使用">
-                            
-                            <span class="card-title">mybatis-使用</span>
-                        </div>
-                    </a>
-
-                    <div class="card-content article-content">
-                        <div class="summary block-with-text">
-                            
-                                
-mybatis很方便，不用像hibernate一样关心太多的关联关系，也不用写JPA本文主要介绍mybatis的一些常用用法和注意事项
-
-EXAMPLE使用    Example example = new Example(demo.cl
-                            
-                        </div>
-                        <div class="publish-info">
-                            <span class="publish-date">
-                                <i class="fa fa-clock-o fa-fw icon-date"></i>2019-09-03
-                            </span>
-                            <span class="publish-author">
-                                
-                                <i class="fa fa-bookmark fa-fw icon-category"></i>
-                                
-                                <a href="/categories/mybatis/" class="post-category" target="_blank">
-                                    mybatis
-                                </a>
-                                
-                                
-                            </span>
-                        </div>
-                    </div>
-
-                    
-                    <div class="card-action article-tags">
-                        
-                        <a href="/tags/mybatis/" target="_blank">
-                            <span class="chip bg-color">mybatis</span>
-                        </a>
-                        
-                    </div>
-                    
-                </div>
-            </div>
-            
-            <div class="article col s12 m6 l4" data-aos="zoom-in">
-                <div class="card">
-                    <a href="/2019/08/28/JDK8多线程并发处理/">
-                        <div class="card-image">
-                            
-                            
-                            <img src="/medias/scienceFiction/4.jpg" class="responsive-img" alt="JDK8多线程并发处理">
-                            
-                            <span class="card-title">JDK8多线程并发处理</span>
-                        </div>
-                    </a>
-
-                    <div class="card-content article-content">
-                        <div class="summary block-with-text">
-                            
-                                
-jdk8提供了新的链式编程和多线程并发处理方法，异常统一处理, CompletableFuture。
-
-CompletableFuturepackage com.jackromer.demo.Thread;
-
-import java.ut
-                            
-                        </div>
-                        <div class="publish-info">
-                            <span class="publish-date">
-                                <i class="fa fa-clock-o fa-fw icon-date"></i>2019-08-28
-                            </span>
-                            <span class="publish-author">
-                                
-                                <i class="fa fa-bookmark fa-fw icon-category"></i>
-                                
-                                <a href="/categories/JDK8/" class="post-category" target="_blank">
-                                    JDK8
-                                </a>
-                                
-                                
-                            </span>
-                        </div>
-                    </div>
-
-                    
-                    <div class="card-action article-tags">
-                        
-                        <a href="/tags/java/" target="_blank">
-                            <span class="chip bg-color">java</span>
-                        </a>
-                        
-                        <a href="/tags/thread/" target="_blank">
-                            <span class="chip bg-color">thread</span>
-                        </a>
-                        
-                    </div>
-                    
-                </div>
-            </div>
-            
-            <div class="article col s12 m6 l4" data-aos="zoom-in">
-                <div class="card">
-                    <a href="/2019/08/27/lambda处理集合/">
-                        <div class="card-image">
-                            
-                            
-                            <img src="/medias/scienceFiction/5.jpg" class="responsive-img" alt="lambda处理集合">
-                            
-                            <span class="card-title">lambda处理集合</span>
-                        </div>
-                    </a>
-
-                    <div class="card-content article-content">
-                        <div class="summary block-with-text">
-                            
-                                
-java8 lambda表达式利用流处理各种集合
-
-处理listpublic class Jdk8Main {
-
-    public static void main(String[] args) {
-        List&lt;P
-                            
-                        </div>
-                        <div class="publish-info">
-                            <span class="publish-date">
-                                <i class="fa fa-clock-o fa-fw icon-date"></i>2019-08-27
-                            </span>
-                            <span class="publish-author">
-                                
-                                <i class="fa fa-bookmark fa-fw icon-category"></i>
-                                
-                                <a href="/categories/lambda/" class="post-category" target="_blank">
-                                    lambda
-                                </a>
-                                
-                                
-                            </span>
-                        </div>
-                    </div>
-
-                    
-                    <div class="card-action article-tags">
-                        
-                        <a href="/tags/java/" target="_blank">
-                            <span class="chip bg-color">java</span>
-                        </a>
-                        
-                        <a href="/tags/lambda/" target="_blank">
-                            <span class="chip bg-color">lambda</span>
-                        </a>
-                        
-                    </div>
-                    
-                </div>
-            </div>
-            
         </div>
     </article>
 
@@ -1208,7 +1237,7 @@ java8 lambda表达式利用流处理各种集合
             
         </div>
         <div class="page-info col m4 l4 hide-on-small-only">
-            <div class="center-align b-text-gray">1 / 4</div>
+            <div class="center-align b-text-gray">1 / 5</div>
         </div>
         <div class="col s6 m4 l4">
             
