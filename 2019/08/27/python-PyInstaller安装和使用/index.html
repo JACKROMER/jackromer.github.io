@@ -430,7 +430,7 @@
 <pre><code>pip install pyintaller</code></pre></blockquote>
 <h2 id="如何使用pyinstaller打包"><a href="#如何使用pyinstaller打包" class="headerlink" title="如何使用pyinstaller打包"></a><a href="#如何使用pyinstaller打包" title="如何使用pyinstaller打包"></a>如何使用pyinstaller打包</h2><blockquote>
 <p>确保PyInstaller安装成功,如果你要打包的文件为hello.py, 则运行CMD或者bash命令窗，切换到该文件的目录下，然后运行如下命令，然后会看到如下页面.</p>
-<pre><code>pyinstaller -F hello.py</code></pre><p><img src="/images/python/python-pyinstaller.png" alt=""></p>
+<pre><code>pyinstaller -F hello.py</code></pre><p><img src="/images/python/python-pyinstaller.png" alt></p>
 </blockquote>
 <blockquote>
 <p>然后在当前文件夹下会自动生成<strong>dist</strong>目录和<strong>build</strong>目录，生成的exe文件则在<strong>dist</strong>目录中，这样通过pyinstaller打包exe的工作就完成了.</p>
@@ -439,25 +439,7 @@
 <p>总的来说，pyinstaller还是挺方便好用的，相对其他两类对高版本的Python支持也比较好,现在你可以尝试将自己的Python脚本编译成exe文件啦.</p>
 </blockquote>
 <hr>
-<script>
-        document.querySelectorAll('.github-emoji')
-          .forEach(el => {
-            if (!el.dataset.src) { return; }
-            const img = document.createElement('img');
-            img.style = 'display:none !important;';
-            img.src = el.dataset.src;
-            img.addEventListener('error', () => {
-              img.remove();
-              el.style.color = 'inherit';
-              el.style.backgroundImage = 'none';
-              el.style.background = 'none';
-            });
-            img.addEventListener('load', () => {
-              img.remove();
-            });
-            document.body.appendChild(img);
-          });
-      </script>
+
             </div>
             <hr/>
 

@@ -680,7 +680,7 @@ Wait    /**
     Thread<span class="token operator">-</span><span class="token number">2</span> <span class="token operator">:</span>i have bean waked up and i get the lock from cpu<span class="token punctuation">,</span> i am free <span class="token punctuation">,</span>i will <span class="token keyword">continue</span> to process<span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">,</span> my num is <span class="token operator">:</span><span class="token number">3</span>
     Thread<span class="token operator">-</span><span class="token number">0</span> <span class="token operator">:</span>i have bean waked up and i get the lock from cpu<span class="token punctuation">,</span> i am free <span class="token punctuation">,</span>i will <span class="token keyword">continue</span> to process<span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">,</span> my num is <span class="token operator">:</span><span class="token number">1</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h2 id="线程的生命周期"><a href="#线程的生命周期" class="headerlink" title="线程的生命周期"></a><a href="#线程的生命周期" title="线程的生命周期"></a>线程的生命周期</h2><p><img src="/images/thread/thread-life.png" alt=""></p>
+<h2 id="线程的生命周期"><a href="#线程的生命周期" class="headerlink" title="线程的生命周期"></a><a href="#线程的生命周期" title="线程的生命周期"></a>线程的生命周期</h2><p><img src="/images/thread/thread-life.png" alt></p>
 <h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a><a href="#总结" title="总结"></a>总结</h2><blockquote>
 <p>wait notify和notifyAll如果光看注释，可能不那么容易理解，最关键的还是试验一下，会有不一样的收获，但只要记住一点这三个是用来做线程通信的，必须在同步代码块中执行，他们都是object顶层对象的方法，所以你应该清楚这三个和线程没关系而是和对象的锁有关系,而线程只是用到了锁而已关系结构可以理解为这样：<br>OBJECT（只有一个） — LOCK（只有一个） — THREADS（线程可以有很多个，但都必须用同一个对象的同一个锁）。</p>
 </blockquote>
@@ -688,25 +688,7 @@ Wait    /**
 <p>一盏灯， 一片昏黄； <strong>一简书</strong>， 一杯淡茶。 守着那一份淡定， 品读属于自己的寂寞。 保持淡定， 才能欣赏到最美丽的风景！ 保持淡定， 人生从此不再寂寞。</p>
 </blockquote>
 <hr>
-<script>
-        document.querySelectorAll('.github-emoji')
-          .forEach(el => {
-            if (!el.dataset.src) { return; }
-            const img = document.createElement('img');
-            img.style = 'display:none !important;';
-            img.src = el.dataset.src;
-            img.addEventListener('error', () => {
-              img.remove();
-              el.style.color = 'inherit';
-              el.style.backgroundImage = 'none';
-              el.style.background = 'none';
-            });
-            img.addEventListener('load', () => {
-              img.remove();
-            });
-            document.body.appendChild(img);
-          });
-      </script>
+
             </div>
             <hr/>
 

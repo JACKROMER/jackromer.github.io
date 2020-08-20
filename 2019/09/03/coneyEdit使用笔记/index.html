@@ -572,10 +572,10 @@ s --- <span class="token function">sort</span>
  cc.gs @w // 获取匹配正则w的所有字符串
  cc.gc 3w -l /^String/ // 获取第三列匹配正则的值，添加行过滤条件
  cc.dc 1:_ //去除数据库字段下划线
- cc.mac 1:" ltrim // 去除"后字符串左边的空格
+ cc.mac 1:&quot; ltrim // 去除&quot;后字符串左边的空格
  cc.ms @i squo // 匹配的字符串加单引号 quo双引号
   cc.gac 1b a // 取空格后的第一个字符串 1b代表空格
- cc.p 9 '#&lt;03&gt;, ' 打印，必须有单引号
+ cc.p 9 &#39;#&lt;03&gt;, &#39; 打印，必须有单引号
 
  private String $a // this is $b  //打印
  cc.p
@@ -594,25 +594,7 @@ s --- <span class="token function">sort</span>
 
  private String $tx.1  --- $tx.2
  cc.p // 处理表格数据
-</code></pre><script>
-        document.querySelectorAll('.github-emoji')
-          .forEach(el => {
-            if (!el.dataset.src) { return; }
-            const img = document.createElement('img');
-            img.style = 'display:none !important;';
-            img.src = el.dataset.src;
-            img.addEventListener('error', () => {
-              img.remove();
-              el.style.color = 'inherit';
-              el.style.backgroundImage = 'none';
-              el.style.background = 'none';
-            });
-            img.addEventListener('load', () => {
-              img.remove();
-            });
-            document.body.appendChild(img);
-          });
-      </script>
+</code></pre>
             </div>
             <hr/>
 

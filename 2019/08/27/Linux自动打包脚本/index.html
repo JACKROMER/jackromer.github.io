@@ -482,27 +482,27 @@ start_connect() {
 start_storm() {
     cd /opt/cluster/storm
 
-    if read -n 1 -p '是否为 nimbus 主机？[Y/N]:' op; then
+    if read -n 1 -p &#39;是否为 nimbus 主机？[Y/N]:&#39; op; then
         if [[ $op == [Yy] ]]; then #判断输入是否为y
-            echo -e "\n\e[0;31;1m nimbus is starting...\e[0m"
+            echo -e &quot;\n\e[0;31;1m nimbus is starting...\e[0m&quot;
             nohup bin/storm nimbus &gt;nimbus.out 2&gt;&amp;1 &lt; /dev/null &amp;
             sleep 5
-            echo -e "\n\e[0;31;1m ui is starting...\e[0m"
+            echo -e &quot;\n\e[0;31;1m ui is starting...\e[0m&quot;
             nohup bin/storm ui &gt;ui.out 2&gt;&amp;1 &lt; /dev/null &amp;
             sleep 5
         elif [[ $op == [Nn] ]]; then
-            echo -e "\n\e[0;31;1m supervisor is starting...\e[0m"
+            echo -e &quot;\n\e[0;31;1m supervisor is starting...\e[0m&quot;
             nohup bin/storm supervisor &gt;supervisor.out 2&gt;&amp;1 &lt; /dev/null &amp;
             sleep 5
         else
-            echo -e "\n\e[0;33;1m input error,exit...\e[0m"
+            echo -e &quot;\n\e[0;33;1m input error,exit...\e[0m&quot;
             return
         fi
     fi
 
     result=$(ps -ef|grep java|grep logviewer)
-    if [ "x$result" == "x" ]; then        
-        echo -e "\n\e[0;31;1m logviewer is starting...\e[0m"
+    if [ &quot;x$result&quot; == &quot;x&quot; ]; then        
+        echo -e &quot;\n\e[0;31;1m logviewer is starting...\e[0m&quot;
         nohup bin/storm logviewer &gt;logviewer.out 2&gt;&amp;1 &lt; /dev/null &amp;
         sleep 5
     fi
@@ -511,14 +511,14 @@ start_storm() {
 }
 
 start_top() {
-    if read -n 1 -p 'Topology是否初次提交到Storm？[Y/N]:' op; then
+    if read -n 1 -p &#39;Topology是否初次提交到Storm？[Y/N]:&#39; op; then
         if [[ $op == [Nn] ]]; then
-            echo -e "\n\e[0;31;1mExit\e[0m"
+            echo -e &quot;\n\e[0;31;1mExit\e[0m&quot;
             return
         elif [[ $op == [Yy] ]]; then
-            echo -e "\n\e[0;32;1mSubmitting\e[0m"
+            echo -e &quot;\n\e[0;32;1mSubmitting\e[0m&quot;
         else
-            echo -e "\n\e[0;33;1mError\e[0m"
+            echo -e &quot;\n\e[0;33;1mError\e[0m&quot;
             return
         fi
     fi
@@ -555,7 +555,7 @@ start_mongodb() {
 }
 
 modify_hosts() {
-    echo -e "127.0.0.1\tlocalhost\n131.10.10.aa\tserver.cluster\n131.10.10.bb\tclusterbb\n131.10.10.cc\tclustercc\n131.10.10.dd\tclusterdd\n131.10.10.ee\tclusteree\n131.10.10.ff\tclusterff"&gt;/etc/hosts
+    echo -e &quot;127.0.0.1\tlocalhost\n131.10.10.aa\tserver.cluster\n131.10.10.bb\tclusterbb\n131.10.10.cc\tclustercc\n131.10.10.dd\tclusterdd\n131.10.10.ee\tclusteree\n131.10.10.ff\tclusterff&quot;&gt;/etc/hosts
 }
 
 case $1 in
@@ -578,17 +578,17 @@ mongodb)
 hosts)
     modify_hosts;;
 *)
-    echo "usage: mqtt, mongodb, zk, kafka, monitor, connect, storm, top, hosts";;
+    echo &quot;usage: mqtt, mongodb, zk, kafka, monitor, connect, storm, top, hosts&quot;;;
 esac</code></pre><pre><code>
 
-[](#linux自动打包脚本 "linux自动打包脚本")linux自动打包脚本
+[](#linux自动打包脚本 &quot;linux自动打包脚本&quot;)linux自动打包脚本
 -----------------------------------------
 
 &gt; 这是package项目并提取需要JAR到指定目录的自动化打包脚本
 
-### [](#注意事项 "注意事项")注意事项
+### [](#注意事项 &quot;注意事项&quot;)注意事项
 
-### [](#shopt-s-extgolb-开启后的效果 "shopt -s extgolb 开启后的效果")shopt -s extgolb 开启后的效果
+### [](#shopt-s-extgolb-开启后的效果 &quot;shopt -s extgolb 开启后的效果&quot;)shopt -s extgolb 开启后的效果
 
     开启之后，以下5个模式匹配操作符将被识别：
     ?(pattern-list) - 所给模式匹配0次或1次；
@@ -598,7 +598,7 @@ esac</code></pre><pre><code>
     !(pattern-list) - 不匹配括号内的所给模式。
 
 
-### [](#自动打包打包脚本 "自动打包打包脚本")自动打包打包脚本
+### [](#自动打包打包脚本 &quot;自动打包打包脚本&quot;)自动打包打包脚本
 
 ```s
     #!/bin/bash
@@ -617,7 +617,7 @@ esac</code></pre><pre><code>
     rm -rf jars
     mkdir  jars
     echo 找到并复制jar到指定目录
-    find iot -name "iot-*.jar" -exec cp '{}' /opt/cluster/iotTag/jars/ \;
+    find iot -name &quot;iot-*.jar&quot; -exec cp &#39;{}&#39; /opt/cluster/iotTag/jars/ \;
     echo 删除不需要的jar
     cd /opt/cluster/iotTag/jars
     #shopt命令用于显示和设置shell中的行为选项，通过这些选项以增强shell易用性。
@@ -634,25 +634,7 @@ esac</code></pre><pre><code>
 <p>linux 自动化脚本可以帮助我们大大减轻部署发布的时间，虽然前期的编写过程比较麻烦，但是用起来却非常方便，试想有很多歌项目环境，如果全部挨个部署岂不是费心又费力呢，所以加入linux脚本阵容是时不我待的.</p>
 </blockquote>
 <hr>
-<script>
-        document.querySelectorAll('.github-emoji')
-          .forEach(el => {
-            if (!el.dataset.src) { return; }
-            const img = document.createElement('img');
-            img.style = 'display:none !important;';
-            img.src = el.dataset.src;
-            img.addEventListener('error', () => {
-              img.remove();
-              el.style.color = 'inherit';
-              el.style.backgroundImage = 'none';
-              el.style.background = 'none';
-            });
-            img.addEventListener('load', () => {
-              img.remove();
-            });
-            document.body.appendChild(img);
-          });
-      </script>
+
             </div>
             <hr/>
 
