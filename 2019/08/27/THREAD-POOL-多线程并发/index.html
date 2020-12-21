@@ -566,7 +566,7 @@
             <span class="token punctuation">}</span>
         <span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <ol start="3">
-<li>继承thread其实也是实现runable接口的方式实现的<br><img src="/images/pool/thread.png" alt></li>
+<li>继承thread其实也是实现runable接口的方式实现的<br><img src="/images/pool/thread.png" alt=""></li>
 <li>实现callable接口</li>
 </ol>
 <pre class="line-numbers language-java"><code class="language-java">        <span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">NewCallableThread</span> <span class="token keyword">implements</span> <span class="token class-name">Callable</span><span class="token operator">&lt;</span>String<span class="token operator">></span> <span class="token punctuation">{</span><span class="token comment" spellcheck="true">//String 是线程的返回值类型</span>
@@ -833,7 +833,25 @@
 <hr>
 <p><a href="https://www.jianshu.com/p/b8197dd2934c" target="_blank" rel="noopener">参考https://www.jianshu.com/p/b8197dd2934c</a></p>
 <hr>
-
+<script>
+        document.querySelectorAll('.github-emoji')
+          .forEach(el => {
+            if (!el.dataset.src) { return; }
+            const img = document.createElement('img');
+            img.style = 'display:none !important;';
+            img.src = el.dataset.src;
+            img.addEventListener('error', () => {
+              img.remove();
+              el.style.color = 'inherit';
+              el.style.backgroundImage = 'none';
+              el.style.background = 'none';
+            });
+            img.addEventListener('load', () => {
+              img.remove();
+            });
+            document.body.appendChild(img);
+          });
+      </script>
             </div>
             <hr/>
 

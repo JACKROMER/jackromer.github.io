@@ -542,7 +542,7 @@
 <h2 id="10-可中断锁"><a href="#10-可中断锁" class="headerlink" title="10. 可中断锁"></a><a href="#10-可中断锁" title="10. 可中断锁"></a>10. 可中断锁</h2><blockquote>
 <p>synchronized 是不可中断的，Lock 是可中断的，这里的可中断建立在阻塞等待中断，运行中是无法中断的。</p>
 </blockquote>
-<h2 id="附wait和sleep的区别"><a href="#附wait和sleep的区别" class="headerlink" title="附wait和sleep的区别"></a><a href="#附wait和sleep的区别" title="附wait和sleep的区别"></a>附wait和sleep的区别</h2><p><img src="/images/thread/thread-life.png" alt></p>
+<h2 id="附wait和sleep的区别"><a href="#附wait和sleep的区别" class="headerlink" title="附wait和sleep的区别"></a><a href="#附wait和sleep的区别" title="附wait和sleep的区别"></a>附wait和sleep的区别</h2><p><img src="/images/thread/thread-life.png" alt=""></p>
 <blockquote>
 <p>sleep理解为一个程序抱着锁睡觉了，锁还在他身上；wait是一个程序把锁归还给CPU,直到有人叫他（notify）去CPU哪里重新获取锁.</p>
 </blockquote>
@@ -586,7 +586,25 @@
 <p>一盏灯， 一片昏黄； <strong>一简书</strong>， 一杯淡茶。 守着那一份淡定， 品读属于自己的寂寞。 保持淡定， 才能欣赏到最美丽的风景！ 保持淡定， 人生从此不再寂寞。</p>
 </blockquote>
 <hr>
-
+<script>
+        document.querySelectorAll('.github-emoji')
+          .forEach(el => {
+            if (!el.dataset.src) { return; }
+            const img = document.createElement('img');
+            img.style = 'display:none !important;';
+            img.src = el.dataset.src;
+            img.addEventListener('error', () => {
+              img.remove();
+              el.style.color = 'inherit';
+              el.style.backgroundImage = 'none';
+              el.style.background = 'none';
+            });
+            img.addEventListener('load', () => {
+              img.remove();
+            });
+            document.body.appendChild(img);
+          });
+      </script>
             </div>
             <hr/>
 
@@ -825,6 +843,9 @@
                     <div class="summary block-with-text">
                         
                             
+        document.querySelectorAll('.github-emoji')
+          .forEach(el => {
+            if (!el.dataset.src) { return
                         
                     </div>
                     <div class="publish-info">

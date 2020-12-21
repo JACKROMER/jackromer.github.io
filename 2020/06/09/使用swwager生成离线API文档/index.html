@@ -445,7 +445,7 @@ spring-boot-2.0 + swagger-2.8.0 .
 </ol>
 </blockquote>
 <h2 id="文件目录结构如下"><a href="#文件目录结构如下" class="headerlink" title="文件目录结构如下"></a>文件目录结构如下</h2><blockquote>
-<p>这是项目结构，其中src中三个目录还有，测试类是必须的。<br><img src="/images/swagger/project.jpg" alt></p>
+<p>这是项目结构，其中src中三个目录还有，测试类是必须的。<br><img src="/images/swagger/project.jpg" alt=""></p>
 </blockquote>
 <h2 id="实现原理"><a href="#实现原理" class="headerlink" title="实现原理"></a>实现原理</h2><blockquote>
 <p>使用MOCK调用接口，生成swagger.json以及swagger的其他参数，再通过swagger.json转化为接口文档</p>
@@ -473,7 +473,25 @@ spring-boot-2.0 + swagger-2.8.0 .
 <h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><blockquote>
 <p>swagger2.6.1版本之后的生成规则有些不一样，暂时没去研究。</p>
 </blockquote>
-
+<script>
+        document.querySelectorAll('.github-emoji')
+          .forEach(el => {
+            if (!el.dataset.src) { return; }
+            const img = document.createElement('img');
+            img.style = 'display:none !important;';
+            img.src = el.dataset.src;
+            img.addEventListener('error', () => {
+              img.remove();
+              el.style.color = 'inherit';
+              el.style.backgroundImage = 'none';
+              el.style.background = 'none';
+            });
+            img.addEventListener('load', () => {
+              img.remove();
+            });
+            document.body.appendChild(img);
+          });
+      </script>
             </div>
             <hr/>
 

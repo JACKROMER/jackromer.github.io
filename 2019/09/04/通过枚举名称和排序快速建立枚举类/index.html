@@ -463,7 +463,7 @@
 04    疑难纠纷
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
 <h3 id="1复制数据然后使用coneyEdit"><a href="#1复制数据然后使用coneyEdit" class="headerlink" title="1复制数据然后使用coneyEdit"></a>1复制数据然后使用coneyEdit</h3><pre><code>// $tx.1 代表说明 $tx.2 代表排序 以此类推
-demo(&quot;$tx.2&quot;, $tx.1)
+demo("$tx.2", $tx.1)
 cc.p</code></pre><blockquote>
 <p>复制粘贴使conneyedit生效后的结果</p>
 </blockquote>
@@ -534,7 +534,25 @@ DIFFICULT_DISPUTES<span aria-hidden="true" class="line-numbers-rows"><span></spa
 <h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><blockquote>
 <p>conyEdit可以做很多方便开发的事情，不管是开发在简单的数据处理上更加方便。</p>
 </blockquote>
-
+<script>
+        document.querySelectorAll('.github-emoji')
+          .forEach(el => {
+            if (!el.dataset.src) { return; }
+            const img = document.createElement('img');
+            img.style = 'display:none !important;';
+            img.src = el.dataset.src;
+            img.addEventListener('error', () => {
+              img.remove();
+              el.style.color = 'inherit';
+              el.style.backgroundImage = 'none';
+              el.style.background = 'none';
+            });
+            img.addEventListener('load', () => {
+              img.remove();
+            });
+            document.body.appendChild(img);
+          });
+      </script>
             </div>
             <hr/>
 

@@ -354,11 +354,11 @@
 <blockquote>
 <p>看一次二叉树的插入操作，假设初始二叉树为图一（初始数据8 9 12）</p>
 </blockquote>
-<p><img src="/images/tree/BST-1.png" alt></p>
+<p><img src="/images/tree/BST-1.png" alt=""></p>
 <blockquote>
 <p>现在插入数据（7 6 5 4 3）</p>
 </blockquote>
-<p><img src="/images/tree/BST-2.png" alt></p>
+<p><img src="/images/tree/BST-2.png" alt=""></p>
 <blockquote>
 <p>可以看到其左分支的深度在不断增加，查询的时候几乎和线性查询没有区别，比正常的二叉树查询性能降低了很多,这就需要引入红黑树来解决这种多次插入新节点而引起的不平衡.</p>
 </blockquote>
@@ -368,7 +368,7 @@
 <h2 id="红黑树有什么好处"><a href="#红黑树有什么好处" class="headerlink" title="红黑树有什么好处"></a><a href="#红黑树有什么好处" title="红黑树有什么好处"></a>红黑树有什么好处</h2><blockquote>
 <p>红黑树的五条规则保证了其最长路径不超过最短路径的两倍，这样便不会出现之前的二叉树线性问题了，大大提高了二叉树查询检索的效率.</p>
 </blockquote>
-<h2 id="一个典型的红黑树"><a href="#一个典型的红黑树" class="headerlink" title="一个典型的红黑树"></a><a href="#一个典型的红黑树" title="一个典型的红黑树"></a>一个典型的红黑树</h2><p><img src="/images/tree/red-black-tree-01.jpg" alt></p>
+<h2 id="一个典型的红黑树"><a href="#一个典型的红黑树" class="headerlink" title="一个典型的红黑树"></a><a href="#一个典型的红黑树" title="一个典型的红黑树"></a>一个典型的红黑树</h2><p><img src="/images/tree/red-black-tree-01.jpg" alt=""></p>
 <h2 id="红黑树特性"><a href="#红黑树特性" class="headerlink" title="红黑树特性"></a><a href="#红黑树特性" title="红黑树特性"></a>红黑树特性</h2><blockquote>
 <p>红黑树的特性:<br>（1）根节点是黑色。<br>（2）每个节点或者是黑色，或者是红色。<br>（3）每个叶子节点（NIL）是黑色。 [注意：这里叶子节点，是指为空(NIL或NULL)的叶子节点！]<br>（4）如果一个节点是红色的，则它的子节点必须是黑色的。<br>（5）从一个节点到该节点的子孙节点的所有路径上包含相同数目的黑节点。</p>
 </blockquote>
@@ -381,27 +381,27 @@
 <h2 id="红黑树插入新节点"><a href="#红黑树插入新节点" class="headerlink" title="红黑树插入新节点"></a><a href="#红黑树插入新节点" title="红黑树插入新节点"></a>红黑树插入新节点</h2><blockquote>
 <p>试着插入为值为14的新节点，由于父节点为15且是黑色节点，这并没有破坏红黑树的结构，不需要做出任何的改变.</p>
 </blockquote>
-<p><img src="/images/tree/red-black-tree-02.jpg" alt></p>
+<p><img src="/images/tree/red-black-tree-02.jpg" alt=""></p>
 <blockquote>
 <p>再来看如果插入的值是21的新节点，可以看到由于原来的父节点22是红色的，21节点也是红色，这打破了红黑树规则4（即：红节点的子节点全为黑），所以需要对红黑树进行调整，调整有两种方式，change color 和左右旋转.</p>
 </blockquote>
-<p><img src="/images/tree/red-black-tree-03.jpg" alt></p>
+<p><img src="/images/tree/red-black-tree-03.jpg" alt=""></p>
 <h2 id="红黑树再平衡-CHANGE-COLOR"><a href="#红黑树再平衡-CHANGE-COLOR" class="headerlink" title="红黑树再平衡-CHANGE COLOR"></a><a href="#红黑树再平衡-CHANGE-COLOR" title="红黑树再平衡-CHANGE COLOR"></a>红黑树再平衡-CHANGE COLOR</h2><blockquote>
 <p>为了让新插入后的红黑树符合规则，会采取对节点红变黑或者黑变红的方式，下面介绍上面的插入21时候的变色方式。</p>
 </blockquote>
-<p><img src="/images/tree/red-black-tree-03.jpg" alt></p>
+<p><img src="/images/tree/red-black-tree-03.jpg" alt=""></p>
 <blockquote>
 <p>第一步:其中25不是根节点，21-22 连续红色，不满足规则4（即：红节点的子节点全为黑），但由于21子节点已经是黑色NIL，无法改变颜色了，所以需要把22红变黑来满足规则4。</p>
 </blockquote>
-<p><img src="/images/tree/red-black-tree-04.jpg" alt></p>
+<p><img src="/images/tree/red-black-tree-04.jpg" alt=""></p>
 <blockquote>
 <p>第二步：变色后又不符合规则5（即：一个节点到该节点的子孙节点的所有路径上包含相同数目的黑节点），明显的25-22-NIL出现了3个黑色节点，大于了25-27-NIL的两个黑色节点，所以需要把25节点也变成红色，来满足规则5。</p>
 </blockquote>
-<p><img src="/images/tree/red-black-tree-05.jpg" alt></p>
+<p><img src="/images/tree/red-black-tree-05.jpg" alt=""></p>
 <blockquote>
 <p>第三步: 25变成红色后，由于25-27又是连续红色，同理继续将27变为黑色，这样通过多次变色便后，新插入的部分数据终于满足了红黑树的规则，成为一个新的红黑树，剩余的再平衡由左右旋来解决。</p>
 </blockquote>
-<p><img src="/images/tree/red-black-tree-06.jpg" alt></p>
+<p><img src="/images/tree/red-black-tree-06.jpg" alt=""></p>
 <h2 id="红黑树再平衡-左右旋转"><a href="#红黑树再平衡-左右旋转" class="headerlink" title="红黑树再平衡-左右旋转"></a><a href="#红黑树再平衡-左右旋转" title="红黑树再平衡-左右旋转"></a>红黑树再平衡-左右旋转</h2><h2 id="左旋之篡位"><a href="#左旋之篡位" class="headerlink" title="左旋之篡位"></a><a href="#左旋之篡位" title="左旋之篡位"></a>左旋之篡位</h2><blockquote>
 <p>有一个boss，有左右副手，左右副手也都有左右下级，假设右边的级别比左边高，右边在同级中排第一，左边排第二。</p>
 </blockquote>
@@ -417,7 +417,7 @@
 <blockquote>
 <p>可怜方变化：<br>原boss-可怜人 》》》 现在boss的左副手 》》》降一级<br>原boss的左副手 》》》 现在左副手的左副手（即：原来boss的左副手）》》》降一级之后，还被同级下降，祸不单行。</p>
 </blockquote>
-<h3 id="左旋"><a href="#左旋" class="headerlink" title="左旋"></a><a href="#左旋" title="左旋"></a>左旋</h3><p><img src="/images/tree/red-black-tree-left.webp" alt></p>
+<h3 id="左旋"><a href="#左旋" class="headerlink" title="左旋"></a><a href="#左旋" title="左旋"></a>左旋</h3><p><img src="/images/tree/red-black-tree-left.webp" alt=""></p>
 <blockquote>
 <p>逆时针旋转两个节点,使得父节点被自己的右孩子取代，而自己却成为了自己的左孩子，我的理解是<strong>降级为左，升级为右，右边权力高</strong>，即降了一个等级，自己被右副手取代，但是原来的右副手的左下级和你的左副手还是归你管。</p>
 </blockquote>
@@ -427,12 +427,12 @@
 <blockquote>
 <p>再简明一点儿就是右副手篡位了，他的下级都升级了（右下级升一级，左下级同级提升为右副手），而原来的BOSS和他的手下都降了一级或更多级，这样应该比较好理解，图中的ABC可以看成一些隐藏的二叉树，并不代表值为 a b c.</p>
 </blockquote>
-<p><img src="/images/tree/red-black-tree-07.jpg" alt></p>
+<p><img src="/images/tree/red-black-tree-07.jpg" alt=""></p>
 <blockquote>
 <p>还有一种理解方式，那就是平面左旋，即X Y a b c 都按逆时针旋转90度.</p>
 </blockquote>
-<p><img src="/images/tree/red-black-tree-07.jpg" alt></p>
-<h3 id="右旋"><a href="#右旋" class="headerlink" title="右旋"></a><a href="#右旋" title="右旋"></a>右旋</h3><p><img src="/images/tree/red-black-tree-right.webp" alt></p>
+<p><img src="/images/tree/red-black-tree-07.jpg" alt=""></p>
+<h3 id="右旋"><a href="#右旋" class="headerlink" title="右旋"></a><a href="#右旋" title="右旋"></a>右旋</h3><p><img src="/images/tree/red-black-tree-right.webp" alt=""></p>
 <blockquote>
 <p>顺时针旋转X Y 节点使得父节点被左孩子取代，而自己成为自己的右孩子，我的理解是<strong>降级为右，升级为左，左边权力高</strong>，即降了一个等级，自己被左副手取代，但是原来的左副手的下级（左副手的右副手）和你的右副手还是归你管。</p>
 </blockquote>
@@ -442,11 +442,11 @@
 <blockquote>
 <p>再简明一点儿就是左副手篡位了，他的下级都升级了（左下级升一级，右下级同级提升为左副手），而原来的BOSS和他的手下都降了一级或者更多级，这样应该比较好理解，图中的ABC可以看成一些隐藏的二叉树，并不代表值为 a b c.</p>
 </blockquote>
-<p><img src="/images/tree/red-black-tree-08.jpg" alt></p>
+<p><img src="/images/tree/red-black-tree-08.jpg" alt=""></p>
 <blockquote>
 <p>还有一种理解方式，那就是平面右旋，即X Y a b c 都按顺时针旋转90度,交换位置.</p>
 </blockquote>
-<p><img src="/images/tree/red-black-tree-08.jpg" alt></p>
+<p><img src="/images/tree/red-black-tree-08.jpg" alt=""></p>
 <h2 id="红黑树的插入与调整"><a href="#红黑树的插入与调整" class="headerlink" title="红黑树的插入与调整"></a><a href="#红黑树的插入与调整" title="红黑树的插入与调整"></a>红黑树的插入与调整</h2><blockquote>
 <p>因为要满足红黑树的这五条性质，如果我们插入的是黑色节点，那就违反了性质五，需要进行大规模调整；<br>如果我们插入的是红色节点，那就只有在要插入节点的父节点也是红色的时候违反性质四或者当插入的节点是根节点时，违反性质二。<br>所以，我们把要插入的节点的颜色变成红色。</p>
 </blockquote>
@@ -462,15 +462,15 @@
 <blockquote>
 <p>1 叔叔节点是红色，<br>这时候只进行换色操作：将父结点和叔叔节点涂成黑色，祖父节点涂成红色,P U &gt;&gt;&gt; BLACK ，G &gt;&gt;&gt; RED。</p>
 </blockquote>
-<p><img src="/images/tree/red-black-tree-change1.webp" alt></p>
+<p><img src="/images/tree/red-black-tree-change1.webp" alt=""></p>
 <blockquote>
 <p>2 叔叔节点U是黑色，插入节点N位于父节点的右支<br>这时候需要将父结点P当成新的插入节点，并以P为支点进行左旋操作（P G连线断开，绕一圈连接到N，N左旋一圈，连接到G），P &gt;&gt;&gt; LEFT，然后和情况三一样处理。</p>
 </blockquote>
-<p><img src="/images/tree/red-black-tree-change2.webp" alt></p>
+<p><img src="/images/tree/red-black-tree-change2.webp" alt=""></p>
 <blockquote>
 <p>3 叔叔节点U是黑色，插入节点N位于父结点P的左支<br>这时候需要先进行换色操作：将父结点涂成黑色，祖父节点涂成红色，然后进行右旋操作。P &gt;&gt;&gt; BLACK，G &gt;&gt;&gt; RED, G &gt;&gt;&gt; RIGHT。</p>
 </blockquote>
-<p><img src="/images/tree/red-black-tree-change3.webp" alt></p>
+<p><img src="/images/tree/red-black-tree-change3.webp" alt=""></p>
 <h2 id="红黑树的删除与调整"><a href="#红黑树的删除与调整" class="headerlink" title="红黑树的删除与调整"></a><a href="#红黑树的删除与调整" title="红黑树的删除与调整"></a>红黑树的删除与调整</h2><blockquote>
 <p>如果被删除结点有孩子，则需要选一个合适的孩子节点作为新的根节点，称为当前节点。<br>1、只有左孩子或只有右孩子，则让该孩子作为当前节点替代被删除结点；<br>2、左右孩子均存在，则用被删除结点的中序后继结点作为当前节点替代被删除结点。<br>注意：替代只是值的互换，颜色不变。</p>
 </blockquote>
@@ -484,23 +484,23 @@
 <blockquote>
 <p>1、兄弟节点为<strong>红色</strong><br>这时候需要互换父结点和兄弟节点的颜色，并进行左旋操作。<strong>P B 互换颜色 &gt; LEFT</strong></p>
 </blockquote>
-<p><img src="/images/tree/red-black-tree-change4.webp" alt></p>
+<p><img src="/images/tree/red-black-tree-change4.webp" alt=""></p>
 <blockquote>
 <p>2、兄弟节点为<strong>黑色</strong>，且其左右孩子也为<strong>黑色</strong><br>将兄弟节点涂成红色，再将父结点当成新的被删除结点（只是当成，并不删除）进行一次调整（右图中少了根节点的左孩子被删除元素）。<strong>B 变红 ,P 当成新的删除节点</strong></p>
 </blockquote>
-<p><img src="/images/tree/red-black-tree-change5.webp" alt></p>
+<p><img src="/images/tree/red-black-tree-change5.webp" alt=""></p>
 <blockquote>
 <p>3、兄弟节点为<strong>黑色</strong>，且其左孩子为<strong>红色</strong><br>先换色：左孩子涂成黑色，兄弟节点涂成红色；再以兄弟节点为支点右旋（b和a连线断开，右旋到c和c连接，c右旋到a和a连接）。变成情况4 <strong>B-L变黑，B变红，再以B RIGHT &gt;&gt;&gt; 情况4</strong></p>
 </blockquote>
-<p><img src="/images/tree/red-black-tree-change6.webp" alt></p>
+<p><img src="/images/tree/red-black-tree-change6.webp" alt=""></p>
 <blockquote>
 <p>4、兄弟节点为<strong>黑色</strong>，且其右孩子为<strong>红色</strong><br>先换色：父结点的颜色赋给兄弟节点，父结点涂成黑色，兄弟节点的右孩子涂成黑色；再左旋（右图中a 的左孩子是被删除元素）。<strong>P-C &gt; B-C ,P &gt;BLACK,B-R &gt; BLACK &gt;&gt;&gt;LEFT</strong></p>
 </blockquote>
-<p><img src="/images/tree/red-black-tree-change7.webp" alt></p>
+<p><img src="/images/tree/red-black-tree-change7.webp" alt=""></p>
 <h2 id="左右旋的使用"><a href="#左右旋的使用" class="headerlink" title="左右旋的使用"></a><a href="#左右旋的使用" title="左右旋的使用"></a>左右旋的使用</h2><blockquote>
 <p>以刚才插入21节点时为栗子，我们知道经过变色后，成了下面的模样。</p>
 </blockquote>
-<p><img src="/images/tree/red-black-tree-10.jpg" alt></p>
+<p><img src="/images/tree/red-black-tree-10.jpg" alt=""></p>
 <blockquote>
 <p>此时出现一个问题，节点17-25都为红色，这违背了规则4（即：红节点的子节点都为黑），试一下把17变为黑色，这又违背了规则5（即：从一个节点到该节点的子孙节点的所有路径上包含相同数目的黑节点）。</p>
 </blockquote>
@@ -510,22 +510,22 @@
 <blockquote>
 <p>需要用到旋转来解决，先试一下把13当X，17当Y，我们先来左旋try一下，得到下图初始结果，为什么左旋而不是右旋呢，明显的图中，左边部分太过突出了，突出了就需要被旋转一下。</p>
 </blockquote>
-<p><img src="/images/tree/red-black-tree-11.jpg" alt></p>
+<p><img src="/images/tree/red-black-tree-11.jpg" alt=""></p>
 <blockquote>
 <p>此时根节点为17，是红色的，根据规则1（即：根节点必须为黑色），需要变为黑色，其他节点根据规则变色，得到下图的结果。</p>
 </blockquote>
-<p><img src="/images/tree/red-black-tree-12.jpg" alt></p>
+<p><img src="/images/tree/red-black-tree-12.jpg" alt=""></p>
 <blockquote>
 <p>但此时仍然有一个问题，就是根据规则5（即：从一个节点到该节点的子孙节点的所有路径上包含相同数目的黑节点），明显此时17-13-8-1-6-NIL包括了4个黑色节点，而其他路径中，比如17-13-15-NIL只存在三个黑色节点，此时又需要旋转。</p>
 </blockquote>
 <blockquote>
 <p>再Try一下右旋，将13作X 8作Y进行右旋，得到如下的结果，为什么右旋而不是左旋呢，明显的图中，左边部分太过突出了，突出了就需要被旋转一下。</p>
 </blockquote>
-<p><img src="/images/tree/red-black-tree-13.jpg" alt></p>
+<p><img src="/images/tree/red-black-tree-13.jpg" alt=""></p>
 <blockquote>
 <p>但是还有些节点颜色不对，根据规则4（即：红节点的子节点全为黑色），需要对相应的节点进行变色，达到规范，最终形成如下的新平衡红黑树。</p>
 </blockquote>
-<p><img src="/images/tree/red-black-tree-14.jpg" alt></p>
+<p><img src="/images/tree/red-black-tree-14.jpg" alt=""></p>
 <h2 id="为什么需要再平衡"><a href="#为什么需要再平衡" class="headerlink" title="为什么需要再平衡"></a><a href="#为什么需要再平衡" title="为什么需要再平衡"></a>为什么需要再平衡</h2><blockquote>
 <p>通过上诉说明，我们可以看出，在新插入数据的时候，对红黑树的再平衡过程是比较复杂的，如此复杂的再平衡目的为何，其实是为了满足红黑树规则，让红黑树具备快速查找的能力，而不是像普通二叉树一样在线性数据插入时候造成性能问题。</p>
 </blockquote>
@@ -540,7 +540,25 @@
 <p>一盏灯， 一片昏黄； <strong>一简书</strong>， 一杯淡茶。 守着那一份淡定， 品读属于自己的寂寞。 保持淡定， 才能欣赏到最美丽的风景！ 保持淡定， 人生从此不再寂寞。</p>
 </blockquote>
 <hr>
-
+<script>
+        document.querySelectorAll('.github-emoji')
+          .forEach(el => {
+            if (!el.dataset.src) { return; }
+            const img = document.createElement('img');
+            img.style = 'display:none !important;';
+            img.src = el.dataset.src;
+            img.addEventListener('error', () => {
+              img.remove();
+              el.style.color = 'inherit';
+              el.style.backgroundImage = 'none';
+              el.style.background = 'none';
+            });
+            img.addEventListener('load', () => {
+              img.remove();
+            });
+            document.body.appendChild(img);
+          });
+      </script>
             </div>
             <hr/>
 

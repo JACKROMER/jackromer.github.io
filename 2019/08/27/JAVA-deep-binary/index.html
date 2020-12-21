@@ -569,7 +569,7 @@ short
 <h2 id="负数的二进制"><a href="#负数的二进制" class="headerlink" title="负数的二进制"></a><a href="#负数的二进制" title="负数的二进制"></a>负数的二进制</h2><blockquote>
 <p>在计算机中，正数是以原码的形式存储的，而负数是以补码的形式存储的，负数的二进制需要该数正数按位取反的值再+1.</p>
 </blockquote>
-<h2 id="详解-gt-gt-gt-预算符"><a href="#详解-gt-gt-gt-预算符" class="headerlink" title="详解&gt;&gt;&gt;预算符"></a><a href="#详解-gt-gt-gt-预算符" title="详解&gt;&gt;&gt;预算符"></a>详解&gt;&gt;&gt;预算符</h2><blockquote>
+<h2 id="详解-gt-gt-gt-预算符"><a href="#详解-gt-gt-gt-预算符" class="headerlink" title="详解>>>预算符"></a><a href="#详解-gt-gt-gt-预算符" title="详解>>>预算符"></a>详解&gt;&gt;&gt;预算符</h2><blockquote>
 <p>负数int -20无符号右移：r = -20 &gt;&gt;&gt; 2</p>
 </blockquote>
 <blockquote>
@@ -787,7 +787,25 @@ short
 <p>一盏灯， 一片昏黄； <strong>一简书</strong>， 一杯淡茶。 守着那一份淡定， 品读属于自己的寂寞。 保持淡定， 才能欣赏到最美丽的风景！ 保持淡定， 人生从此不再寂寞。</p>
 </blockquote>
 <hr>
-
+<script>
+        document.querySelectorAll('.github-emoji')
+          .forEach(el => {
+            if (!el.dataset.src) { return; }
+            const img = document.createElement('img');
+            img.style = 'display:none !important;';
+            img.src = el.dataset.src;
+            img.addEventListener('error', () => {
+              img.remove();
+              el.style.color = 'inherit';
+              el.style.backgroundImage = 'none';
+              el.style.background = 'none';
+            });
+            img.addEventListener('load', () => {
+              img.remove();
+            });
+            document.body.appendChild(img);
+          });
+      </script>
             </div>
             <hr/>
 
