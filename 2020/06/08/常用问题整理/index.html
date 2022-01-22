@@ -1,0 +1,1396 @@
+<!DOCTYPE HTML>
+<html lang="en">
+
+
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="utf-8">
+    <meta name="keywords" content="常用问题整理, Jack Romer">
+    <meta name="description" content="概述
+近期关于开发过程中常见问题整理。
+
+consul 命令
+查看consul健康状态
+
+curl http://localhost:8500/v1/agent/health/service/name/safety-api
+
+删除无用con">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="renderer" content="webkit|ie-stand|ie-comp">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <title>常用问题整理 | Jack Romer</title>
+    <link rel="icon" type="image/jpeg" href="/medias/mine.jpg">
+
+    <link rel="stylesheet" type="text/css" href="/libs/awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/materialize/materialize.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/aos/aos.css">
+    <link rel="stylesheet" type="text/css" href="/libs/animate/animate.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/lightGallery/css/lightgallery.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/matery.css">
+    <link rel="stylesheet" type="text/css" href="/css/my.css">
+    <style type="text/css">
+        
+    </style>
+
+    <script src="/libs/jquery/jquery-2.2.0.min.js"></script>
+<link rel="stylesheet" href="/css/prism-tomorrow.css" type="text/css">
+<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
+
+
+<body>
+
+<header class="navbar-fixed">
+    <nav id="headNav" class="bg-color nav-transparent">
+        <div id="navContainer" class="nav-wrapper container">
+            <div class="brand-logo">
+                <a href="/" class="waves-effect waves-light">
+                    
+                    <img src="/medias/mine.jpg" class="logo-img" alt="LOGO">
+                    
+                    <span class="logo-span">Jack Romer</span>
+                </a>
+            </div>
+            
+
+<a href="#" data-target="mobile-nav" class="sidenav-trigger button-collapse"><i class="fa fa-navicon"></i></a>
+<ul class="right">
+    
+    <li class="hide-on-med-and-down">
+        <a href="/" class="waves-effect waves-light">
+            
+            <i class="fa fa-home"></i>
+            
+            <span>Index</span>
+        </a>
+    </li>
+    
+    <li class="hide-on-med-and-down">
+        <a href="/tags" class="waves-effect waves-light">
+            
+            <i class="fa fa-tags"></i>
+            
+            <span>Tags</span>
+        </a>
+    </li>
+    
+    <li class="hide-on-med-and-down">
+        <a href="/categories" class="waves-effect waves-light">
+            
+            <i class="fa fa-bookmark"></i>
+            
+            <span>Categories</span>
+        </a>
+    </li>
+    
+    <li class="hide-on-med-and-down">
+        <a href="/archives" class="waves-effect waves-light">
+            
+            <i class="fa fa-archive"></i>
+            
+            <span>Archives</span>
+        </a>
+    </li>
+    
+    <li class="hide-on-med-and-down">
+        <a href="/about" class="waves-effect waves-light">
+            
+            <i class="fa fa-user-circle-o"></i>
+            
+            <span>About</span>
+        </a>
+    </li>
+    
+    <li class="hide-on-med-and-down">
+        <a href="/friends" class="waves-effect waves-light">
+            
+            <i class="fa fa-address-book"></i>
+            
+            <span>Friends</span>
+        </a>
+    </li>
+    
+    <li>
+        <a href="#searchModal" class="modal-trigger waves-effect waves-light">
+            <i id="searchIcon" class="fa fa-search" title="Search"></i>
+        </a>
+    </li>
+</ul>
+
+<div id="mobile-nav" class="side-nav sidenav">
+
+    <div class="mobile-head bg-color">
+        
+        <img src="/medias/mine.jpg" class="logo-img circle responsive-img">
+        
+        <div class="logo-name">Jack Romer</div>
+        <div class="logo-desc">
+            
+            See as far away as possible you can, do as firm as possible you can , getting better every day.
+            
+        </div>
+    </div>
+
+    
+
+    <ul class="menu-list mobile-menu-list">
+        
+        <li>
+            <a href="/" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-home"></i>
+                
+                Index
+            </a>
+        </li>
+        
+        <li>
+            <a href="/tags" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-tags"></i>
+                
+                Tags
+            </a>
+        </li>
+        
+        <li>
+            <a href="/categories" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-bookmark"></i>
+                
+                Categories
+            </a>
+        </li>
+        
+        <li>
+            <a href="/archives" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-archive"></i>
+                
+                Archives
+            </a>
+        </li>
+        
+        <li>
+            <a href="/about" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-user-circle-o"></i>
+                
+                About
+            </a>
+        </li>
+        
+        <li>
+            <a href="/friends" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-address-book"></i>
+                
+                Friends
+            </a>
+        </li>
+        
+        
+        <li><div class="divider"></div></li>
+        <li>
+            <a href="https://github.com/JACKROMER" class="waves-effect waves-light" target="_blank">
+                <i class="fa fa-github-square fa-fw"></i>Fork Me
+            </a>
+        </li>
+        
+    </ul>
+</div>
+
+        </div>
+
+        
+            <style>
+    .nav-transparent .github-corner {
+        display: none !important;
+    }
+
+    .github-corner {
+        position: absolute;
+        z-index: 10;
+        top: 0;
+        right: 0;
+        border: 0;
+        transform: scale(1.1);
+    }
+
+    .github-corner svg {
+        color: #0f9d58;
+        fill: #fff;
+        height: 64px;
+        width: 64px;
+    }
+
+    .github-corner:hover .octo-arm {
+        animation: a 0.56s ease-in-out;
+    }
+
+    .github-corner .octo-arm {
+        animation: none;
+    }
+
+    @keyframes a {
+        0%,
+        to {
+            transform: rotate(0);
+        }
+        20%,
+        60% {
+            transform: rotate(-25deg);
+        }
+        40%,
+        80% {
+            transform: rotate(10deg);
+        }
+    }
+</style>
+
+<a href="https://github.com/JACKROMER" class="github-corner tooltipped hide-on-med-and-down" target="_blank"
+   data-tooltip="Fork Me" data-position="left" data-delay="50">
+    <svg viewBox="0 0 250 250" aria-hidden="true">
+        <path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path>
+        <path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2"
+              fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path>
+        <path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z"
+              fill="currentColor" class="octo-body"></path>
+    </svg>
+</a>
+        
+    </nav>
+
+</header>
+
+
+
+
+
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/scienceFiction/4.jpg')">
+    <div class="container">
+        <div class="row">
+            <div class="col s12 m12 l12">
+                <div class="brand">
+                    <div class="description center-align post-title">
+                        常用问题整理
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<main class="post-container content">
+
+    
+    <link rel="stylesheet" href="/libs/tocbot/tocbot.css">
+<style>
+    #articleContent h1::before,
+    #articleContent h2::before,
+    #articleContent h3::before,
+    #articleContent h4::before,
+    #articleContent h5::before,
+    #articleContent h6::before {
+        display: block;
+        content: " ";
+        height: 100px;
+        margin-top: -100px;
+        visibility: hidden;
+    }
+
+    #articleContent :focus {
+        outline: none;
+    }
+
+    .toc-fixed {
+        position: fixed;
+        top: 64px;
+    }
+
+    .toc-widget {
+        padding-left: 20px;
+    }
+
+    .toc-widget .toc-title {
+        margin: 35px 0 15px 0;
+        padding-left: 17px;
+        font-size: 1.5rem;
+        font-weight: bold;
+        line-height: 1.5rem;
+    }
+
+    .toc-widget ol {
+        padding: 0;
+        list-style: none;
+    }
+
+    #toc-content ol {
+        padding-left: 10px;
+    }
+
+    #toc-content ol li {
+        padding-left: 10px;
+    }
+
+    #toc-content .toc-link:hover {
+        color: #42b983;
+        font-weight: 700;
+        text-decoration: underline;
+    }
+
+    #toc-content .toc-link::before {
+        background-color: transparent;
+        max-height: 25px;
+    }
+
+    #toc-content .is-active-link {
+        color: #42b983;
+    }
+
+    #toc-content .is-active-link::before {
+        background-color: #42b983;
+    }
+
+    #floating-toc-btn {
+        position: fixed;
+        right: 20px;
+        bottom: 76px;
+        padding-top: 15px;
+        margin-bottom: 0;
+        z-index: 998;
+    }
+
+    #floating-toc-btn .btn-floating {
+        width: 48px;
+        height: 48px;
+    }
+
+    #floating-toc-btn .btn-floating i {
+        line-height: 48px;
+        font-size: 1.4rem;
+    }
+</style>
+<div class="row">
+    <div id="main-content" class="col s12 m12 l9">
+        <!-- 文章内容详情 -->
+<div id="artDetail">
+    <div class="card">
+        <div class="card-content article-info">
+            <div class="row tag-cate">
+                <div class="col s7">
+                    
+                    <div class="article-tag">
+                        
+                            <a href="/tags/java/" target="_blank">
+                                <span class="chip bg-color">java</span>
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+                <div class="col s5 right-align">
+                    
+                </div>
+            </div>
+
+            <div class="post-info">
+                <div class="post-date info-break-policy">
+                    <i class="fa fa-calendar-minus-o fa-fw"></i>Publish Date:&nbsp;&nbsp;
+                    2020-06-08
+                </div>
+
+                
+				
+				
+                    <div id="busuanzi_container_page_pv" class="info-break-policy">
+                        <i class="fa fa-eye fa-fw"></i>Read Count:&nbsp;&nbsp;
+                        <span id="busuanzi_value_page_pv"></span>
+                    </div>
+				
+            </div>
+        </div>
+        <hr class="clearfix">
+        <div class="card-content article-card-content">
+            <div id="articleContent">
+                <h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a><a href="#概述" title="概述"></a>概述</h2><blockquote>
+<p>近期关于开发过程中常见问题整理。</p>
+</blockquote>
+<h2 id="consul-命令"><a href="#consul-命令" class="headerlink" title="consul 命令"></a>consul 命令</h2><blockquote>
+<p>查看consul健康状态</p>
+</blockquote>
+<pre class="line-numbers language-linux"><code class="language-linux">curl http://localhost:8500/v1/agent/health/service/name/safety-api<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<blockquote>
+<p>删除无用consul实例</p>
+</blockquote>
+<pre class="line-numbers language-linux"><code class="language-linux"> curl  http://123.206.197.169:8500/v1/agent/service/deregister/safety-user-18027<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<h2 id="ws连接异常"><a href="#ws连接异常" class="headerlink" title="ws连接异常"></a>ws连接异常</h2><blockquote>
+<p>尝试去掉protocol参数</p>
+</blockquote>
+<h2 id="page-helper-和mybatis-plus冲突解决"><a href="#page-helper-和mybatis-plus冲突解决" class="headerlink" title="page-helper 和mybatis-plus冲突解决"></a>page-helper 和mybatis-plus冲突解决</h2><pre class="line-numbers language-xml"><code class="language-xml"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>dependency</span><span class="token punctuation">></span></span>
+      <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>groupId</span><span class="token punctuation">></span></span>com.github.pagehelper<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>groupId</span><span class="token punctuation">></span></span>
+      <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>artifactId</span><span class="token punctuation">></span></span>pagehelper-spring-boot-starter<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>artifactId</span><span class="token punctuation">></span></span>
+      <span class="token comment" spellcheck="true">&lt;!-- 解决mybatis-plus冲突 --></span>
+      <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>exclusions</span><span class="token punctuation">></span></span>
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>exclusion</span><span class="token punctuation">></span></span>
+          <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>groupId</span><span class="token punctuation">></span></span>org.springframework.boot<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>groupId</span><span class="token punctuation">></span></span>
+          <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>artifactId</span><span class="token punctuation">></span></span>spring-boot-starter-logging<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>artifactId</span><span class="token punctuation">></span></span>
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>exclusion</span><span class="token punctuation">></span></span>
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>exclusion</span><span class="token punctuation">></span></span>
+          <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>groupId</span><span class="token punctuation">></span></span>org.mybatis<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>groupId</span><span class="token punctuation">></span></span>
+          <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>artifactId</span><span class="token punctuation">></span></span>mybatis<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>artifactId</span><span class="token punctuation">></span></span>
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>exclusion</span><span class="token punctuation">></span></span>
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>exclusion</span><span class="token punctuation">></span></span>
+          <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>groupId</span><span class="token punctuation">></span></span>org.mybatis<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>groupId</span><span class="token punctuation">></span></span>
+          <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>artifactId</span><span class="token punctuation">></span></span>mybatis-spring<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>artifactId</span><span class="token punctuation">></span></span>
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>exclusion</span><span class="token punctuation">></span></span>
+      <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>exclusions</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>dependency</span><span class="token punctuation">></span></span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="spring-boot异常解决"><a href="#spring-boot异常解决" class="headerlink" title="spring-boot异常解决"></a>spring-boot异常解决</h2><dependency>
+          <groupid>org.safety</groupid>
+          <artifactid>safety-common</artifactid>
+          <version>${project.version}</version>
+          <exclusions>
+          <!--
+            1. webflux与webmvc不兼容，否则会项目启动不起来 需要解决冲突
+          -->
+            <exclusion>
+                <groupid>org.springframework</groupid>
+                <artifactid>spring-webmvc</artifactid>
+            </exclusion>
+            <exclusion>
+                <groupid>org.springframework.boot</groupid>
+                <artifactid>spring-boot-starter-data-redis</artifactid>
+            </exclusion>
+            <exclusion>
+                <groupid>org.springframework.boot</groupid>
+                <artifactid>spring-boot-starter-tomcat</artifactid>
+            </exclusion>
+          </exclusions>
+        </dependency>
+
+<h2 id="重置GIT配置，包括checkStyle"><a href="#重置GIT配置，包括checkStyle" class="headerlink" title="重置GIT配置，包括checkStyle"></a>重置GIT配置，包括checkStyle</h2><p>重置GIT 配置<br>git config –global –unset core.hookspath</p>
+<h2 id="swagger-失效原因"><a href="#swagger-失效原因" class="headerlink" title="swagger 失效原因"></a>swagger 失效原因</h2><blockquote>
+<p>   mvc:<br>        static-path-pattern: /media/**</p>
+</blockquote>
+<blockquote>
+<p>如果非要配置静态配置，可以做兼容性处理，增加配置类。</p>
+</blockquote>
+<pre class="line-numbers language-java"><code class="language-java"><span class="token annotation punctuation">@Configuration</span>
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">WebConfig</span> <span class="token keyword">implements</span> <span class="token class-name">WebMvcConfigurer</span> <span class="token punctuation">{</span>
+  <span class="token annotation punctuation">@Override</span>
+  <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">addResourceHandlers</span><span class="token punctuation">(</span>ResourceHandlerRegistry registry<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    registry<span class="token punctuation">.</span><span class="token function">addResourceHandler</span><span class="token punctuation">(</span><span class="token string">"swagger-ui.html"</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">addResourceLocations</span><span class="token punctuation">(</span><span class="token string">"classpath:/META-INF/resources/"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="如何使用JS复制DIV或者p标签文本"><a href="#如何使用JS复制DIV或者p标签文本" class="headerlink" title="如何使用JS复制DIV或者p标签文本"></a>如何使用JS复制DIV或者p标签文本</h2><blockquote>
+<p>使用曲线救国方式</p>
+</blockquote>
+<pre class="line-numbers language-html"><code class="language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>style</span> <span class="token attr-name">type</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>text/css<span class="token punctuation">"</span></span><span class="token punctuation">></span></span><span class="token style language-css">
+   <span class="token selector"><span class="token class">.wrapper</span> </span><span class="token punctuation">{</span><span class="token property">position</span><span class="token punctuation">:</span> relative<span class="token punctuation">;</span><span class="token punctuation">}</span>
+   <span class="token selector"><span class="token id">#input</span> </span><span class="token punctuation">{</span><span class="token property">position</span><span class="token punctuation">:</span> absolute<span class="token punctuation">;</span><span class="token property">top</span><span class="token punctuation">:</span> <span class="token number">0</span><span class="token punctuation">;</span><span class="token property">left</span><span class="token punctuation">:</span> <span class="token number">0</span><span class="token punctuation">;</span><span class="token property">opacity</span><span class="token punctuation">:</span> <span class="token number">0</span><span class="token punctuation">;</span><span class="token property">z-index</span><span class="token punctuation">:</span> -<span class="token number">10</span><span class="token punctuation">;</span><span class="token punctuation">}</span>
+</span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>style</span><span class="token punctuation">></span></span>
+
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span> <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>wrapper<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>
+   <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>p</span> <span class="token attr-name">id</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>text<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>我把你当兄弟你却想着复制我？<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>p</span><span class="token punctuation">></span></span>
+   <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>textarea</span> <span class="token attr-name">id</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>input<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>这是幕后黑手<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>textarea</span><span class="token punctuation">></span></span>
+   <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>button</span> <span class="token attr-name">onclick</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>copyText()<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>copy<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>button</span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>div</span><span class="token punctuation">></span></span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<blockquote>
+<p>JS</p>
+</blockquote>
+<pre class="line-numbers language-js"><code class="language-js"><span class="token operator">&lt;</span>script type<span class="token operator">=</span><span class="token string">"text/javascript"</span><span class="token operator">></span>
+    <span class="token keyword">function</span> <span class="token function">copyText</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+      <span class="token keyword">var</span> text <span class="token operator">=</span> document<span class="token punctuation">.</span><span class="token function">getElementById</span><span class="token punctuation">(</span><span class="token string">"text"</span><span class="token punctuation">)</span><span class="token punctuation">.</span>innerText<span class="token punctuation">;</span>
+      <span class="token keyword">var</span> input <span class="token operator">=</span> document<span class="token punctuation">.</span><span class="token function">getElementById</span><span class="token punctuation">(</span><span class="token string">"input"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+      input<span class="token punctuation">.</span>value <span class="token operator">=</span> text<span class="token punctuation">;</span> <span class="token comment" spellcheck="true">// 修改文本框的内容</span>
+      input<span class="token punctuation">.</span><span class="token function">select</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">// 选中文本</span>
+      document<span class="token punctuation">.</span><span class="token function">execCommand</span><span class="token punctuation">(</span><span class="token string">"copy"</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">// 执行浏览器复制命令</span>
+      <span class="token function">alert</span><span class="token punctuation">(</span><span class="token string">"复制成功"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+  <span class="token operator">&lt;</span><span class="token operator">/</span>script<span class="token operator">></span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="2021"><a href="#2021" class="headerlink" title="2021"></a>2021</h2><p>2021 遇到的一些问题和总计</p>
+<h2 id="mybatis-plus-问题"><a href="#mybatis-plus-问题" class="headerlink" title="mybatis plus 问题"></a>mybatis plus 问题</h2><h2 id="limit-问题"><a href="#limit-问题" class="headerlink" title="limit 问题"></a>limit 问题</h2><pre class="line-numbers language-java"><code class="language-java">    <span class="token comment" spellcheck="true">// 可以使用lambdaQuery查询</span>
+    QueryWrapper<span class="token operator">&lt;</span>ContractTemplate<span class="token operator">></span> wrapper <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">QueryWrapper</span><span class="token operator">&lt;</span><span class="token operator">></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    wrapper<span class="token punctuation">.</span><span class="token function">lambda</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">orderByDesc</span><span class="token punctuation">(</span>ContractTemplate<span class="token operator">:</span><span class="token operator">:</span>getDownCount<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    wrapper<span class="token punctuation">.</span><span class="token function">last</span><span class="token punctuation">(</span><span class="token string">"limit 10"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    List<span class="token operator">&lt;</span>ContractTemplate<span class="token operator">></span> list <span class="token operator">=</span> contractTemplateService<span class="token punctuation">.</span><span class="token function">list</span><span class="token punctuation">(</span>wrapper<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="带分页组合查询"><a href="#带分页组合查询" class="headerlink" title="带分页组合查询"></a>带分页组合查询</h2><pre class="line-numbers language-java"><code class="language-java">    LambdaQueryChainWrapper<span class="token operator">&lt;</span>UserCollect<span class="token operator">></span> lambdaQuery <span class="token operator">=</span> userCollectService<span class="token punctuation">.</span><span class="token function">lambdaQuery</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    lambdaQuery<span class="token punctuation">.</span><span class="token function">eq</span><span class="token punctuation">(</span>UserCollect<span class="token operator">:</span><span class="token operator">:</span>getUserCode<span class="token punctuation">,</span> startQueryReqVo<span class="token punctuation">.</span><span class="token function">getUserCode</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    lambdaQuery<span class="token punctuation">.</span><span class="token function">eq</span><span class="token punctuation">(</span>UserCollect<span class="token operator">:</span><span class="token operator">:</span>getType<span class="token punctuation">,</span> startQueryReqVo<span class="token punctuation">.</span><span class="token function">getType</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    lambdaQuery<span class="token punctuation">.</span><span class="token function">eq</span><span class="token punctuation">(</span><span class="token operator">!</span>StringUtils<span class="token punctuation">.</span><span class="token function">isEmpty</span><span class="token punctuation">(</span>startQueryReqVo<span class="token punctuation">.</span><span class="token function">getSubType</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">,</span> UserCollect<span class="token operator">:</span><span class="token operator">:</span>getSubType<span class="token punctuation">,</span> startQueryReqVo<span class="token punctuation">.</span><span class="token function">getSubType</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    lambdaQuery<span class="token punctuation">.</span><span class="token function">like</span><span class="token punctuation">(</span><span class="token operator">!</span>StringUtils<span class="token punctuation">.</span><span class="token function">isEmpty</span><span class="token punctuation">(</span>startQueryReqVo<span class="token punctuation">.</span><span class="token function">getTags</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">,</span> UserCollect<span class="token operator">:</span><span class="token operator">:</span>getTags<span class="token punctuation">,</span> startQueryReqVo<span class="token punctuation">.</span><span class="token function">getTags</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token comment" spellcheck="true">// 使用lambda表达式拼装查询语句</span>
+    lambdaQuery<span class="token punctuation">.</span><span class="token function">and</span><span class="token punctuation">(</span><span class="token operator">!</span>StringUtils<span class="token punctuation">.</span><span class="token function">isEmpty</span><span class="token punctuation">(</span>startQueryReqVo<span class="token punctuation">.</span><span class="token function">getSearchKey</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">,</span> 
+    wapper <span class="token operator">-</span><span class="token operator">></span> wapper<span class="token punctuation">.</span><span class="token function">like</span><span class="token punctuation">(</span><span class="token operator">!</span>StringUtils<span class="token punctuation">.</span><span class="token function">isEmpty</span><span class="token punctuation">(</span>startQueryReqVo<span class="token punctuation">.</span><span class="token function">getSearchKey</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">,</span> UserCollect<span class="token operator">:</span><span class="token operator">:</span>getTitle<span class="token punctuation">,</span> startQueryReqVo<span class="token punctuation">.</span><span class="token function">getSearchKey</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">or</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">like</span><span class="token punctuation">(</span><span class="token operator">!</span>StringUtils<span class="token punctuation">.</span><span class="token function">isEmpty</span><span class="token punctuation">(</span>startQueryReqVo<span class="token punctuation">.</span><span class="token function">getSearchKey</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">,</span> UserCollect<span class="token operator">:</span><span class="token operator">:</span>getContent<span class="token punctuation">,</span> startQueryReqVo<span class="token punctuation">.</span><span class="token function">getSearchKey</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    Page<span class="token operator">&lt;</span>UserCollect<span class="token operator">></span> page <span class="token operator">=</span> lambdaQuery<span class="token punctuation">.</span><span class="token function">page</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">Page</span><span class="token operator">&lt;</span>UserCollect<span class="token operator">></span><span class="token punctuation">(</span>startQueryReqVo<span class="token punctuation">.</span><span class="token function">getCurrentPage</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> startQueryReqVo<span class="token punctuation">.</span><span class="token function">getPageSize</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">return</span> ResultVo<span class="token punctuation">.</span><span class="token function">success</span><span class="token punctuation">(</span>page<span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="定时器模式下的事务支持"><a href="#定时器模式下的事务支持" class="headerlink" title="定时器模式下的事务支持"></a>定时器模式下的事务支持</h2><blockquote>
+<p> 在定时器中直接执行数据插入等操作是不会被spring管理事务的，所以需要将数据插入更新操作提成单独的service并加上@transactional.</p>
+</blockquote>
+<pre class="line-numbers language-java"><code class="language-java">  <span class="token annotation punctuation">@Scheduled</span><span class="token punctuation">(</span>cron <span class="token operator">=</span> <span class="token string">"0 0/4 * * * ?"</span><span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// 定时任务</span>
+  <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">syncDataTask</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token function">save</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token punctuation">}</span>
+
+  <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">save</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    service<span class="token punctuation">.</span><span class="token function">doSomeInsert</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token punctuation">}</span>
+
+  <span class="token comment" spellcheck="true">// 单独的service</span>
+  <span class="token annotation punctuation">@service</span>
+  <span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">service</span> <span class="token punctuation">{</span>
+    <span class="token comment" spellcheck="true">/**
+    * 此事务会被spring管理，但注意定时任务中插入数据最好在一个整体中。
+    * 以免其他插入或更新操作没有被spring管理而导致数据异常。
+    **/</span>
+    <span class="token annotation punctuation">@transactional</span>
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">doSomeInsert</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
+        <span class="token comment" spellcheck="true">// insert some record</span>
+    <span class="token punctuation">}</span>
+  <span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="AOP中支持事务"><a href="#AOP中支持事务" class="headerlink" title="AOP中支持事务"></a>AOP中支持事务</h2><blockquote>
+<p>可以参考配置全局的事务处理</p>
+<pre class="line-numbers language-URL"><code class="language-URL">https://blog.csdn.net/yxw908186797/article/details/90319643<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>以下情况事务会失效</p>
+</blockquote>
+<pre class="line-numbers language-java"><code class="language-java">  <span class="token annotation punctuation">@Async</span>
+  <span class="token annotation punctuation">@Transactional</span>
+  <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">saveInterfaceLog</span><span class="token punctuation">(</span>Record rec<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+      recordMapper<span class="token punctuation">.</span><span class="token function">insertRecord</span><span class="token punctuation">(</span>rec<span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<blockquote>
+<p>解决方式是将insertRecord(rec)提取到另一个service中, 并由事务管理起来。</p>
+</blockquote>
+<pre class="line-numbers language-java"><code class="language-java">  <span class="token annotation punctuation">@Async</span>
+  <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">saveInterfaceLog</span><span class="token punctuation">(</span>Record rec<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+      recordService<span class="token punctuation">.</span><span class="token function">insert</span><span class="token punctuation">(</span>rec<span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token punctuation">}</span>
+
+  <span class="token comment" spellcheck="true">// 将异步方法中的执行由事务进行管理</span>
+  <span class="token annotation punctuation">@Transactional</span>
+  <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">insert</span><span class="token punctuation">(</span>Record rec<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    recordMapper<span class="token punctuation">.</span><span class="token function">insertRecord</span><span class="token punctuation">(</span>rec<span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token punctuation">}</span>
+
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="事务总结"><a href="#事务总结" class="headerlink" title="事务总结"></a>事务总结</h2><blockquote>
+<p>在开发过程中我们经常遇到AOP ，异步，多线程，定时器等的使用，但是如果这几类操作中携带了对数据的插入或更新以及删除操作。<br>  正常情况下spring是不支持对这几种情况进行事务管理的，而我们又希望在程序错误的情况下让事务回滚，那么都可以考虑将需要事务操作的内容提为一个单独的服务，单独由事务进行管理。</p>
+</blockquote>
+<h2 id="security框架"><a href="#security框架" class="headerlink" title="security框架"></a>security框架</h2><blockquote>
+<p>spring 提供了现成的security框架机制，其优点类似于拦截器，常常我们将其和JWT进行一些组合来完成权限验证工作，但是使用过程经常遇到一些问题。<br>  比如，某些链接被限制了，但是本身又放开了权限，为什么呢? 先看JWT + security框架实现机制如何。</p>
+</blockquote>
+<pre class="line-numbers language-java"><code class="language-java"><span class="token annotation punctuation">@EnableWebSecurity</span>
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">SecurityConfig</span> <span class="token keyword">extends</span> <span class="token class-name">JWTSecurityConfig</span> <span class="token punctuation">{</span>
+
+    <span class="token annotation punctuation">@Value</span><span class="token punctuation">(</span><span class="token string">"${spring.security.allowCorsOrigin}"</span><span class="token punctuation">)</span>
+    <span class="token keyword">private</span> String allowCorsOrigin<span class="token punctuation">;</span>
+
+    <span class="token annotation punctuation">@Value</span><span class="token punctuation">(</span><span class="token string">"${jwt.auth.secret}"</span><span class="token punctuation">)</span>
+    <span class="token keyword">private</span> String authJwtSecret<span class="token punctuation">;</span>
+
+    <span class="token annotation punctuation">@Override</span>
+    <span class="token keyword">protected</span> <span class="token keyword">void</span> <span class="token function">configure</span><span class="token punctuation">(</span>HttpSecurity http<span class="token punctuation">)</span> <span class="token keyword">throws</span> Exception <span class="token punctuation">{</span>
+        <span class="token comment" spellcheck="true">// 继承jwt配置</span>
+        <span class="token keyword">super</span><span class="token punctuation">.</span><span class="token function">configure</span><span class="token punctuation">(</span>http<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token comment" spellcheck="true">// 禁用csrf</span>
+        http<span class="token punctuation">.</span><span class="token function">csrf</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">disable</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        http<span class="token punctuation">.</span><span class="token function">cors</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token comment" spellcheck="true">// 根据角色校验url</span>
+        http<span class="token punctuation">.</span><span class="token function">authorizeRequests</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">antMatchers</span><span class="token punctuation">(</span><span class="token string">"/admin/**"</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">hasAnyAuthority</span><span class="token punctuation">(</span><span class="token string">"ADMIN"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        http<span class="token punctuation">.</span><span class="token function">antMatcher</span><span class="token punctuation">(</span><span class="token string">"/**"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    <span class="token punctuation">}</span>
+
+    <span class="token annotation punctuation">@Override</span>
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">configure</span><span class="token punctuation">(</span>WebSecurity web<span class="token punctuation">)</span> <span class="token keyword">throws</span> Exception <span class="token punctuation">{</span>
+        <span class="token operator">/</span><span class="token operator">/</span> 配置不需要鉴权的url
+        web<span class="token punctuation">.</span><span class="token function">ignoring</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">antMatchers</span><span class="token punctuation">(</span> <span class="token operator">/</span><span class="token operator">/</span> 测试
+                <span class="token string">"/swagger-ui.html"</span><span class="token punctuation">,</span>
+                <span class="token string">"/webjars/**"</span><span class="token punctuation">,</span>
+                <span class="token string">"/swagger-resources/**"</span><span class="token punctuation">,</span>
+                <span class="token string">"/api/**"</span>
+        <span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+
+    <span class="token annotation punctuation">@Override</span>
+    <span class="token keyword">protected</span> String <span class="token function">getJWTSecret</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">return</span> authJwtSecret<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+
+    <span class="token annotation punctuation">@Bean</span>
+    CorsConfigurationSource <span class="token function">corsConfigurationSource</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        CorsConfiguration configuration <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">CorsConfiguration</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        configuration<span class="token punctuation">.</span><span class="token function">setAllowedOrigins</span><span class="token punctuation">(</span>Arrays<span class="token punctuation">.</span><span class="token function">asList</span><span class="token punctuation">(</span>allowCorsOrigin<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        configuration<span class="token punctuation">.</span><span class="token function">setAllowedMethods</span><span class="token punctuation">(</span>Arrays<span class="token punctuation">.</span><span class="token function">asList</span><span class="token punctuation">(</span><span class="token string">"*"</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        configuration<span class="token punctuation">.</span><span class="token function">setAllowedHeaders</span><span class="token punctuation">(</span>Arrays<span class="token punctuation">.</span><span class="token function">asList</span><span class="token punctuation">(</span><span class="token string">"*"</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        UrlBasedCorsConfigurationSource source <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">UrlBasedCorsConfigurationSource</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        source<span class="token punctuation">.</span><span class="token function">registerCorsConfiguration</span><span class="token punctuation">(</span><span class="token string">"/**"</span><span class="token punctuation">,</span> configuration<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">return</span> source<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+<span class="token punctuation">}</span>
+
+<span class="token operator">/</span><span class="token operator">/</span> JWT权限配置类，指定过滤器、权限拦截类
+<span class="token annotation punctuation">@Component</span>
+<span class="token keyword">public</span> <span class="token keyword">abstract</span> <span class="token keyword">class</span> <span class="token class-name">JWTSecurityConfig</span> <span class="token keyword">extends</span> <span class="token class-name">WebSecurityConfigurerAdapter</span> <span class="token punctuation">{</span>
+
+    <span class="token annotation punctuation">@Resource</span>
+    <span class="token keyword">private</span> JWTUtils jwtUtils<span class="token punctuation">;</span>
+
+    <span class="token annotation punctuation">@Override</span>
+    <span class="token keyword">protected</span> <span class="token keyword">void</span> <span class="token function">configure</span><span class="token punctuation">(</span>HttpSecurity http<span class="token punctuation">)</span> <span class="token keyword">throws</span> Exception <span class="token punctuation">{</span>
+        http<span class="token punctuation">.</span><span class="token function">exceptionHandling</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">authenticationEntryPoint</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">JWTAuthenticationEntryPoint</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token operator">/</span><span class="token operator">/</span> 处理未登录提示
+                <span class="token punctuation">.</span><span class="token function">accessDeniedHandler</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">JWTAccessDeniedHandler</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">and</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">/</span><span class="token operator">/</span> 处理权限不足AccessDeniedException
+                <span class="token punctuation">.</span><span class="token function">addFilterAfter</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">JWTAuthenticationFilter</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> BasicAuthenticationFilter<span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">)</span> <span class="token operator">/</span><span class="token operator">/</span> 做一些简单过滤处理 
+                <span class="token punctuation">.</span><span class="token function">authenticationProvider</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">JWTAuthenticationProvider</span><span class="token punctuation">(</span><span class="token function">getJWTSecret</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> jwtUtils<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token operator">/</span><span class="token operator">/</span> 指定权限校验者
+                <span class="token punctuation">.</span><span class="token function">authorizeRequests</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">filterSecurityInterceptorOncePerRequest</span><span class="token punctuation">(</span><span class="token boolean">true</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">anyRequest</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">/</span><span class="token operator">/</span> 开始鉴权
+                <span class="token punctuation">.</span><span class="token function">authenticated</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+    <span class="token operator">/</span><span class="token operator">/</span> 标注由子类实现
+    <span class="token keyword">protected</span> <span class="token keyword">abstract</span> String <span class="token function">getJWTSecret</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token operator">/</span><span class="token operator">/</span> 此部分为filter中部分内容，过滤器主要设置验证参数Authentication
+SecurityContextHolder<span class="token punctuation">.</span><span class="token function">clearContext</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">if</span> <span class="token punctuation">(</span>StringUtils<span class="token punctuation">.</span><span class="token function">isNotBlank</span><span class="token punctuation">(</span>token<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  SecurityContextHolder<span class="token punctuation">.</span><span class="token function">getContext</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">setAuthentication</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">JWTAuthenticationToken</span><span class="token punctuation">(</span>token<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token operator">/</span><span class="token operator">/</span> 设置用户全局变量
+<span class="token punctuation">}</span>
+
+
+<span class="token operator">/</span><span class="token operator">/</span> 获取全局变量
+  <span class="token keyword">public</span> <span class="token keyword">static</span> JWTAuthenticationToken <span class="token function">getJWTAuthentication</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    Authentication authentication <span class="token operator">=</span> SecurityContextHolder<span class="token punctuation">.</span><span class="token function">getContext</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">getAuthentication</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    AssertUtils<span class="token punctuation">.</span><span class="token function">assertTrue</span><span class="token punctuation">(</span>
+        authentication <span class="token operator">!=</span> null <span class="token operator">&amp;&amp;</span> authentication<span class="token punctuation">.</span><span class="token function">isAuthenticated</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+            <span class="token operator">&amp;&amp;</span> authentication <span class="token keyword">instanceof</span> <span class="token class-name">JWTAuthenticationToken</span><span class="token punctuation">,</span>
+        ErrorCode<span class="token punctuation">.</span>NOT_LOGIN<span class="token punctuation">,</span> <span class="token string">"用户未登录"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    <span class="token keyword">return</span> <span class="token punctuation">(</span>JWTAuthenticationToken<span class="token punctuation">)</span> authentication<span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span class="token operator">/</span><span class="token operator">/</span> 权限校验类
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">JWTAuthenticationProvider</span> <span class="token keyword">implements</span> <span class="token class-name">AuthenticationProvider</span> <span class="token punctuation">{</span>
+
+  <span class="token keyword">private</span> String jwtSecret<span class="token punctuation">;</span>
+  <span class="token keyword">private</span> JWTUtils jwtUtils<span class="token punctuation">;</span>
+
+  <span class="token keyword">public</span> <span class="token function">JWTAuthenticationProvider</span><span class="token punctuation">(</span>String jwtSecret<span class="token punctuation">,</span> JWTUtils jwtUtils<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">this</span><span class="token punctuation">.</span>jwtSecret <span class="token operator">=</span> jwtSecret<span class="token punctuation">;</span>
+    <span class="token keyword">this</span><span class="token punctuation">.</span>jwtUtils <span class="token operator">=</span> jwtUtils<span class="token punctuation">;</span>
+  <span class="token punctuation">}</span>
+
+  <span class="token annotation punctuation">@Override</span>
+  <span class="token keyword">public</span> Authentication <span class="token function">authenticate</span><span class="token punctuation">(</span>Authentication authentication<span class="token punctuation">)</span> <span class="token keyword">throws</span> AuthenticationException <span class="token punctuation">{</span>
+    <span class="token operator">/</span><span class="token operator">/</span> 自定义JWT权限验证对象
+    JWTAuthenticationToken jwtAuthentication <span class="token operator">=</span> <span class="token punctuation">(</span>JWTAuthenticationToken<span class="token punctuation">)</span> authentication<span class="token punctuation">;</span>
+    <span class="token operator">/</span><span class="token operator">/</span> 获取前端表单中输入后返回的用户名、密码
+    AssertUtils<span class="token punctuation">.</span><span class="token function">assertNotNull</span><span class="token punctuation">(</span>jwtAuthentication<span class="token punctuation">,</span> ErrorCode<span class="token punctuation">.</span>ILLEGAL_PARAMETER<span class="token punctuation">,</span> <span class="token string">"非法参数"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    String jwtToken <span class="token operator">=</span> jwtAuthentication<span class="token punctuation">.</span><span class="token function">getJwtToken</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">return</span> jwtUtils<span class="token punctuation">.</span><span class="token function">generateAuthenticationToken</span><span class="token punctuation">(</span>jwtToken<span class="token punctuation">,</span> jwtSecret<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token operator">/</span><span class="token operator">/</span> 生成对应token
+  <span class="token punctuation">}</span>
+
+  <span class="token annotation punctuation">@Override</span>
+  <span class="token keyword">public</span> <span class="token keyword">boolean</span> <span class="token function">supports</span><span class="token punctuation">(</span>Class<span class="token operator">&lt;</span><span class="token operator">?</span><span class="token operator">></span> authentication<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">return</span> JWTAuthenticationToken<span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">.</span><span class="token function">isAssignableFrom</span><span class="token punctuation">(</span>authentication<span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+
+<span class="token operator">/</span><span class="token operator">/</span> 自定义JWT权限验证对象
+<span class="token annotation punctuation">@data</span>
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">JWTAuthenticationToken</span> <span class="token keyword">extends</span> <span class="token class-name">AbstractAuthenticationToken</span> <span class="token punctuation">{</span>
+
+  <span class="token keyword">private</span> <span class="token keyword">static</span> <span class="token keyword">final</span> <span class="token keyword">long</span> serialVersionUID <span class="token operator">=</span> 689177934199815232L<span class="token punctuation">;</span>
+  <span class="token keyword">private</span> String userCode<span class="token punctuation">;</span>
+  <span class="token keyword">private</span> String userPhone<span class="token punctuation">;</span>
+  <span class="token keyword">private</span> String userEmail<span class="token punctuation">;</span>
+  <span class="token keyword">private</span> Integer status<span class="token punctuation">;</span>
+  <span class="token keyword">private</span> String companyName<span class="token punctuation">;</span>
+  <span class="token keyword">private</span> Map<span class="token operator">&lt;</span>String<span class="token punctuation">,</span> Object<span class="token operator">></span> attributes <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">HashMap</span><span class="token operator">&lt;</span><span class="token operator">></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+  <span class="token keyword">private</span> String jwtToken<span class="token punctuation">;</span>
+
+  <span class="token keyword">public</span> <span class="token function">JWTAuthenticationToken</span><span class="token punctuation">(</span>String jwtToken<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">super</span><span class="token punctuation">(</span>null<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">this</span><span class="token punctuation">.</span>jwtToken <span class="token operator">=</span> jwtToken<span class="token punctuation">;</span>
+    <span class="token function">setAuthenticated</span><span class="token punctuation">(</span><span class="token boolean">false</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token punctuation">}</span>
+
+  <span class="token keyword">public</span> <span class="token function">JWTAuthenticationToken</span><span class="token punctuation">(</span>String userCode<span class="token punctuation">,</span> String userPhone<span class="token punctuation">,</span>String userEmail<span class="token punctuation">,</span> Collection<span class="token operator">&lt;</span><span class="token operator">?</span> <span class="token keyword">extends</span> <span class="token class-name">GrantedAuthority</span><span class="token operator">></span> authorities<span class="token punctuation">,</span> Map<span class="token operator">&lt;</span>String<span class="token punctuation">,</span> Object<span class="token operator">></span> attributes<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">super</span><span class="token punctuation">(</span>authorities<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">this</span><span class="token punctuation">.</span>userCode<span class="token operator">=</span>userCode<span class="token punctuation">;</span>
+    <span class="token keyword">this</span><span class="token punctuation">.</span>userPhone <span class="token operator">=</span> userPhone<span class="token punctuation">;</span>
+    <span class="token keyword">this</span><span class="token punctuation">.</span>userEmail <span class="token operator">=</span> userEmail<span class="token punctuation">;</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token operator">!</span>CollectionUtils<span class="token punctuation">.</span><span class="token function">isEmpty</span><span class="token punctuation">(</span>attributes<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+      <span class="token keyword">this</span><span class="token punctuation">.</span>attributes <span class="token operator">=</span> attributes<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+    <span class="token keyword">super</span><span class="token punctuation">.</span><span class="token function">setAuthenticated</span><span class="token punctuation">(</span><span class="token boolean">true</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token punctuation">}</span>
+
+  <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">setAuthenticated</span><span class="token punctuation">(</span><span class="token keyword">boolean</span> isAuthenticated<span class="token punctuation">)</span> <span class="token keyword">throws</span> IllegalArgumentException <span class="token punctuation">{</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>isAuthenticated<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+      <span class="token keyword">throw</span> <span class="token keyword">new</span> <span class="token class-name">IllegalArgumentException</span><span class="token punctuation">(</span>
+          <span class="token string">"Cannot set this token to trusted - use constructor which takes a GrantedAuthority list instead"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+    <span class="token keyword">super</span><span class="token punctuation">.</span><span class="token function">setAuthenticated</span><span class="token punctuation">(</span><span class="token boolean">false</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token punctuation">}</span>
+
+  <span class="token annotation punctuation">@Override</span>
+  <span class="token keyword">public</span> Object <span class="token function">getCredentials</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">return</span> null<span class="token punctuation">;</span>
+  <span class="token punctuation">}</span>
+
+  <span class="token annotation punctuation">@Override</span>
+  <span class="token keyword">public</span> Object <span class="token function">getPrincipal</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span> <span class="token operator">/</span><span class="token operator">/</span> 用于设置设置全局信息
+    <span class="token keyword">return</span> userEmail<span class="token punctuation">;</span>
+  <span class="token punctuation">}</span>
+
+ <span class="token operator">/</span><span class="token operator">/</span> JWT UTIL 列举部分信息用于理解
+<span class="token annotation punctuation">@Component</span>
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">JWTUtils</span> <span class="token punctuation">{</span>
+
+  <span class="token keyword">private</span> <span class="token keyword">static</span> <span class="token keyword">final</span> String TOKEN_KEY_USER_CODE <span class="token operator">=</span> <span class="token string">"userCode"</span><span class="token punctuation">;</span>
+  <span class="token keyword">private</span> <span class="token keyword">static</span> <span class="token keyword">final</span> String TOKEN_KEY_USER_PHONE <span class="token operator">=</span> <span class="token string">"phone"</span><span class="token punctuation">;</span>
+  <span class="token operator">/</span><span class="token operator">*</span><span class="token operator">*</span>
+   <span class="token operator">*</span> 存储用户code与token的对应关系的前缀
+   <span class="token operator">*</span><span class="token operator">/</span>
+  <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">final</span> String USERCODE_AND_JWTTOKEN_RELATIONSHIP <span class="token operator">=</span> <span class="token string">"USERCODE_AND_JWTTOKEN_RELATIONSHIP_"</span><span class="token punctuation">;</span>
+
+  <span class="token annotation punctuation">@Resource</span>
+  <span class="token keyword">private</span> RedisTemplate redisTemplate<span class="token punctuation">;</span>
+
+  <span class="token comment" spellcheck="true">/**
+   * 生成jwt token
+   *
+   * @param expireTime 过期时间
+   * @param phone 手机号
+   */</span>
+  <span class="token annotation punctuation">@SuppressWarnings</span><span class="token punctuation">(</span><span class="token string">"unchecked"</span><span class="token punctuation">)</span>
+  <span class="token keyword">public</span> String <span class="token function">generateJWTToken</span><span class="token punctuation">(</span>Date expireTime<span class="token punctuation">,</span>String userCode<span class="token punctuation">,</span>String phone<span class="token punctuation">,</span>String email<span class="token punctuation">,</span>Integer status<span class="token punctuation">,</span>String companyName<span class="token punctuation">,</span>
+                                 Map<span class="token operator">&lt;</span>String<span class="token punctuation">,</span> Object<span class="token operator">></span> attributes<span class="token punctuation">,</span> String jwtSecret<span class="token punctuation">,</span> Long timeout<span class="token punctuation">,</span>
+      TimeUnit timeUnit<span class="token punctuation">,</span> JWTTokenTypeEnums jwtTokenTypeEnums<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    Map<span class="token operator">&lt;</span>String<span class="token punctuation">,</span> Object<span class="token operator">></span> claims <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">HashMap</span><span class="token operator">&lt;</span><span class="token operator">></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    attributes<span class="token punctuation">.</span><span class="token function">put</span><span class="token punctuation">(</span>JWTTokenTypeEnums<span class="token punctuation">.</span>TOKEN<span class="token punctuation">.</span><span class="token function">toString</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> jwtTokenTypeEnums<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    claims<span class="token punctuation">.</span><span class="token function">put</span><span class="token punctuation">(</span>TOKEN_KEY_ATTRIBUTES<span class="token punctuation">,</span> attributes<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    String jwtToken <span class="token operator">=</span> Jwts<span class="token punctuation">.</span><span class="token function">builder</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">addClaims</span><span class="token punctuation">(</span>claims<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">setExpiration</span><span class="token punctuation">(</span>expireTime<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">signWith</span><span class="token punctuation">(</span>SignatureAlgorithm<span class="token punctuation">.</span>HS512<span class="token punctuation">,</span> <span class="token function">resetJwtSecret</span><span class="token punctuation">(</span>jwtSecret<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">compact</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token comment" spellcheck="true">// 保存用户和对应token的key关系</span>
+    redisTemplate<span class="token punctuation">.</span><span class="token function">opsForValue</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">set</span><span class="token punctuation">(</span><span class="token function">getUserCodeAndTokenRelationshipKey</span><span class="token punctuation">(</span>jwtTokenTypeEnums<span class="token punctuation">,</span> <span class="token function">getCtype</span><span class="token punctuation">(</span>attributes<span class="token punctuation">)</span><span class="token punctuation">,</span> userCode<span class="token punctuation">)</span><span class="token punctuation">,</span> jwtToken<span class="token punctuation">,</span> timeout<span class="token punctuation">,</span> timeUnit<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">return</span> jwtToken<span class="token punctuation">;</span>
+  <span class="token punctuation">}</span>
+  <span class="token comment" spellcheck="true">/**
+   * 解析jwtToken
+   */</span>
+  <span class="token keyword">public</span> Claims <span class="token function">parseJWTToken</span><span class="token punctuation">(</span>String jwtToken<span class="token punctuation">,</span> String jwtSecret<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">return</span> Jwts<span class="token punctuation">.</span><span class="token function">parser</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">setSigningKey</span><span class="token punctuation">(</span><span class="token function">resetJwtSecret</span><span class="token punctuation">(</span>jwtSecret<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">parseClaimsJws</span><span class="token punctuation">(</span>jwtToken<span class="token punctuation">)</span>
+        <span class="token punctuation">.</span><span class="token function">getBody</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token punctuation">}</span>
+
+  <span class="token comment" spellcheck="true">/**
+   * 生成认证实体，基于spring security authenticationToken机制
+   *
+   * @param authToken token
+   * @param jwtSecret 秘钥
+   */</span>
+  <span class="token annotation punctuation">@SuppressWarnings</span><span class="token punctuation">(</span><span class="token string">"unchecked"</span><span class="token punctuation">)</span>
+  <span class="token keyword">public</span> JWTAuthenticationToken <span class="token function">generateAuthenticationToken</span><span class="token punctuation">(</span>String authToken<span class="token punctuation">,</span> String jwtSecret<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    Claims claims <span class="token operator">=</span> null<span class="token punctuation">;</span>
+    claims <span class="token operator">=</span> <span class="token function">parseJWTToken</span><span class="token punctuation">(</span>authToken<span class="token punctuation">,</span> jwtSecret<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    String userCode <span class="token operator">=</span> claims<span class="token punctuation">.</span><span class="token function">get</span><span class="token punctuation">(</span>TOKEN_KEY_USER_CODE<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    Map<span class="token operator">&lt;</span>String<span class="token punctuation">,</span> Object<span class="token operator">></span> attributes <span class="token operator">=</span> <span class="token punctuation">(</span>Map<span class="token operator">&lt;</span>String<span class="token punctuation">,</span> Object<span class="token operator">></span><span class="token punctuation">)</span> claims<span class="token punctuation">.</span><span class="token function">get</span><span class="token punctuation">(</span>TOKEN_KEY_ATTRIBUTES<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    List<span class="token operator">&lt;</span>GrantedAuthority<span class="token operator">></span> authorities <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">ArrayList</span><span class="token operator">&lt;</span>GrantedAuthority<span class="token operator">></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">return</span> <span class="token keyword">new</span> <span class="token class-name">JWTAuthenticationToken</span><span class="token punctuation">(</span>userCode<span class="token punctuation">,</span> userName<span class="token punctuation">,</span> personType<span class="token punctuation">,</span> authorities<span class="token punctuation">,</span>attributes<span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token punctuation">}</span>
+
+
+
+
+
+
+<span class="token punctuation">}</span>
+
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="JWT权限验证流程总结"><a href="#JWT权限验证流程总结" class="headerlink" title="JWT权限验证流程总结"></a>JWT权限验证流程总结</h2><blockquote>
+<p>准备好JWT相关配置类和自定义token类，并且和spring security进行关系绑定。<br>在用户登录成功后为用户生成一个合乎JWT格式的token和refreshToken。（登录接口不需鉴权）<br>调用其他接口时，则获取filter设置全局token对象JWTAuthenticationToken（包含token值）。<br>provider负责解析和校验token并从token中获取用户信息，且是否超时，并设置全局用户参数。（JWT属于暴力破解，和Redis关系不大）<br>如果需要刷新token 则从新生产refreshtoken。</p>
+</blockquote>
+<h2 id="JWT和Redis-token的区别"><a href="#JWT和Redis-token的区别" class="headerlink" title="JWT和Redis token的区别"></a>JWT和Redis token的区别</h2><blockquote>
+<p>jwt token属于暴力破解模式，直接解析加密串获取用户信息和token时限。<br>redis 存储token模式相对安全，但是效率稍低。<br>尝试在JWT中增加自有的加密方式，比如JWT + timestamp + 等再做一次SHA256加密解密等。<br>用户退出可以设置JWT参数，让其失效。</p>
+</blockquote>
+<h2 id="JAVA-观察者模式"><a href="#JAVA-观察者模式" class="headerlink" title="JAVA 观察者模式"></a>JAVA 观察者模式</h2><blockquote>
+<p>java 自带了观察者模式的实现，通知类实现<strong>Observable</strong>，实现类创建 <strong>noticeAllWatchers(obj)</strong>来通知所有观察者。<br>具体实现类实现<strong>Observer</strong>,通过<strong>update</strong>通知观察者处理对应的逻辑。<br>应用初始化时需要向通知类<strong>Observable</strong>注册，并在需要的时候调用<strong>Observable</strong>实现类方法<strong>noticeAllWatchers(obj)</strong>通知所有观察者;</p>
+</blockquote>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><blockquote>
+<p>后面将会继续补充，关于web开发中的一些问题。</p>
+</blockquote>
+<script>
+        document.querySelectorAll('.github-emoji')
+          .forEach(el => {
+            if (!el.dataset.src) { return; }
+            const img = document.createElement('img');
+            img.style = 'display:none !important;';
+            img.src = el.dataset.src;
+            img.addEventListener('error', () => {
+              img.remove();
+              el.style.color = 'inherit';
+              el.style.backgroundImage = 'none';
+              el.style.background = 'none';
+            });
+            img.addEventListener('load', () => {
+              img.remove();
+            });
+            document.body.appendChild(img);
+          });
+      </script>
+            </div>
+            <hr/>
+
+            
+            <style>
+    #reward {
+        margin: 40px 0;
+        text-align: center;
+    }
+
+    #reward .reward-link {
+        font-size: 1.88rem;
+    }
+
+    #reward .btn-floating:hover {
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2), 0 5px 15px rgba(0, 0, 0, 0.2);
+    }
+
+    #rewardModal {
+        width: 320px;
+        height: 350px;
+    }
+
+    #rewardModal .reward-title {
+        margin: 15px auto;
+        padding-bottom: 5px;
+    }
+
+    #rewardModal .modal-content {
+        padding: 10px;
+    }
+
+    #rewardModal .close {
+        position: absolute;
+        right: 15px;
+        top: 15px;
+        color: rgba(0, 0, 0, 0.5);
+        font-size: 1.3rem;
+        line-height: 20px;
+        cursor: pointer;
+    }
+
+    #rewardModal .close:hover {
+        color: #ef5350;
+        transform: scale(1.3);
+        -moz-transform:scale(1.3);
+        -webkit-transform:scale(1.3);
+        -o-transform:scale(1.3);
+    }
+
+    #rewardModal .reward-tabs {
+        margin: 0 auto;
+        width: 210px;
+    }
+
+    .reward-tabs .tabs {
+        height: 38px;
+        margin: 10px auto;
+        padding-left: 0;
+    }
+
+    .reward-content ul {
+        padding-left: 0 !important;
+    }
+
+    .reward-tabs .tabs .tab {
+        height: 38px;
+        line-height: 38px;
+    }
+
+    .reward-tabs .tab a {
+        color: #fff;
+        background-color: #ccc;
+    }
+
+    .reward-tabs .tab a:hover {
+        background-color: #ccc;
+        color: #fff;
+    }
+
+    .reward-tabs .wechat-tab .active {
+        color: #fff !important;
+        background-color: #22AB38 !important;
+    }
+
+    .reward-tabs .alipay-tab .active {
+        color: #fff !important;
+        background-color: #019FE8 !important;
+    }
+
+    .reward-tabs .reward-img {
+        width: 210px;
+        height: 210px;
+    }
+</style>
+
+<div id="reward">
+    <a href="#rewardModal" class="reward-link modal-trigger btn-floating btn-large waves-effect waves-light red">赏</a>
+
+    <!-- Modal Structure -->
+    <div id="rewardModal" class="modal">
+        <div class="modal-content">
+            <a class="close modal-close"><i class="fa fa-close"></i></a>
+            <h4 class="reward-title">你的赏识是我前进的动力</h4>
+            <div class="reward-content">
+                <div class="reward-tabs">
+                    <ul class="tabs row">
+                        <li class="tab col s6 alipay-tab waves-effect waves-light"><a href="#alipay">支付宝</a></li>
+                        <li class="tab col s6 wechat-tab waves-effect waves-light"><a href="#wechat">微 信</a></li>
+                    </ul>
+                    <div id="alipay">
+                        <img src="/medias/reward/alipay.png" class="reward-img" alt="支付宝打赏二维码">
+                    </div>
+                    <div id="wechat">
+                        <img src="/medias/reward/wechat.png" class="reward-img" alt="微信打赏二维码">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function () {
+        $('.tabs').tabs();
+    });
+</script>
+            
+
+            <link rel="stylesheet" type="text/css" href="/libs/share/css/share.min.css">
+
+<div id="article-share">
+    
+    <div class="social-share" data-disabled="qzone, qq, weibo, douban"></div>
+    
+</div>
+
+<script src="/libs/share/js/social-share.min.js"></script>
+
+            
+
+    <div class="reprint" id="reprint-statement">
+        <p class="reprint-tip">
+            <i class="fa fa-exclamation-triangle"></i>&nbsp;&nbsp;
+            <span>Reprint policy</span>
+        </p>
+        
+            <div class="center-align">
+                <a rel="license" href="https://creativecommons.org/licenses/by/4.0/">
+                    <img alt=""
+                         style="border-width:0"
+                         src="https://i.creativecommons.org/l/by/4.0/88x31.png"/>
+                </a>
+            </div>
+            <br/>
+            <span xmlns:dct="http://purl.org/dc/terms/" href="http://purl.org/dc/dcmitype/Text"
+                  property="dct:title" rel="dct:type">
+                    《常用问题整理》
+                </span> by
+            <a xmlns:cc="http://creativecommons.org/ns#" href="/2020/06/08/常用问题整理/" property="cc:attributionName"
+               rel="cc:attributionURL">
+                jackromer
+            </a> is licensed under a
+            <a rel="license" href="https://creativecommons.org/licenses/by/4.0/">
+                Creative Commons Attribution 4.0 International License
+            </a> 
+        
+    </div>
+
+    <script async defer>
+      document.addEventListener("copy", function (e) {
+        let toastHTML = '<span>Copied successfully, please follow the reprint policy of this article</span><button class="btn-flat toast-action" onclick="navToReprintStatement()" style="font-size: smaller">more</a>';
+        M.toast({html: toastHTML})
+      });
+
+      function navToReprintStatement() {
+        $("html, body").animate({scrollTop: $("#reprint-statement").offset().top - 80}, 800);
+      }
+    </script>
+
+
+        </div>
+    </div>
+
+    
+        <link rel="stylesheet" href="/libs/gitalk/gitalk.css">
+<link rel="stylesheet" href="/css/my-gitalk.css">
+
+<div class="card gitalk-card" data-aos="fade-up">
+    <div id="gitalk-container" class="card-content"></div>
+</div>
+
+<script src="/libs/gitalk/gitalk.min.js"></script>
+<script>
+    let gitalk = new Gitalk({
+        clientID: '034ed228151af1a154d9',
+        clientSecret: 'c7be1e2628ceb41e81648bff31633a31b005c2fa',
+        repo: 'jackromer.github.io',
+        owner: 'jackromer',
+        admin: "jackromer",
+        id: '2020-06-08T10-50-31',
+        distractionFreeMode: false  // Facebook-like distraction free mode
+    });
+
+    gitalk.render('gitalk-container');
+</script>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+<article id="prenext-posts" class="prev-next articles">
+    <div class="row article-row">
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge left-badge text-color">
+                <i class="fa fa-chevron-left"></i>&nbsp;Previous</div>
+            <div class="card">
+                <a href="/2020/06/09/使用swwager生成离线API文档/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/scienceFiction/12.jpg" class="responsive-img" alt="使用swwager生成离线API文档">
+                        
+                        <span class="card-title">使用swwager生成离线API文档</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            概述
+本文主要介绍如何使用swagger生成离线API。
+
+项目架构
+spring-boot-2.0 + swagger-2.8.0 .
+
+需要哪些要素
+3个配置文件
+
+静态文件StaticResourceFile，将静态文件中的文件夹放到
+                        
+                    </div>
+                    <div class="publish-info">
+                        <span class="publish-date">
+                            <i class="fa fa-clock-o fa-fw icon-date"></i>2020-06-09
+                        </span>
+                        <span class="publish-author">
+                            
+                            <i class="fa fa-user fa-fw"></i>
+                            jackromer
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/spring-boot/" target="_blank">
+                        <span class="chip bg-color">spring-boot</span>
+                    </a>
+                    
+                    <a href="/tags/swagger/" target="_blank">
+                        <span class="chip bg-color">swagger</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                Next&nbsp;<i class="fa fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/2020/05/06/mybatis-plus自定义分页/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/scienceFiction/14.jpg" class="responsive-img" alt="mybatis-plus实现自定义分页">
+                        
+                        <span class="card-title">mybatis-plus实现自定义分页</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            概述
+本文主要介绍如何使用mybatis-plus实现复杂自定义分页
+
+使用说明
+接口定义
+
+/**
+   * 分页查询
+   * // 此处最好返回IPAGE
+   */
+  APIResult&lt;IPage&lt;ResDTO>> 
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="fa fa-clock-o fa-fw icon-date"></i>2020-05-06
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fa fa-user fa-fw"></i>
+                            jackromer
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/spring-boot/" target="_blank">
+                        <span class="chip bg-color">spring boot</span>
+                    </a>
+                    
+                    <a href="/tags/mybatis-plus/" target="_blank">
+                        <span class="chip bg-color">mybatis-plus</span>
+                    </a>
+                    
+                    <a href="/tags/pagehelper/" target="_blank">
+                        <span class="chip bg-color">pagehelper</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+    </div>
+</article>
+</div>
+
+
+
+    </div>
+    <div id="toc-aside" class="expanded col l3 hide-on-med-and-down">
+        <div class="toc-widget">
+            <div class="toc-title"><i class="fa fa-list-alt"></i>&nbsp;&nbsp;目录</div>
+            <div id="toc-content"></div>
+        </div>
+    </div>
+</div>
+
+<!-- TOC 悬浮按钮. -->
+
+<div id="floating-toc-btn" class="hide-on-med-and-down">
+    <a class="btn-floating btn-large bg-color">
+        <i class="fa fa-list"></i>
+    </a>
+</div>
+
+
+<script src="/libs/tocbot/tocbot.min.js"></script>
+<script>
+    $(function () {
+        tocbot.init({
+            tocSelector: '#toc-content',
+            contentSelector: '#articleContent',
+            headingsOffset: -($(window).height() * 0.4 - 45),
+            // headingsOffset: -205,
+            headingSelector: 'h2, h3, h4'
+        });
+
+        // modify the toc link href to support Chinese.
+        let i = 0;
+        let tocHeading = 'toc-heading-';
+        $('#toc-content a').each(function () {
+            $(this).attr('href', '#' + tocHeading + (++i));
+        });
+
+        // modify the heading title id to support Chinese.
+        i = 0;
+        $('#articleContent').children('h2, h3, h4').each(function () {
+            $(this).attr('id', tocHeading + (++i));
+        });
+
+        // Set scroll toc fixed.
+        let tocHeight = parseInt($(window).height() * 0.4 - 64);
+        let $tocWidget = $('.toc-widget');
+        $(window).scroll(function () {
+            let scroll = $(window).scrollTop();
+            /* add post toc fixed. */
+            if (scroll > tocHeight) {
+                $tocWidget.addClass('toc-fixed');
+            } else {
+                $tocWidget.removeClass('toc-fixed');
+            }
+        });
+
+        
+        /* 修复文章卡片 div 的宽度. */
+        let fixPostCardWidth = function (srcId, targetId) {
+            let srcDiv = $('#' + srcId);
+            if (srcDiv.length === 0) {
+                return;
+            }
+
+            let w = srcDiv.width();
+            if (w >= 450) {
+                w = w + 21;
+            } else if (w >= 350 && w < 450) {
+                w = w + 18;
+            } else if (w >= 300 && w < 350) {
+                w = w + 16;
+            } else {
+                w = w + 14;
+            }
+            $('#' + targetId).width(w);
+        };
+
+        // 切换TOC目录展开收缩的相关操作.
+        const expandedClass = 'expanded';
+        let $tocAside = $('#toc-aside');
+        let $mainContent = $('#main-content');
+        $('#floating-toc-btn .btn-floating').click(function () {
+            if ($tocAside.hasClass(expandedClass)) {
+                $tocAside.removeClass(expandedClass).slideUp(500);
+                $mainContent.removeClass('l9');
+            } else {
+                $tocAside.addClass(expandedClass).slideDown(500);
+                $mainContent.addClass('l9');
+            }
+            fixPostCardWidth('artDetail', 'prenext-posts');
+        });
+        
+    });
+</script>
+    
+
+</main>
+
+
+<footer class="page-footer bg-color">
+    <div class="container row center-align">
+        <div class="col s12 m8 l8 copy-right">
+            本站由&copy;<a href="https://github.com/JACKROMER/jackromer.github.io/" target="_blank">jackromer</a>基于
+            <a href="https://hexo.io/" target="_blank">Hexo</a> 的
+            <a href="https://github.com/blinkfox/hexo-theme-matery" target="_blank">hexo-theme-matery</a>主题搭建.
+
+            
+
+            
+			
+                <br>
+                
+                <span id="busuanzi_container_site_pv">
+                    <i class="fa fa-heart-o"></i>
+                    本站总访问量 <span id="busuanzi_value_site_pv" class="white-color"></span>
+                </span>
+                
+                
+                <span id="busuanzi_container_site_uv">
+                    <i class="fa fa-users"></i>
+                    次,&nbsp;访客数 <span id="busuanzi_value_site_uv" class="white-color"></span> 人.
+                </span>
+                
+            
+        </div>
+        <div class="col s12 m4 l4 social-link social-statis">
+    <a href="https://github.com/JACKROMER" class="tooltipped" target="_blank" data-tooltip="访问我的GitHub" data-position="top" data-delay="50">
+        <i class="fa fa-github"></i>
+    </a>
+
+
+
+    <a href="mailto:jackromer@163.com" class="tooltipped" target="_blank" data-tooltip="邮件联系我" data-position="top" data-delay="50">
+        <i class="fa fa-envelope-open"></i>
+    </a>
+
+
+
+    <a href="tencent://AddContact/?fromId=50&fromSubId=1&subcmd=all&uin=943655387" class="tooltipped" data-tooltip="QQ联系我: 943655387" data-position="top" data-delay="50">
+        <i class="fa fa-qq"></i>
+    </a>
+
+
+
+    <a href="/atom.xml" class="tooltipped" target="_blank" data-tooltip="RSS 订阅" data-position="top" data-delay="50">
+        <i class="fa fa-rss"></i>
+    </a>
+</div>
+    </div>
+</footer>
+
+<div class="progress-bar"></div>
+
+
+<!-- 搜索遮罩框 -->
+<div id="searchModal" class="modal">
+    <div class="modal-content">
+        <div class="search-header">
+            <span class="title"><i class="fa fa-search"></i>&nbsp;&nbsp;Search</span>
+            <input type="search" id="searchInput" name="s" placeholder="Please enter a search keyword"
+                   class="search-input">
+        </div>
+        <div id="searchResult"></div>
+    </div>
+</div>
+
+<script src="/js/search.js"></script>
+<script type="text/javascript">
+$(function () {
+    searchFunc("/" + "search.xml", 'searchInput', 'searchResult');
+});
+</script>
+<!-- 回到顶部按钮 -->
+<div id="backTop" class="top-scroll">
+    <a class="btn-floating btn-large waves-effect waves-light" href="#!">
+        <i class="fa fa-angle-up"></i>
+    </a>
+</div>
+
+
+<script src="/libs/materialize/materialize.min.js"></script>
+<script src="/libs/masonry/masonry.pkgd.min.js"></script>
+<script src="/libs/aos/aos.js"></script>
+<script src="/libs/scrollprogress/scrollProgress.min.js"></script>
+<script src="/libs/lightGallery/js/lightgallery-all.min.js"></script>
+<script src="/js/matery.js"></script>
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+
+
+
+    <script src="/libs/others/clicklove.js"></script>
+
+
+    <script async src="/libs/others/busuanzi.pure.mini.js"></script>
+
+
+</body>
+</html>

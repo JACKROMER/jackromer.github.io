@@ -1,0 +1,1260 @@
+<!DOCTYPE HTML>
+<html lang="en">
+
+
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="utf-8">
+    <meta name="keywords" content="java-wait-and-notify使用, Jack Romer">
+    <meta name="description" content="
+概述
+java中多线程常用到wait和notify等方法，但是对此缺乏一个清晰的认识，本文主要介绍JAVA中wait和notify以及notifyAll的使用.
+
+Wait    /**
+         * Causes the cur">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="renderer" content="webkit|ie-stand|ie-comp">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <title>java-wait-and-notify使用 | Jack Romer</title>
+    <link rel="icon" type="image/jpeg" href="/medias/mine.jpg">
+
+    <link rel="stylesheet" type="text/css" href="/libs/awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/materialize/materialize.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/aos/aos.css">
+    <link rel="stylesheet" type="text/css" href="/libs/animate/animate.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/lightGallery/css/lightgallery.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/matery.css">
+    <link rel="stylesheet" type="text/css" href="/css/my.css">
+    <style type="text/css">
+        
+    </style>
+
+    <script src="/libs/jquery/jquery-2.2.0.min.js"></script>
+<link rel="stylesheet" href="/css/prism-tomorrow.css" type="text/css">
+<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
+
+
+<body>
+
+<header class="navbar-fixed">
+    <nav id="headNav" class="bg-color nav-transparent">
+        <div id="navContainer" class="nav-wrapper container">
+            <div class="brand-logo">
+                <a href="/" class="waves-effect waves-light">
+                    
+                    <img src="/medias/mine.jpg" class="logo-img" alt="LOGO">
+                    
+                    <span class="logo-span">Jack Romer</span>
+                </a>
+            </div>
+            
+
+<a href="#" data-target="mobile-nav" class="sidenav-trigger button-collapse"><i class="fa fa-navicon"></i></a>
+<ul class="right">
+    
+    <li class="hide-on-med-and-down">
+        <a href="/" class="waves-effect waves-light">
+            
+            <i class="fa fa-home"></i>
+            
+            <span>Index</span>
+        </a>
+    </li>
+    
+    <li class="hide-on-med-and-down">
+        <a href="/tags" class="waves-effect waves-light">
+            
+            <i class="fa fa-tags"></i>
+            
+            <span>Tags</span>
+        </a>
+    </li>
+    
+    <li class="hide-on-med-and-down">
+        <a href="/categories" class="waves-effect waves-light">
+            
+            <i class="fa fa-bookmark"></i>
+            
+            <span>Categories</span>
+        </a>
+    </li>
+    
+    <li class="hide-on-med-and-down">
+        <a href="/archives" class="waves-effect waves-light">
+            
+            <i class="fa fa-archive"></i>
+            
+            <span>Archives</span>
+        </a>
+    </li>
+    
+    <li class="hide-on-med-and-down">
+        <a href="/about" class="waves-effect waves-light">
+            
+            <i class="fa fa-user-circle-o"></i>
+            
+            <span>About</span>
+        </a>
+    </li>
+    
+    <li class="hide-on-med-and-down">
+        <a href="/friends" class="waves-effect waves-light">
+            
+            <i class="fa fa-address-book"></i>
+            
+            <span>Friends</span>
+        </a>
+    </li>
+    
+    <li>
+        <a href="#searchModal" class="modal-trigger waves-effect waves-light">
+            <i id="searchIcon" class="fa fa-search" title="Search"></i>
+        </a>
+    </li>
+</ul>
+
+<div id="mobile-nav" class="side-nav sidenav">
+
+    <div class="mobile-head bg-color">
+        
+        <img src="/medias/mine.jpg" class="logo-img circle responsive-img">
+        
+        <div class="logo-name">Jack Romer</div>
+        <div class="logo-desc">
+            
+            See as far away as possible you can, do as firm as possible you can , getting better every day.
+            
+        </div>
+    </div>
+
+    
+
+    <ul class="menu-list mobile-menu-list">
+        
+        <li>
+            <a href="/" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-home"></i>
+                
+                Index
+            </a>
+        </li>
+        
+        <li>
+            <a href="/tags" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-tags"></i>
+                
+                Tags
+            </a>
+        </li>
+        
+        <li>
+            <a href="/categories" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-bookmark"></i>
+                
+                Categories
+            </a>
+        </li>
+        
+        <li>
+            <a href="/archives" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-archive"></i>
+                
+                Archives
+            </a>
+        </li>
+        
+        <li>
+            <a href="/about" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-user-circle-o"></i>
+                
+                About
+            </a>
+        </li>
+        
+        <li>
+            <a href="/friends" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-address-book"></i>
+                
+                Friends
+            </a>
+        </li>
+        
+        
+        <li><div class="divider"></div></li>
+        <li>
+            <a href="https://github.com/JACKROMER" class="waves-effect waves-light" target="_blank">
+                <i class="fa fa-github-square fa-fw"></i>Fork Me
+            </a>
+        </li>
+        
+    </ul>
+</div>
+
+        </div>
+
+        
+            <style>
+    .nav-transparent .github-corner {
+        display: none !important;
+    }
+
+    .github-corner {
+        position: absolute;
+        z-index: 10;
+        top: 0;
+        right: 0;
+        border: 0;
+        transform: scale(1.1);
+    }
+
+    .github-corner svg {
+        color: #0f9d58;
+        fill: #fff;
+        height: 64px;
+        width: 64px;
+    }
+
+    .github-corner:hover .octo-arm {
+        animation: a 0.56s ease-in-out;
+    }
+
+    .github-corner .octo-arm {
+        animation: none;
+    }
+
+    @keyframes a {
+        0%,
+        to {
+            transform: rotate(0);
+        }
+        20%,
+        60% {
+            transform: rotate(-25deg);
+        }
+        40%,
+        80% {
+            transform: rotate(10deg);
+        }
+    }
+</style>
+
+<a href="https://github.com/JACKROMER" class="github-corner tooltipped hide-on-med-and-down" target="_blank"
+   data-tooltip="Fork Me" data-position="left" data-delay="50">
+    <svg viewBox="0 0 250 250" aria-hidden="true">
+        <path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path>
+        <path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2"
+              fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path>
+        <path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z"
+              fill="currentColor" class="octo-body"></path>
+    </svg>
+</a>
+        
+    </nav>
+
+</header>
+
+
+
+
+
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/scienceFiction/11.jpg')">
+    <div class="container">
+        <div class="row">
+            <div class="col s12 m12 l12">
+                <div class="brand">
+                    <div class="description center-align post-title">
+                        java-wait-and-notify使用
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<main class="post-container content">
+
+    
+    <link rel="stylesheet" href="/libs/tocbot/tocbot.css">
+<style>
+    #articleContent h1::before,
+    #articleContent h2::before,
+    #articleContent h3::before,
+    #articleContent h4::before,
+    #articleContent h5::before,
+    #articleContent h6::before {
+        display: block;
+        content: " ";
+        height: 100px;
+        margin-top: -100px;
+        visibility: hidden;
+    }
+
+    #articleContent :focus {
+        outline: none;
+    }
+
+    .toc-fixed {
+        position: fixed;
+        top: 64px;
+    }
+
+    .toc-widget {
+        padding-left: 20px;
+    }
+
+    .toc-widget .toc-title {
+        margin: 35px 0 15px 0;
+        padding-left: 17px;
+        font-size: 1.5rem;
+        font-weight: bold;
+        line-height: 1.5rem;
+    }
+
+    .toc-widget ol {
+        padding: 0;
+        list-style: none;
+    }
+
+    #toc-content ol {
+        padding-left: 10px;
+    }
+
+    #toc-content ol li {
+        padding-left: 10px;
+    }
+
+    #toc-content .toc-link:hover {
+        color: #42b983;
+        font-weight: 700;
+        text-decoration: underline;
+    }
+
+    #toc-content .toc-link::before {
+        background-color: transparent;
+        max-height: 25px;
+    }
+
+    #toc-content .is-active-link {
+        color: #42b983;
+    }
+
+    #toc-content .is-active-link::before {
+        background-color: #42b983;
+    }
+
+    #floating-toc-btn {
+        position: fixed;
+        right: 20px;
+        bottom: 76px;
+        padding-top: 15px;
+        margin-bottom: 0;
+        z-index: 998;
+    }
+
+    #floating-toc-btn .btn-floating {
+        width: 48px;
+        height: 48px;
+    }
+
+    #floating-toc-btn .btn-floating i {
+        line-height: 48px;
+        font-size: 1.4rem;
+    }
+</style>
+<div class="row">
+    <div id="main-content" class="col s12 m12 l9">
+        <!-- 文章内容详情 -->
+<div id="artDetail">
+    <div class="card">
+        <div class="card-content article-info">
+            <div class="row tag-cate">
+                <div class="col s7">
+                    
+                    <div class="article-tag">
+                        
+                            <a href="/tags/java/" target="_blank">
+                                <span class="chip bg-color">java</span>
+                            </a>
+                        
+                            <a href="/tags/wait/" target="_blank">
+                                <span class="chip bg-color">wait</span>
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+                <div class="col s5 right-align">
+                    
+                    <div class="post-cate">
+                        <i class="fa fa-bookmark fa-fw icon-category"></i>
+                        
+                            <a href="/categories/thread/" class="post-category" target="_blank">
+                                thread
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+
+            <div class="post-info">
+                <div class="post-date info-break-policy">
+                    <i class="fa fa-calendar-minus-o fa-fw"></i>Publish Date:&nbsp;&nbsp;
+                    2019-08-27
+                </div>
+
+                
+				
+				
+                    <div id="busuanzi_container_page_pv" class="info-break-policy">
+                        <i class="fa fa-eye fa-fw"></i>Read Count:&nbsp;&nbsp;
+                        <span id="busuanzi_value_page_pv"></span>
+                    </div>
+				
+            </div>
+        </div>
+        <hr class="clearfix">
+        <div class="card-content article-card-content">
+            <div id="articleContent">
+                <hr>
+<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a><a href="#概述" title="概述"></a>概述</h2><blockquote>
+<p>java中多线程常用到wait和notify等方法，但是对此缺乏一个清晰的认识，本文主要介绍JAVA中wait和notify以及notifyAll的使用.</p>
+</blockquote>
+<h2 id="Wait"><a href="#Wait" class="headerlink" title="Wait"></a><a href="#Wait" title="Wait"></a>Wait</h2><pre class="line-numbers language-java"><code class="language-java">    <span class="token comment" spellcheck="true">/**
+         * Causes the current thread to wait until another thread invokes the
+         * {@link java.lang.Object#notify()} method or the
+         * {@link java.lang.Object#notifyAll()} method for this object.
+         * In other words, this method behaves exactly as if it simply
+         * performs the call {@code wait(0)}.
+         * &lt;p>
+         * The current thread must own this object's monitor. The thread
+         * releases ownership of this monitor and waits until another thread
+         * notifies threads waiting on this object's monitor to wake up
+         * either through a call to the {@code notify} method or the
+         * {@code notifyAll} method. The thread then waits until it can
+         * re-obtain ownership of the monitor and resumes execution.
+         * &lt;p>
+         * As in the one argument version, interrupts and spurious wakeups are
+         * possible, and this method should always be used in a loop:
+         * &lt;pre>
+         *     synchronized (obj) {
+         *         while (&amp;lt;condition does not hold&amp;gt;)
+         *             obj.wait();
+         *         ... // Perform action appropriate to condition
+         *     }
+         * &lt;/pre>
+         * This method should only be called by a thread that is the owner
+         * of this object's monitor. See the {@code notify} method for a
+         * description of the ways in which a thread can become the owner of
+         * a monitor.
+         *
+         * @throws  IllegalMonitorStateException  if the current thread is not
+         *               the owner of the object's monitor.
+         * @throws  InterruptedException if any thread interrupted the
+         *             current thread before or while the current thread
+         *             was waiting for a notification.  The &lt;i>interrupted
+         *             status&lt;/i> of the current thread is cleared when
+         *             this exception is thrown.
+         * @see        java.lang.Object#notify()
+         * @see        java.lang.Object#notifyAll()
+         */</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<blockquote>
+<p>wait方法调用后会使持有该对象的线程把对象的控制权交出去，也就是释放锁，然后原来的线程处于等待状态.<br>wait和notify是用来做线程通信的，wait调用后必须是另一个线程中调用notify或者notifyAll来唤醒线程.<br>并且wait方法只能在拥有前对象的镜像中调用，也就是在synchronized同步代码块中调用,否则会报IllegalMonitorStateException异常.</p>
+</blockquote>
+<h2 id="Notify"><a href="#Notify" class="headerlink" title="Notify"></a><a href="#Notify" title="Notify"></a>Notify</h2><pre class="line-numbers language-java"><code class="language-java">    <span class="token comment" spellcheck="true">/**
+         * Wakes up a single thread that is waiting on this object's
+         * monitor. If any threads are waiting on this object, one of them
+         * is chosen to be awakened. The choice is arbitrary and occurs at
+         * the discretion of the implementation. A thread waits on an object's
+         * monitor by calling one of the {@code wait} methods.
+         * &lt;p>
+         * The awakened thread will not be able to proceed until the current
+         * thread relinquishes the lock on this object. The awakened thread will
+         * compete in the usual manner with any other threads that might be
+         * actively competing to synchronize on this object; for example, the
+         * awakened thread enjoys no reliable privilege or disadvantage in being
+         * the next thread to lock this object.
+         * &lt;p>
+         * This method should only be called by a thread that is the owner
+         * of this object's monitor. A thread becomes the owner of the
+         * object's monitor in one of three ways:
+         * &lt;ul>
+         * &lt;li>By executing a synchronized instance method of that object.
+         * &lt;li>By executing the body of a {@code synchronized} statement
+         *     that synchronizes on the object.
+         * &lt;li>For objects of type {@code Class,} by executing a
+         *     synchronized static method of that class.
+         * &lt;/ul>
+         * &lt;p>
+         * Only one thread at a time can own an object's monitor.
+         *
+         * @throws  IllegalMonitorStateException  if the current thread is not
+         *               the owner of this object's monitor.
+         * @see        java.lang.Object#notifyAll()
+         * @see        java.lang.Object#wait()
+         */</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<blockquote>
+<p>通知某个正在等待这个对象的控制权的线程可以继续运行，注意这里唤醒的是一个单一线程使该线程重新获取这个对象的锁，获取锁并不代表就可以马上执行.<br>新唤醒的线程不会马上执行，而是和其他线程竞争执行权限，除非该线程设置了特有的线程优先级.<br>同样的必须在synchronized同步代码块中调用，否则会报IllegalMonitorStateException异常.</p>
+</blockquote>
+<h2 id="NotifyAll"><a href="#NotifyAll" class="headerlink" title="NotifyAll"></a><a href="#NotifyAll" title="NotifyAll"></a>NotifyAll</h2><pre class="line-numbers language-java"><code class="language-java">    <span class="token comment" spellcheck="true">/**
+         * Wakes up all threads that are waiting on this object's monitor. A
+         * thread waits on an object's monitor by calling one of the
+         * {@code wait} methods.
+         * &lt;p>
+         * The awakened threads will not be able to proceed until the current
+         * thread relinquishes the lock on this object. The awakened threads
+         * will compete in the usual manner with any other threads that might
+         * be actively competing to synchronize on this object; for example,
+         * the awakened threads enjoy no reliable privilege or disadvantage in
+         * being the next thread to lock this object.
+         * &lt;p>
+         * This method should only be called by a thread that is the owner
+         * of this object's monitor. See the {@code notify} method for a
+         * description of the ways in which a thread can become the owner of
+         * a monitor.
+         *
+         * @throws  IllegalMonitorStateException  if the current thread is not
+         *               the owner of this object's monitor.
+         * @see        java.lang.Object#notify()
+         * @see        java.lang.Object#wait()
+         */</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<blockquote>
+<p>唤醒等待获取此对象控制权限的所有线程，同样的这些线程不会马上执行，而是去CPU哪里竞争执行权限.<br>也必须在synchronized同步代码块中执行，，否则会报IllegalMonitorStateException异常.</p>
+</blockquote>
+<h2 id="使用-例子-1"><a href="#使用-例子-1" class="headerlink" title="使用-例子-1"></a><a href="#使用-例子-1" title="使用-例子-1"></a>使用-例子-1</h2><pre class="line-numbers language-java"><code class="language-java">    <span class="token keyword">package</span> com<span class="token punctuation">.</span>sefon<span class="token punctuation">.</span>gateway<span class="token punctuation">;</span>
+
+    <span class="token comment" spellcheck="true">/**
+    * @Description:    
+    * @author: zhouqiang
+    * @version: 1.0, Apr 4, 2019
+    */</span>
+
+    <span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">OutputThread</span> <span class="token keyword">implements</span> <span class="token class-name">Runnable</span> <span class="token punctuation">{</span>
+
+        <span class="token keyword">private</span> <span class="token keyword">int</span> num<span class="token punctuation">;</span>
+        <span class="token keyword">private</span> Object lock<span class="token punctuation">;</span>
+
+        <span class="token keyword">public</span> <span class="token function">OutputThread</span><span class="token punctuation">(</span><span class="token keyword">int</span> num<span class="token punctuation">,</span> Object lock<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token keyword">super</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token keyword">this</span><span class="token punctuation">.</span>num <span class="token operator">=</span> num<span class="token punctuation">;</span>
+            <span class="token keyword">this</span><span class="token punctuation">.</span>lock <span class="token operator">=</span> lock<span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+
+        <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">run</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token keyword">try</span> <span class="token punctuation">{</span>
+                <span class="token keyword">while</span><span class="token punctuation">(</span><span class="token boolean">true</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
+                    <span class="token keyword">synchronized</span><span class="token punctuation">(</span>lock<span class="token punctuation">)</span><span class="token punctuation">{</span>
+                          lock<span class="token punctuation">.</span><span class="token function">notifyAll</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token comment" spellcheck="true">//如果此处先wait,在notify不会打印任何结果</span>
+                        lock<span class="token punctuation">.</span><span class="token function">wait</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+                        Thread<span class="token punctuation">.</span><span class="token function">sleep</span><span class="token punctuation">(</span><span class="token number">1000</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+                        System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>num<span class="token punctuation">)</span><span class="token punctuation">;</span>
+                    <span class="token punctuation">}</span>
+                <span class="token punctuation">}</span>
+            <span class="token punctuation">}</span> <span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">InterruptedException</span> e<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+                <span class="token comment" spellcheck="true">// TODO Auto-generated catch block</span>
+                e<span class="token punctuation">.</span><span class="token function">printStackTrace</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token punctuation">}</span>
+
+        <span class="token punctuation">}</span>
+
+        <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">main</span><span class="token punctuation">(</span>String<span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span><span class="token punctuation">{</span>
+            <span class="token keyword">final</span> Object lock <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Object</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+            Thread thread1 <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Thread</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">OutputThread</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span> lock<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            Thread thread2 <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Thread</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">OutputThread</span><span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">,</span> lock<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+            thread1<span class="token punctuation">.</span><span class="token function">start</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            thread2<span class="token punctuation">.</span><span class="token function">start</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+
+    <span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<blockquote>
+<p>这是一个轮询打印数字的多线程演示，为何lock先wait再notifyAll不会打印任何东西，而必须先notify才行呢？</p>
+</blockquote>
+<blockquote>
+<p>分析：如果先wait，那线程1 2先后启动，然后都wait了那这样线程1 2都会等待另一个线程来notify。<br>但是显然这个线程3是不存在的，这样就没人来唤醒这两个等待中的线程，所以wait之后的代码便不会再执行了.</p>
+</blockquote>
+<h2 id="使用-例子-2"><a href="#使用-例子-2" class="headerlink" title="使用-例子-2"></a><a href="#使用-例子-2" title="使用-例子-2"></a>使用-例子-2</h2><blockquote>
+<p>再来看下面一个简单的例子</p>
+</blockquote>
+<blockquote>
+<p>WaitThread只负责wait然后执行业务代码</p>
+</blockquote>
+<pre class="line-numbers language-java"><code class="language-java">    <span class="token keyword">package</span> com<span class="token punctuation">.</span>sefon<span class="token punctuation">.</span>gateway<span class="token punctuation">;</span>
+
+    <span class="token comment" spellcheck="true">/**
+    * @Description:    
+    * @author: jackromer
+    * @version: 1.0, Apr 4, 2019
+    */</span>
+
+    <span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">WaitThread</span> <span class="token keyword">implements</span> <span class="token class-name">Runnable</span> <span class="token punctuation">{</span>
+
+
+        <span class="token keyword">private</span> <span class="token keyword">int</span> num<span class="token punctuation">;</span>
+        <span class="token keyword">private</span> Object lock<span class="token punctuation">;</span>
+
+        <span class="token keyword">public</span> <span class="token function">WaitThread</span><span class="token punctuation">(</span><span class="token keyword">int</span> num<span class="token punctuation">,</span> Object lock<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token keyword">super</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token keyword">this</span><span class="token punctuation">.</span>num <span class="token operator">=</span> num<span class="token punctuation">;</span>
+            <span class="token keyword">this</span><span class="token punctuation">.</span>lock <span class="token operator">=</span> lock<span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+
+        <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">run</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token keyword">try</span> <span class="token punctuation">{</span>
+                <span class="token keyword">synchronized</span><span class="token punctuation">(</span>lock<span class="token punctuation">)</span><span class="token punctuation">{</span>
+                    System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>Thread<span class="token punctuation">.</span><span class="token function">currentThread</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">getName</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">+</span> <span class="token string">" :wait for notify"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+                    lock<span class="token punctuation">.</span><span class="token function">wait</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token comment" spellcheck="true">//wait调用后, wait之后的代码就暂时不会再执行了, 必须等到其他线程notifyAll, 直到当前线程重新在CPU哪里竞争到了object的锁，当前线程的后序代码才会执行 .</span>
+                    System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>Thread<span class="token punctuation">.</span><span class="token function">currentThread</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">getName</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">+</span> <span class="token string">" :i have bean waked up and i get the lock from cpu, i am free ,i will continue to process..., my num is :"</span> <span class="token operator">+</span> num<span class="token punctuation">)</span><span class="token punctuation">;</span>
+                <span class="token punctuation">}</span>
+            <span class="token punctuation">}</span> <span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">InterruptedException</span> e<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+                e<span class="token punctuation">.</span><span class="token function">printStackTrace</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token punctuation">}</span>
+
+        <span class="token punctuation">}</span>
+
+        <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">main</span><span class="token punctuation">(</span>String<span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span> <span class="token keyword">throws</span> InterruptedException <span class="token punctuation">{</span>
+            <span class="token keyword">final</span> Object lock <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Object</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            Thread waitThread1     <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Thread</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">WaitThread</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span> lock<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            Thread waitThread2     <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Thread</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">WaitThread</span><span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">,</span> lock<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            Thread waitThread3     <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Thread</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">WaitThread</span><span class="token punctuation">(</span><span class="token number">3</span><span class="token punctuation">,</span> lock<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            Thread notifyThread <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Thread</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">NotifyThread</span><span class="token punctuation">(</span>lock<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token comment" spellcheck="true">//notifyThread 用来唤醒之前wait的所有线程</span>
+
+            waitThread1<span class="token punctuation">.</span><span class="token function">start</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            waitThread2<span class="token punctuation">.</span><span class="token function">start</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            waitThread3<span class="token punctuation">.</span><span class="token function">start</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            Thread<span class="token punctuation">.</span><span class="token function">sleep</span><span class="token punctuation">(</span><span class="token number">2000</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token comment" spellcheck="true">//此处sleep是为了让wait的三个线程先启动，后面再启动notify线程。</span>
+            notifyThread<span class="token punctuation">.</span><span class="token function">start</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+
+    <span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<blockquote>
+<p>NotifyThread只负责唤醒wait object的所有线程</p>
+</blockquote>
+<pre class="line-numbers language-java"><code class="language-java">    <span class="token keyword">package</span> com<span class="token punctuation">.</span>sefon<span class="token punctuation">.</span>gateway<span class="token punctuation">;</span>
+
+    <span class="token comment" spellcheck="true">/**
+    * @Description:    
+    * @author: jackromer
+    * @version: 1.0, Apr 4, 2019
+    */</span>
+
+    <span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">NotifyThread</span> <span class="token keyword">implements</span> <span class="token class-name">Runnable</span> <span class="token punctuation">{</span>
+
+        <span class="token keyword">private</span> Object lock<span class="token punctuation">;</span>
+        <span class="token keyword">public</span> <span class="token function">NotifyThread</span><span class="token punctuation">(</span>Object lock<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token keyword">super</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token keyword">this</span><span class="token punctuation">.</span>lock <span class="token operator">=</span> lock<span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+
+        <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">run</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span><span class="token comment" spellcheck="true">//用于notify 所有等待此对象的线程</span>
+            <span class="token keyword">synchronized</span><span class="token punctuation">(</span>lock<span class="token punctuation">)</span><span class="token punctuation">{</span>
+                lock<span class="token punctuation">.</span><span class="token function">notifyAll</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token comment" spellcheck="true">//注意，此处notifyAll虽然唤醒了所有等待object的线程，但是不一定按之前线程的先后顺序继续执行，而是谁先去CPU哪里竞争到锁谁就先执行</span>
+                System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"I am notify thread ,i will wake up all threads which are waiting for this object."</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token punctuation">}</span>
+        <span class="token punctuation">}</span>
+
+    <span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<blockquote>
+<p>启动main方法运行后的结果：</p>
+</blockquote>
+<pre class="line-numbers language-java"><code class="language-java">    <span class="token comment" spellcheck="true">//分析：线程执行顺序分别为0 2 1，这三个线程都会等待notify</span>
+    Thread<span class="token operator">-</span><span class="token number">0</span> <span class="token operator">:</span>wait <span class="token keyword">for</span> notify 
+    Thread<span class="token operator">-</span><span class="token number">2</span> <span class="token operator">:</span>wait <span class="token keyword">for</span> notify
+    Thread<span class="token operator">-</span><span class="token number">1</span> <span class="token operator">:</span>wait <span class="token keyword">for</span> notify
+    <span class="token comment" spellcheck="true">//notifyAll线程唤醒了线程1 2 3，1 2 3线程重新去CPU哪里获取执行权限，明显的他们抢到执行权限的顺序为2 3 1</span>
+    I am notify thread <span class="token punctuation">,</span>i will wake up all threads which are waiting <span class="token keyword">for</span> <span class="token keyword">this</span> object<span class="token punctuation">.</span>
+    Thread<span class="token operator">-</span><span class="token number">1</span> <span class="token operator">:</span>i have bean waked up and i get the lock from cpu<span class="token punctuation">,</span> i am free <span class="token punctuation">,</span>i will <span class="token keyword">continue</span> to process<span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">,</span> my num is <span class="token operator">:</span><span class="token number">2</span>
+    Thread<span class="token operator">-</span><span class="token number">2</span> <span class="token operator">:</span>i have bean waked up and i get the lock from cpu<span class="token punctuation">,</span> i am free <span class="token punctuation">,</span>i will <span class="token keyword">continue</span> to process<span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">,</span> my num is <span class="token operator">:</span><span class="token number">3</span>
+    Thread<span class="token operator">-</span><span class="token number">0</span> <span class="token operator">:</span>i have bean waked up and i get the lock from cpu<span class="token punctuation">,</span> i am free <span class="token punctuation">,</span>i will <span class="token keyword">continue</span> to process<span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">,</span> my num is <span class="token operator">:</span><span class="token number">1</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="线程的生命周期"><a href="#线程的生命周期" class="headerlink" title="线程的生命周期"></a><a href="#线程的生命周期" title="线程的生命周期"></a>线程的生命周期</h2><p><img src="/images/thread/thread-life.png" alt=""></p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a><a href="#总结" title="总结"></a>总结</h2><blockquote>
+<p>wait notify和notifyAll如果光看注释，可能不那么容易理解，最关键的还是试验一下，会有不一样的收获，但只要记住一点这三个是用来做线程通信的，必须在同步代码块中执行，他们都是object顶层对象的方法，所以你应该清楚这三个和线程没关系而是和对象的锁有关系,而线程只是用到了锁而已关系结构可以理解为这样：<br>OBJECT（只有一个） — LOCK（只有一个） — THREADS（线程可以有很多个，但都必须用同一个对象的同一个锁）。</p>
+</blockquote>
+<blockquote>
+<p>一盏灯， 一片昏黄； <strong>一简书</strong>， 一杯淡茶。 守着那一份淡定， 品读属于自己的寂寞。 保持淡定， 才能欣赏到最美丽的风景！ 保持淡定， 人生从此不再寂寞。</p>
+</blockquote>
+<hr>
+<script>
+        document.querySelectorAll('.github-emoji')
+          .forEach(el => {
+            if (!el.dataset.src) { return; }
+            const img = document.createElement('img');
+            img.style = 'display:none !important;';
+            img.src = el.dataset.src;
+            img.addEventListener('error', () => {
+              img.remove();
+              el.style.color = 'inherit';
+              el.style.backgroundImage = 'none';
+              el.style.background = 'none';
+            });
+            img.addEventListener('load', () => {
+              img.remove();
+            });
+            document.body.appendChild(img);
+          });
+      </script>
+            </div>
+            <hr/>
+
+            
+            <style>
+    #reward {
+        margin: 40px 0;
+        text-align: center;
+    }
+
+    #reward .reward-link {
+        font-size: 1.88rem;
+    }
+
+    #reward .btn-floating:hover {
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2), 0 5px 15px rgba(0, 0, 0, 0.2);
+    }
+
+    #rewardModal {
+        width: 320px;
+        height: 350px;
+    }
+
+    #rewardModal .reward-title {
+        margin: 15px auto;
+        padding-bottom: 5px;
+    }
+
+    #rewardModal .modal-content {
+        padding: 10px;
+    }
+
+    #rewardModal .close {
+        position: absolute;
+        right: 15px;
+        top: 15px;
+        color: rgba(0, 0, 0, 0.5);
+        font-size: 1.3rem;
+        line-height: 20px;
+        cursor: pointer;
+    }
+
+    #rewardModal .close:hover {
+        color: #ef5350;
+        transform: scale(1.3);
+        -moz-transform:scale(1.3);
+        -webkit-transform:scale(1.3);
+        -o-transform:scale(1.3);
+    }
+
+    #rewardModal .reward-tabs {
+        margin: 0 auto;
+        width: 210px;
+    }
+
+    .reward-tabs .tabs {
+        height: 38px;
+        margin: 10px auto;
+        padding-left: 0;
+    }
+
+    .reward-content ul {
+        padding-left: 0 !important;
+    }
+
+    .reward-tabs .tabs .tab {
+        height: 38px;
+        line-height: 38px;
+    }
+
+    .reward-tabs .tab a {
+        color: #fff;
+        background-color: #ccc;
+    }
+
+    .reward-tabs .tab a:hover {
+        background-color: #ccc;
+        color: #fff;
+    }
+
+    .reward-tabs .wechat-tab .active {
+        color: #fff !important;
+        background-color: #22AB38 !important;
+    }
+
+    .reward-tabs .alipay-tab .active {
+        color: #fff !important;
+        background-color: #019FE8 !important;
+    }
+
+    .reward-tabs .reward-img {
+        width: 210px;
+        height: 210px;
+    }
+</style>
+
+<div id="reward">
+    <a href="#rewardModal" class="reward-link modal-trigger btn-floating btn-large waves-effect waves-light red">赏</a>
+
+    <!-- Modal Structure -->
+    <div id="rewardModal" class="modal">
+        <div class="modal-content">
+            <a class="close modal-close"><i class="fa fa-close"></i></a>
+            <h4 class="reward-title">你的赏识是我前进的动力</h4>
+            <div class="reward-content">
+                <div class="reward-tabs">
+                    <ul class="tabs row">
+                        <li class="tab col s6 alipay-tab waves-effect waves-light"><a href="#alipay">支付宝</a></li>
+                        <li class="tab col s6 wechat-tab waves-effect waves-light"><a href="#wechat">微 信</a></li>
+                    </ul>
+                    <div id="alipay">
+                        <img src="/medias/reward/alipay.png" class="reward-img" alt="支付宝打赏二维码">
+                    </div>
+                    <div id="wechat">
+                        <img src="/medias/reward/wechat.png" class="reward-img" alt="微信打赏二维码">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function () {
+        $('.tabs').tabs();
+    });
+</script>
+            
+
+            <link rel="stylesheet" type="text/css" href="/libs/share/css/share.min.css">
+
+<div id="article-share">
+    
+    <div class="social-share" data-disabled="qzone, qq, weibo, douban"></div>
+    
+</div>
+
+<script src="/libs/share/js/social-share.min.js"></script>
+
+            
+
+    <div class="reprint" id="reprint-statement">
+        <p class="reprint-tip">
+            <i class="fa fa-exclamation-triangle"></i>&nbsp;&nbsp;
+            <span>Reprint policy</span>
+        </p>
+        
+            <div class="center-align">
+                <a rel="license" href="https://creativecommons.org/licenses/by/4.0/">
+                    <img alt=""
+                         style="border-width:0"
+                         src="https://i.creativecommons.org/l/by/4.0/88x31.png"/>
+                </a>
+            </div>
+            <br/>
+            <span xmlns:dct="http://purl.org/dc/terms/" href="http://purl.org/dc/dcmitype/Text"
+                  property="dct:title" rel="dct:type">
+                    《java-wait-and-notify使用》
+                </span> by
+            <a xmlns:cc="http://creativecommons.org/ns#" href="/2019/08/27/java-wait-and-notify使用/" property="cc:attributionName"
+               rel="cc:attributionURL">
+                jackromer
+            </a> is licensed under a
+            <a rel="license" href="https://creativecommons.org/licenses/by/4.0/">
+                Creative Commons Attribution 4.0 International License
+            </a> 
+        
+    </div>
+
+    <script async defer>
+      document.addEventListener("copy", function (e) {
+        let toastHTML = '<span>Copied successfully, please follow the reprint policy of this article</span><button class="btn-flat toast-action" onclick="navToReprintStatement()" style="font-size: smaller">more</a>';
+        M.toast({html: toastHTML})
+      });
+
+      function navToReprintStatement() {
+        $("html, body").animate({scrollTop: $("#reprint-statement").offset().top - 80}, 800);
+      }
+    </script>
+
+
+        </div>
+    </div>
+
+    
+        <link rel="stylesheet" href="/libs/gitalk/gitalk.css">
+<link rel="stylesheet" href="/css/my-gitalk.css">
+
+<div class="card gitalk-card" data-aos="fade-up">
+    <div id="gitalk-container" class="card-content"></div>
+</div>
+
+<script src="/libs/gitalk/gitalk.min.js"></script>
+<script>
+    let gitalk = new Gitalk({
+        clientID: '034ed228151af1a154d9',
+        clientSecret: 'c7be1e2628ceb41e81648bff31633a31b005c2fa',
+        repo: 'jackromer.github.io',
+        owner: 'jackromer',
+        admin: "jackromer",
+        id: '2019-08-27T10-55-23',
+        distractionFreeMode: false  // Facebook-like distraction free mode
+    });
+
+    gitalk.render('gitalk-container');
+</script>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+<article id="prenext-posts" class="prev-next articles">
+    <div class="row article-row">
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge left-badge text-color">
+                <i class="fa fa-chevron-left"></i>&nbsp;Previous</div>
+            <div class="card">
+                <a href="/2019/08/27/java锁分类和说明/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/scienceFiction/2.jpg" class="responsive-img" alt="java锁分类和说明">
+                        
+                        <span class="card-title">java锁分类和说明</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+概述
+本文主要介绍JAVA的锁分类和简单使用
+
+锁分类
+其实对于 Java 锁的分类没有严格意义的规则，我们常说的分类一般都是依据锁的特性、锁的设计、锁的状态等进行归纳整理的，大概分为以下几种。
+
+
+公平锁，非公平锁
+
+
+可重入锁
+
+
+互
+                        
+                    </div>
+                    <div class="publish-info">
+                        <span class="publish-date">
+                            <i class="fa fa-clock-o fa-fw icon-date"></i>2019-08-27
+                        </span>
+                        <span class="publish-author">
+                            
+                            <i class="fa fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/lock/" class="post-category" target="_blank">
+                                    lock
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/java/" target="_blank">
+                        <span class="chip bg-color">java</span>
+                    </a>
+                    
+                    <a href="/tags/thread/" target="_blank">
+                        <span class="chip bg-color">thread</span>
+                    </a>
+                    
+                    <a href="/tags/lock/" target="_blank">
+                        <span class="chip bg-color">lock</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                Next&nbsp;<i class="fa fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/2019/08/27/spring-cloud简介和核心组件简介/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/scienceFiction/4.jpg" class="responsive-img" alt="spring-cloud简介和核心组件简介">
+                        
+                        <span class="card-title">spring-cloud简介和核心组件简介</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            概述
+本文主要介绍 spring cloud 以及其相关的核心组件简介，对 spring cloud 有一个比较简明清晰的认识。
+
+组件简介spring cloud Eureka
+Spring Cloud Eureka 是 Spring C
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="fa fa-clock-o fa-fw icon-date"></i>2019-08-27
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fa fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/spring/" class="post-category" target="_blank">
+                                    spring
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/java/" target="_blank">
+                        <span class="chip bg-color">java</span>
+                    </a>
+                    
+                    <a href="/tags/spring-cloud/" target="_blank">
+                        <span class="chip bg-color">spring-cloud</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+    </div>
+</article>
+</div>
+
+
+
+    </div>
+    <div id="toc-aside" class="expanded col l3 hide-on-med-and-down">
+        <div class="toc-widget">
+            <div class="toc-title"><i class="fa fa-list-alt"></i>&nbsp;&nbsp;目录</div>
+            <div id="toc-content"></div>
+        </div>
+    </div>
+</div>
+
+<!-- TOC 悬浮按钮. -->
+
+<div id="floating-toc-btn" class="hide-on-med-and-down">
+    <a class="btn-floating btn-large bg-color">
+        <i class="fa fa-list"></i>
+    </a>
+</div>
+
+
+<script src="/libs/tocbot/tocbot.min.js"></script>
+<script>
+    $(function () {
+        tocbot.init({
+            tocSelector: '#toc-content',
+            contentSelector: '#articleContent',
+            headingsOffset: -($(window).height() * 0.4 - 45),
+            // headingsOffset: -205,
+            headingSelector: 'h2, h3, h4'
+        });
+
+        // modify the toc link href to support Chinese.
+        let i = 0;
+        let tocHeading = 'toc-heading-';
+        $('#toc-content a').each(function () {
+            $(this).attr('href', '#' + tocHeading + (++i));
+        });
+
+        // modify the heading title id to support Chinese.
+        i = 0;
+        $('#articleContent').children('h2, h3, h4').each(function () {
+            $(this).attr('id', tocHeading + (++i));
+        });
+
+        // Set scroll toc fixed.
+        let tocHeight = parseInt($(window).height() * 0.4 - 64);
+        let $tocWidget = $('.toc-widget');
+        $(window).scroll(function () {
+            let scroll = $(window).scrollTop();
+            /* add post toc fixed. */
+            if (scroll > tocHeight) {
+                $tocWidget.addClass('toc-fixed');
+            } else {
+                $tocWidget.removeClass('toc-fixed');
+            }
+        });
+
+        
+        /* 修复文章卡片 div 的宽度. */
+        let fixPostCardWidth = function (srcId, targetId) {
+            let srcDiv = $('#' + srcId);
+            if (srcDiv.length === 0) {
+                return;
+            }
+
+            let w = srcDiv.width();
+            if (w >= 450) {
+                w = w + 21;
+            } else if (w >= 350 && w < 450) {
+                w = w + 18;
+            } else if (w >= 300 && w < 350) {
+                w = w + 16;
+            } else {
+                w = w + 14;
+            }
+            $('#' + targetId).width(w);
+        };
+
+        // 切换TOC目录展开收缩的相关操作.
+        const expandedClass = 'expanded';
+        let $tocAside = $('#toc-aside');
+        let $mainContent = $('#main-content');
+        $('#floating-toc-btn .btn-floating').click(function () {
+            if ($tocAside.hasClass(expandedClass)) {
+                $tocAside.removeClass(expandedClass).slideUp(500);
+                $mainContent.removeClass('l9');
+            } else {
+                $tocAside.addClass(expandedClass).slideDown(500);
+                $mainContent.addClass('l9');
+            }
+            fixPostCardWidth('artDetail', 'prenext-posts');
+        });
+        
+    });
+</script>
+    
+
+</main>
+
+
+<footer class="page-footer bg-color">
+    <div class="container row center-align">
+        <div class="col s12 m8 l8 copy-right">
+            本站由&copy;<a href="https://github.com/JACKROMER/jackromer.github.io/" target="_blank">jackromer</a>基于
+            <a href="https://hexo.io/" target="_blank">Hexo</a> 的
+            <a href="https://github.com/blinkfox/hexo-theme-matery" target="_blank">hexo-theme-matery</a>主题搭建.
+
+            
+
+            
+			
+                <br>
+                
+                <span id="busuanzi_container_site_pv">
+                    <i class="fa fa-heart-o"></i>
+                    本站总访问量 <span id="busuanzi_value_site_pv" class="white-color"></span>
+                </span>
+                
+                
+                <span id="busuanzi_container_site_uv">
+                    <i class="fa fa-users"></i>
+                    次,&nbsp;访客数 <span id="busuanzi_value_site_uv" class="white-color"></span> 人.
+                </span>
+                
+            
+        </div>
+        <div class="col s12 m4 l4 social-link social-statis">
+    <a href="https://github.com/JACKROMER" class="tooltipped" target="_blank" data-tooltip="访问我的GitHub" data-position="top" data-delay="50">
+        <i class="fa fa-github"></i>
+    </a>
+
+
+
+    <a href="mailto:jackromer@163.com" class="tooltipped" target="_blank" data-tooltip="邮件联系我" data-position="top" data-delay="50">
+        <i class="fa fa-envelope-open"></i>
+    </a>
+
+
+
+    <a href="tencent://AddContact/?fromId=50&fromSubId=1&subcmd=all&uin=943655387" class="tooltipped" data-tooltip="QQ联系我: 943655387" data-position="top" data-delay="50">
+        <i class="fa fa-qq"></i>
+    </a>
+
+
+
+    <a href="/atom.xml" class="tooltipped" target="_blank" data-tooltip="RSS 订阅" data-position="top" data-delay="50">
+        <i class="fa fa-rss"></i>
+    </a>
+</div>
+    </div>
+</footer>
+
+<div class="progress-bar"></div>
+
+
+<!-- 搜索遮罩框 -->
+<div id="searchModal" class="modal">
+    <div class="modal-content">
+        <div class="search-header">
+            <span class="title"><i class="fa fa-search"></i>&nbsp;&nbsp;Search</span>
+            <input type="search" id="searchInput" name="s" placeholder="Please enter a search keyword"
+                   class="search-input">
+        </div>
+        <div id="searchResult"></div>
+    </div>
+</div>
+
+<script src="/js/search.js"></script>
+<script type="text/javascript">
+$(function () {
+    searchFunc("/" + "search.xml", 'searchInput', 'searchResult');
+});
+</script>
+<!-- 回到顶部按钮 -->
+<div id="backTop" class="top-scroll">
+    <a class="btn-floating btn-large waves-effect waves-light" href="#!">
+        <i class="fa fa-angle-up"></i>
+    </a>
+</div>
+
+
+<script src="/libs/materialize/materialize.min.js"></script>
+<script src="/libs/masonry/masonry.pkgd.min.js"></script>
+<script src="/libs/aos/aos.js"></script>
+<script src="/libs/scrollprogress/scrollProgress.min.js"></script>
+<script src="/libs/lightGallery/js/lightgallery-all.min.js"></script>
+<script src="/js/matery.js"></script>
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+
+
+
+    <script src="/libs/others/clicklove.js"></script>
+
+
+    <script async src="/libs/others/busuanzi.pure.mini.js"></script>
+
+
+</body>
+</html>

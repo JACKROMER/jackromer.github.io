@@ -1,0 +1,577 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>Jack Romer</title>
+  
+  <subtitle>Jack romer&#39;s blog.</subtitle>
+  <link href="/atom.xml" rel="self"/>
+  
+  <link href="http://yoursite.com/"/>
+  <updated>2022-01-22T15:11:37.907Z</updated>
+  <id>http://yoursite.com/</id>
+  
+  <author>
+    <name>jackromer</name>
+    
+  </author>
+  
+  <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>关于异常处理，有话要say?</title>
+    <link href="http://yoursite.com/2021/01/11/%E5%85%B3%E4%BA%8E%E5%BC%82%E5%B8%B8%E5%A4%84%E7%90%86%EF%BC%8C%E6%9C%89%E8%AF%9D%E8%A6%81say/"/>
+    <id>http://yoursite.com/2021/01/11/关于异常处理，有话要say/</id>
+    <published>2021-01-11T07:35:43.000Z</published>
+    <updated>2022-01-22T15:11:37.907Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h2 id=&quot;概述&quot;&gt;&lt;a href=&quot;#概述&quot; class=&quot;headerlink&quot; title=&quot;概述&quot;&gt;&lt;/a&gt;&lt;a href=&quot;#概述&quot; title=&quot;概述&quot;&gt;&lt;/a&gt;概述&lt;/h2&gt;&lt;blockquote&gt;
+&lt;p&gt;作为一名JAVA开发者，开发已经4年了,
+        
+      
+    
+    </summary>
+    
+    
+      <category term="java" scheme="http://yoursite.com/tags/java/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>SomeThingNew</title>
+    <link href="http://yoursite.com/2020/08/19/SomeThingNew/"/>
+    <id>http://yoursite.com/2020/08/19/SomeThingNew/</id>
+    <published>2020-08-19T08:36:26.000Z</published>
+    <updated>2022-01-22T15:11:37.900Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;hr&gt;
+&lt;h2 id=&quot;概述&quot;&gt;&lt;a href=&quot;#概述&quot; class=&quot;headerlink&quot; title=&quot;概述&quot;&gt;&lt;/a&gt;&lt;a href=&quot;#概述&quot;
+        
+      
+    
+    </summary>
+    
+      <category term="linux" scheme="http://yoursite.com/categories/linux/"/>
+    
+    
+      <category term="forward" scheme="http://yoursite.com/tags/forward/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>快速提交代码脚本</title>
+    <link href="http://yoursite.com/2020/08/10/%E5%BF%AB%E9%80%9F%E6%8F%90%E4%BA%A4%E4%BB%A3%E7%A0%81%E8%84%9A%E6%9C%AC/"/>
+    <id>http://yoursite.com/2020/08/10/快速提交代码脚本/</id>
+    <published>2020-08-10T08:55:51.000Z</published>
+    <updated>2022-01-22T15:11:37.908Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h2 id=&quot;概述&quot;&gt;&lt;a href=&quot;#概述&quot; class=&quot;headerlink&quot; title=&quot;概述&quot;&gt;&lt;/a&gt;&lt;a href=&quot;#概述&quot; title=&quot;概述&quot;&gt;&lt;/a&gt;概述&lt;/h2&gt;&lt;blockquote&gt;
+&lt;p&gt;这是一篇关于快速提交代码的脚本，VERY
+        
+      
+    
+    </summary>
+    
+    
+      <category term="shell" scheme="http://yoursite.com/tags/shell/"/>
+    
+      <category term="windows" scheme="http://yoursite.com/tags/windows/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>vue-table添加自定义行背景色</title>
+    <link href="http://yoursite.com/2020/06/30/vue-table%E6%B7%BB%E5%8A%A0%E8%87%AA%E5%AE%9A%E4%B9%89%E8%A1%8C%E8%83%8C%E6%99%AF%E8%89%B2/"/>
+    <id>http://yoursite.com/2020/06/30/vue-table添加自定义行背景色/</id>
+    <published>2020-06-30T09:07:36.000Z</published>
+    <updated>2022-01-22T15:11:37.906Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;hr&gt;
+&lt;h2 id=&quot;简介&quot;&gt;&lt;a href=&quot;#简介&quot; class=&quot;headerlink&quot; title=&quot;简介&quot;&gt;&lt;/a&gt;简介&lt;/h2&gt;&lt;blockquote&gt;
+&lt;p&gt;本文主要介绍vue table
+        
+      
+    
+    </summary>
+    
+    
+      <category term="VUE" scheme="http://yoursite.com/tags/VUE/"/>
+    
+      <category term="element-ui" scheme="http://yoursite.com/tags/element-ui/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>使用swwager生成离线API文档</title>
+    <link href="http://yoursite.com/2020/06/09/%E4%BD%BF%E7%94%A8swwager%E7%94%9F%E6%88%90%E7%A6%BB%E7%BA%BFAPI%E6%96%87%E6%A1%A3/"/>
+    <id>http://yoursite.com/2020/06/09/使用swwager生成离线API文档/</id>
+    <published>2020-06-09T02:40:12.000Z</published>
+    <updated>2022-01-22T15:11:37.907Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h2 id=&quot;概述&quot;&gt;&lt;a href=&quot;#概述&quot; class=&quot;headerlink&quot; title=&quot;概述&quot;&gt;&lt;/a&gt;&lt;a href=&quot;#概述&quot;
+        
+      
+    
+    </summary>
+    
+    
+      <category term="spring-boot" scheme="http://yoursite.com/tags/spring-boot/"/>
+    
+      <category term="swagger" scheme="http://yoursite.com/tags/swagger/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>常用问题整理</title>
+    <link href="http://yoursite.com/2020/06/08/%E5%B8%B8%E7%94%A8%E9%97%AE%E9%A2%98%E6%95%B4%E7%90%86/"/>
+    <id>http://yoursite.com/2020/06/08/常用问题整理/</id>
+    <published>2020-06-08T02:50:31.000Z</published>
+    <updated>2022-01-22T15:11:37.908Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h2 id=&quot;概述&quot;&gt;&lt;a href=&quot;#概述&quot; class=&quot;headerlink&quot; title=&quot;概述&quot;&gt;&lt;/a&gt;&lt;a href=&quot;#概述&quot;
+        
+      
+    
+    </summary>
+    
+    
+      <category term="java" scheme="http://yoursite.com/tags/java/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>mybatis-plus实现自定义分页</title>
+    <link href="http://yoursite.com/2020/05/06/mybatis-plus%E8%87%AA%E5%AE%9A%E4%B9%89%E5%88%86%E9%A1%B5/"/>
+    <id>http://yoursite.com/2020/05/06/mybatis-plus自定义分页/</id>
+    <published>2020-05-06T03:04:15.000Z</published>
+    <updated>2022-01-22T15:11:37.903Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h2 id=&quot;概述&quot;&gt;&lt;a href=&quot;#概述&quot; class=&quot;headerlink&quot; title=&quot;概述&quot;&gt;&lt;/a&gt;概述&lt;/h2&gt;&lt;blockquote&gt;
+&lt;p&gt;本文主要介绍如何使用mybatis-plus实现复杂自定义分页&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h2
+        
+      
+    
+    </summary>
+    
+    
+      <category term="spring boot" scheme="http://yoursite.com/tags/spring-boot/"/>
+    
+      <category term="mybatis-plus" scheme="http://yoursite.com/tags/mybatis-plus/"/>
+    
+      <category term="pagehelper" scheme="http://yoursite.com/tags/pagehelper/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>spring boot使用junit Test</title>
+    <link href="http://yoursite.com/2020/03/19/spring-boot%E4%BD%BF%E7%94%A8junit-Test/"/>
+    <id>http://yoursite.com/2020/03/19/spring-boot使用junit-Test/</id>
+    <published>2020-03-19T06:04:26.000Z</published>
+    <updated>2022-01-22T15:11:37.905Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h2 id=&quot;概述&quot;&gt;&lt;a href=&quot;#概述&quot; class=&quot;headerlink&quot; title=&quot;概述&quot;&gt;&lt;/a&gt;概述&lt;/h2&gt;&lt;blockquote&gt;
+&lt;p&gt;本文主要介绍如何在spring
+        
+      
+    
+    </summary>
+    
+    
+      <category term="java" scheme="http://yoursite.com/tags/java/"/>
+    
+      <category term="spring boot" scheme="http://yoursite.com/tags/spring-boot/"/>
+    
+      <category term="junit" scheme="http://yoursite.com/tags/junit/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>触发器实现业务日志等功能</title>
+    <link href="http://yoursite.com/2020/03/17/%E8%A7%A6%E5%8F%91%E5%99%A8%E5%AE%9E%E7%8E%B0%E4%B8%9A%E5%8A%A1%E6%97%A5%E5%BF%97%E7%AD%89%E5%8A%9F%E8%83%BD/"/>
+    <id>http://yoursite.com/2020/03/17/触发器实现业务日志等功能/</id>
+    <published>2020-03-17T03:26:29.000Z</published>
+    <updated>2022-01-22T15:11:37.910Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;ul&gt;
+&lt;li&gt;mysql&lt;/li&gt;
+&lt;li&gt;触发器&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&quot;概述&quot;&gt;&lt;a href=&quot;#概述&quot; class=&quot;headerlink&quot; title=&quot;概述&quot;&gt;&lt;/a&gt;&lt;a href=&quot;#概述&quot;
+        
+      
+    
+    </summary>
+    
+    
+      <category term="触发器" scheme="http://yoursite.com/tags/%E8%A7%A6%E5%8F%91%E5%99%A8/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>查询数据库表结构以及聚合拼接SQL查询</title>
+    <link href="http://yoursite.com/2019/12/13/%E6%9F%A5%E8%AF%A2%E6%95%B0%E6%8D%AE%E5%BA%93%E8%A1%A8%E7%BB%93%E6%9E%84%E4%BB%A5%E5%8F%8A%E8%81%9A%E5%90%88%E6%8B%BC%E6%8E%A5SQL%E6%9F%A5%E8%AF%A2/"/>
+    <id>http://yoursite.com/2019/12/13/查询数据库表结构以及聚合拼接SQL查询/</id>
+    <published>2019-12-13T07:53:06.000Z</published>
+    <updated>2022-01-22T15:11:37.909Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;hr&gt;
+&lt;h2 id=&quot;概述&quot;&gt;&lt;a href=&quot;#概述&quot; class=&quot;headerlink&quot; title=&quot;概述&quot;&gt;&lt;/a&gt;&lt;a href=&quot;#概述&quot;
+        
+      
+    
+    </summary>
+    
+      <category term="java" scheme="http://yoursite.com/categories/java/"/>
+    
+    
+      <category term="java" scheme="http://yoursite.com/tags/java/"/>
+    
+      <category term="red-black-tree" scheme="http://yoursite.com/tags/red-black-tree/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>cone edit 根据数据库数据快速创建类和文档</title>
+    <link href="http://yoursite.com/2019/10/16/cone-edit-%E6%A0%B9%E6%8D%AE%E6%95%B0%E6%8D%AE%E5%BA%93%E6%95%B0%E6%8D%AE%E5%BF%AB%E9%80%9F%E5%88%9B%E5%BB%BA%E7%B1%BB%E5%92%8C%E6%96%87%E6%A1%A3/"/>
+    <id>http://yoursite.com/2019/10/16/cone-edit-根据数据库数据快速创建类和文档/</id>
+    <published>2019-10-16T09:38:34.000Z</published>
+    <updated>2022-01-22T15:11:37.901Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h2 id=&quot;简介&quot;&gt;&lt;a href=&quot;#简介&quot; class=&quot;headerlink&quot; title=&quot;简介&quot;&gt;&lt;/a&gt;简介&lt;/h2&gt;&lt;blockquote&gt;
+&lt;p&gt;最近整理接口对接文档，发现复制粘贴太麻烦了，还是祭出coney
+        
+      
+    
+    </summary>
+    
+      <category term="conyEdit" scheme="http://yoursite.com/categories/conyEdit/"/>
+    
+    
+      <category term="conyEdit" scheme="http://yoursite.com/tags/conyEdit/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>spring-boot启动加载数据库数据</title>
+    <link href="http://yoursite.com/2019/09/27/spring-boot%E5%90%AF%E5%8A%A8%E5%8A%A0%E8%BD%BD%E6%95%B0%E6%8D%AE%E5%BA%93%E6%95%B0%E6%8D%AE/"/>
+    <id>http://yoursite.com/2019/09/27/spring-boot启动加载数据库数据/</id>
+    <published>2019-09-27T03:40:32.000Z</published>
+    <updated>2022-01-22T15:11:37.905Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h2 id=&quot;概述&quot;&gt;&lt;a href=&quot;#概述&quot; class=&quot;headerlink&quot; title=&quot;概述&quot;&gt;&lt;/a&gt;概述&lt;/h2&gt;&lt;blockquote&gt;
+&lt;p&gt;本文主要介绍如何在spring
+        
+      
+    
+    </summary>
+    
+      <category term="spring-boot" scheme="http://yoursite.com/categories/spring-boot/"/>
+    
+    
+      <category term="java" scheme="http://yoursite.com/tags/java/"/>
+    
+      <category term="spring-boot" scheme="http://yoursite.com/tags/spring-boot/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>sql优化和SQL特殊用法</title>
+    <link href="http://yoursite.com/2019/09/05/sql%E4%BC%98%E5%8C%96%E5%92%8CSQL%E7%89%B9%E6%AE%8A%E7%94%A8%E6%B3%95/"/>
+    <id>http://yoursite.com/2019/09/05/sql优化和SQL特殊用法/</id>
+    <published>2019-09-05T08:52:34.000Z</published>
+    <updated>2022-01-22T15:11:37.906Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h2 id=&quot;简介&quot;&gt;&lt;a href=&quot;#简介&quot; class=&quot;headerlink&quot;
+        
+      
+    
+    </summary>
+    
+      <category term="sql" scheme="http://yoursite.com/categories/sql/"/>
+    
+    
+      <category term="mysql" scheme="http://yoursite.com/tags/mysql/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>3秒建立枚举类</title>
+    <link href="http://yoursite.com/2019/09/05/3%E7%A7%92%E5%BB%BA%E7%AB%8B%E6%9E%9A%E4%B8%BE%E7%B1%BB/"/>
+    <id>http://yoursite.com/2019/09/05/3秒建立枚举类/</id>
+    <published>2019-09-05T07:42:37.000Z</published>
+    <updated>2022-01-22T15:11:37.892Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h2 id=&quot;枚举烦恼风&quot;&gt;&lt;a href=&quot;#枚举烦恼风&quot; class=&quot;headerlink&quot;
+        
+      
+    
+    </summary>
+    
+      <category term="enum" scheme="http://yoursite.com/categories/enum/"/>
+    
+    
+      <category term="java" scheme="http://yoursite.com/tags/java/"/>
+    
+      <category term="enum" scheme="http://yoursite.com/tags/enum/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>JAVA调用Google翻译api</title>
+    <link href="http://yoursite.com/2019/09/05/JAVA%E8%B0%83%E7%94%A8Google%E7%BF%BB%E8%AF%91api/"/>
+    <id>http://yoursite.com/2019/09/05/JAVA调用Google翻译api/</id>
+    <published>2019-09-05T06:08:53.000Z</published>
+    <updated>2022-01-22T15:11:37.897Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h2 id=&quot;Java调用Google翻译api，支持多种语言翻译。&quot;&gt;&lt;a href=&quot;#Java调用Google翻译api，支持多种语言翻译。&quot; class=&quot;headerlink&quot;
+        
+      
+    
+    </summary>
+    
+      <category term="translate" scheme="http://yoursite.com/categories/translate/"/>
+    
+    
+      <category term="java" scheme="http://yoursite.com/tags/java/"/>
+    
+      <category term="translate" scheme="http://yoursite.com/tags/translate/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>通过枚举名称和排序快速建立枚举类</title>
+    <link href="http://yoursite.com/2019/09/04/%E9%80%9A%E8%BF%87%E6%9E%9A%E4%B8%BE%E5%90%8D%E7%A7%B0%E5%92%8C%E6%8E%92%E5%BA%8F%E5%BF%AB%E9%80%9F%E5%BB%BA%E7%AB%8B%E6%9E%9A%E4%B8%BE%E7%B1%BB/"/>
+    <id>http://yoursite.com/2019/09/04/通过枚举名称和排序快速建立枚举类/</id>
+    <published>2019-09-04T01:51:00.000Z</published>
+    <updated>2022-01-22T15:11:37.910Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h2 id=&quot;使用coneyEdit-快速建立枚举类&quot;&gt;&lt;a href=&quot;#使用coneyEdit-快速建立枚举类&quot; class=&quot;headerlink&quot; title=&quot;使用coneyEdit 快速建立枚举类&quot;&gt;&lt;/a&gt;使用coneyEdit 快速建立枚举类&lt;/h2&gt;&lt;h3
+        
+      
+    
+    </summary>
+    
+      <category term="conyEdit" scheme="http://yoursite.com/categories/conyEdit/"/>
+    
+    
+      <category term="conyEdit" scheme="http://yoursite.com/tags/conyEdit/"/>
+    
+      <category term="Enum" scheme="http://yoursite.com/tags/Enum/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>coneyEdit使用笔记</title>
+    <link href="http://yoursite.com/2019/09/03/coneyEdit%E4%BD%BF%E7%94%A8%E7%AC%94%E8%AE%B0/"/>
+    <id>http://yoursite.com/2019/09/03/coneyEdit使用笔记/</id>
+    <published>2019-09-03T11:35:04.000Z</published>
+    <updated>2022-01-22T15:11:37.902Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h2 id=&quot;简介&quot;&gt;&lt;a href=&quot;#简介&quot; class=&quot;headerlink&quot; title=&quot;简介&quot;&gt;&lt;/a&gt;简介&lt;/h2&gt;&lt;p&gt;coney edit 是一个很好的协助开发的软件尤其是数据批量处理上有很强大的功能&lt;/p&gt;
+&lt;h2 id=&quot;使用&quot;&gt;&lt;a
+        
+      
+    
+    </summary>
+    
+      <category term="conyEdit" scheme="http://yoursite.com/categories/conyEdit/"/>
+    
+    
+      <category term="conyEdit" scheme="http://yoursite.com/tags/conyEdit/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>mybatis-使用</title>
+    <link href="http://yoursite.com/2019/09/03/mybatis-%E4%BD%BF%E7%94%A8/"/>
+    <id>http://yoursite.com/2019/09/03/mybatis-使用/</id>
+    <published>2019-09-03T08:26:07.000Z</published>
+    <updated>2022-01-22T15:11:37.904Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;blockquote&gt;
+&lt;p&gt;mybatis很方便，不用像hibernate一样关心太多的关联关系，也不用写JPA&lt;br&gt;本文主要介绍mybatis的一些常用用法和注意事项&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h2 id=&quot;EXAMPLE使用&quot;&gt;&lt;a
+        
+      
+    
+    </summary>
+    
+      <category term="mybatis" scheme="http://yoursite.com/categories/mybatis/"/>
+    
+    
+      <category term="mybatis" scheme="http://yoursite.com/tags/mybatis/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>JDK8多线程并发处理</title>
+    <link href="http://yoursite.com/2019/08/28/JDK8%E5%A4%9A%E7%BA%BF%E7%A8%8B%E5%B9%B6%E5%8F%91%E5%A4%84%E7%90%86/"/>
+    <id>http://yoursite.com/2019/08/28/JDK8多线程并发处理/</id>
+    <published>2019-08-28T06:02:40.000Z</published>
+    <updated>2022-01-22T15:11:37.897Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;blockquote&gt;
+&lt;p&gt;jdk8提供了新的链式编程和多线程并发处理方法，异常统一处理, CompletableFuture。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h2 id=&quot;CompletableFuture&quot;&gt;&lt;a
+        
+      
+    
+    </summary>
+    
+      <category term="JDK8" scheme="http://yoursite.com/categories/JDK8/"/>
+    
+    
+      <category term="java" scheme="http://yoursite.com/tags/java/"/>
+    
+      <category term="thread" scheme="http://yoursite.com/tags/thread/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>lambda处理集合</title>
+    <link href="http://yoursite.com/2019/08/27/lambda%E5%A4%84%E7%90%86%E9%9B%86%E5%90%88/"/>
+    <id>http://yoursite.com/2019/08/27/lambda处理集合/</id>
+    <published>2019-08-27T09:50:38.000Z</published>
+    <updated>2022-01-22T15:11:37.903Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;blockquote&gt;
+&lt;p&gt;java8 lambda表达式利用流处理各种集合&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h1 id=&quot;处理list&quot;&gt;&lt;a href=&quot;#处理list&quot; class=&quot;headerlink&quot;
+        
+      
+    
+    </summary>
+    
+      <category term="lambda" scheme="http://yoursite.com/categories/lambda/"/>
+    
+    
+      <category term="java" scheme="http://yoursite.com/tags/java/"/>
+    
+      <category term="lambda" scheme="http://yoursite.com/tags/lambda/"/>
+    
+  </entry>
+  
+</feed>
