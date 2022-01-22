@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2022-01-22T15:11:37.907Z</updated>
+  <updated>2022-01-22T17:16:43.401Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -15,6 +15,33 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>hello 2022</title>
+    <link href="http://yoursite.com/2022/01/22/hello2022/"/>
+    <id>http://yoursite.com/2022/01/22/hello2022/</id>
+    <published>2022-01-22T03:06:58.000Z</published>
+    <updated>2022-01-22T17:16:43.401Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h2 id=&quot;2022-新的开始&quot;&gt;&lt;a href=&quot;#2022-新的开始&quot; class=&quot;headerlink&quot; title=&quot;2022 新的开始&quot;&gt;&lt;/a&gt;2022 新的开始&lt;/h2&gt;&lt;blockquote&gt;
+&lt;p&gt;2021
+        
+      
+    
+    </summary>
+    
+      <category term="learn" scheme="http://yoursite.com/categories/learn/"/>
+    
+    
+      <category term="manage" scheme="http://yoursite.com/tags/manage/"/>
+    
+  </entry>
   
   <entry>
     <title>关于异常处理，有话要say?</title>
@@ -540,37 +567,6 @@
       <category term="java" scheme="http://yoursite.com/tags/java/"/>
     
       <category term="thread" scheme="http://yoursite.com/tags/thread/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>lambda处理集合</title>
-    <link href="http://yoursite.com/2019/08/27/lambda%E5%A4%84%E7%90%86%E9%9B%86%E5%90%88/"/>
-    <id>http://yoursite.com/2019/08/27/lambda处理集合/</id>
-    <published>2019-08-27T09:50:38.000Z</published>
-    <updated>2022-01-22T15:11:37.903Z</updated>
-    
-    <summary type="html">
-    
-      
-      
-        
-        
-          &lt;blockquote&gt;
-&lt;p&gt;java8 lambda表达式利用流处理各种集合&lt;/p&gt;
-&lt;/blockquote&gt;
-&lt;h1 id=&quot;处理list&quot;&gt;&lt;a href=&quot;#处理list&quot; class=&quot;headerlink&quot;
-        
-      
-    
-    </summary>
-    
-      <category term="lambda" scheme="http://yoursite.com/categories/lambda/"/>
-    
-    
-      <category term="java" scheme="http://yoursite.com/tags/java/"/>
-    
-      <category term="lambda" scheme="http://yoursite.com/tags/lambda/"/>
     
   </entry>
   

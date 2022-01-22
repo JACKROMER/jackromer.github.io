@@ -4,6 +4,31 @@
   
     
     <entry>
+      <title>hello 2022</title>
+      <link href="/2022/01/22/hello2022/"/>
+      <url>/2022/01/22/hello2022/</url>
+      
+        <content type="html"><![CDATA[<h2 id="2022-新的开始"><a href="#2022-新的开始" class="headerlink" title="2022 新的开始"></a>2022 新的开始</h2><blockquote><p>2021 过去几年，收获了很多，也接触了很多人和事，相信缘分，相信自己，2020继续前进。look forward！</p></blockquote><script>        document.querySelectorAll('.github-emoji')          .forEach(el => {            if (!el.dataset.src) { return; }            const img = document.createElement('img');            img.style = 'display:none !important;';            img.src = el.dataset.src;            img.addEventListener('error', () => {              img.remove();              el.style.color = 'inherit';              el.style.backgroundImage = 'none';              el.style.background = 'none';            });            img.addEventListener('load', () => {              img.remove();            });            document.body.appendChild(img);          });      </script>]]></content>
+      
+      
+      <categories>
+          
+          <category> learn </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> manage </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>关于异常处理，有话要say?</title>
       <link href="/2021/01/11/%E5%85%B3%E4%BA%8E%E5%BC%82%E5%B8%B8%E5%A4%84%E7%90%86%EF%BC%8C%E6%9C%89%E8%AF%9D%E8%A6%81say/"/>
       <url>/2021/01/11/%E5%85%B3%E4%BA%8E%E5%BC%82%E5%B8%B8%E5%A4%84%E7%90%86%EF%BC%8C%E6%9C%89%E8%AF%9D%E8%A6%81say/</url>
@@ -770,9 +795,9 @@
       
         <tags>
             
-            <tag> java </tag>
-            
             <tag> https </tag>
+            
+            <tag> java </tag>
             
         </tags>
       
