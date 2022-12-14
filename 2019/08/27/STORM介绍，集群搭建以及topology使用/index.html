@@ -1,0 +1,1200 @@
+<!DOCTYPE HTML>
+<html lang="en">
+
+
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="utf-8">
+    <meta name="keywords" content="STORM介绍，集群搭建以及topology使用, Jack Romer">
+    <meta name="description" content="
+本文主要介绍STORM，以及storm集群的安装和使用
+什么是storm
+Apache Storm是自由开源的分布式实时计算系统，擅长处理海量数据，适用于数据实时处理而非批处理。批处理使用的大多是鼎鼎大名的hadoop或者hive，作为一">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="renderer" content="webkit|ie-stand|ie-comp">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <title>STORM介绍，集群搭建以及topology使用 | Jack Romer</title>
+    <link rel="icon" type="image/jpeg" href="/medias/mine.jpg">
+
+    <link rel="stylesheet" type="text/css" href="/libs/awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/materialize/materialize.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/aos/aos.css">
+    <link rel="stylesheet" type="text/css" href="/libs/animate/animate.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/lightGallery/css/lightgallery.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/matery.css">
+    <link rel="stylesheet" type="text/css" href="/css/my.css">
+    <style type="text/css">
+        
+    </style>
+
+    <script src="/libs/jquery/jquery-2.2.0.min.js"></script>
+<link rel="stylesheet" href="/css/prism-tomorrow.css" type="text/css">
+<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
+
+
+<body>
+
+<header class="navbar-fixed">
+    <nav id="headNav" class="bg-color nav-transparent">
+        <div id="navContainer" class="nav-wrapper container">
+            <div class="brand-logo">
+                <a href="/" class="waves-effect waves-light">
+                    
+                    <img src="/medias/mine.jpg" class="logo-img" alt="LOGO">
+                    
+                    <span class="logo-span">Jack Romer</span>
+                </a>
+            </div>
+            
+
+<a href="#" data-target="mobile-nav" class="sidenav-trigger button-collapse"><i class="fa fa-navicon"></i></a>
+<ul class="right">
+    
+    <li class="hide-on-med-and-down">
+        <a href="/" class="waves-effect waves-light">
+            
+            <i class="fa fa-home"></i>
+            
+            <span>Index</span>
+        </a>
+    </li>
+    
+    <li class="hide-on-med-and-down">
+        <a href="/tags" class="waves-effect waves-light">
+            
+            <i class="fa fa-tags"></i>
+            
+            <span>Tags</span>
+        </a>
+    </li>
+    
+    <li class="hide-on-med-and-down">
+        <a href="/categories" class="waves-effect waves-light">
+            
+            <i class="fa fa-bookmark"></i>
+            
+            <span>Categories</span>
+        </a>
+    </li>
+    
+    <li class="hide-on-med-and-down">
+        <a href="/archives" class="waves-effect waves-light">
+            
+            <i class="fa fa-archive"></i>
+            
+            <span>Archives</span>
+        </a>
+    </li>
+    
+    <li class="hide-on-med-and-down">
+        <a href="/about" class="waves-effect waves-light">
+            
+            <i class="fa fa-user-circle-o"></i>
+            
+            <span>About</span>
+        </a>
+    </li>
+    
+    <li class="hide-on-med-and-down">
+        <a href="/friends" class="waves-effect waves-light">
+            
+            <i class="fa fa-address-book"></i>
+            
+            <span>Friends</span>
+        </a>
+    </li>
+    
+    <li>
+        <a href="#searchModal" class="modal-trigger waves-effect waves-light">
+            <i id="searchIcon" class="fa fa-search" title="Search"></i>
+        </a>
+    </li>
+</ul>
+
+<div id="mobile-nav" class="side-nav sidenav">
+
+    <div class="mobile-head bg-color">
+        
+        <img src="/medias/mine.jpg" class="logo-img circle responsive-img">
+        
+        <div class="logo-name">Jack Romer</div>
+        <div class="logo-desc">
+            
+            See as far away as possible you can, do as firm as possible you can , getting better every day.
+            
+        </div>
+    </div>
+
+    
+
+    <ul class="menu-list mobile-menu-list">
+        
+        <li>
+            <a href="/" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-home"></i>
+                
+                Index
+            </a>
+        </li>
+        
+        <li>
+            <a href="/tags" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-tags"></i>
+                
+                Tags
+            </a>
+        </li>
+        
+        <li>
+            <a href="/categories" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-bookmark"></i>
+                
+                Categories
+            </a>
+        </li>
+        
+        <li>
+            <a href="/archives" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-archive"></i>
+                
+                Archives
+            </a>
+        </li>
+        
+        <li>
+            <a href="/about" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-user-circle-o"></i>
+                
+                About
+            </a>
+        </li>
+        
+        <li>
+            <a href="/friends" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-address-book"></i>
+                
+                Friends
+            </a>
+        </li>
+        
+        
+        <li><div class="divider"></div></li>
+        <li>
+            <a href="https://github.com/JACKROMER" class="waves-effect waves-light" target="_blank">
+                <i class="fa fa-github-square fa-fw"></i>Fork Me
+            </a>
+        </li>
+        
+    </ul>
+</div>
+
+        </div>
+
+        
+            <style>
+    .nav-transparent .github-corner {
+        display: none !important;
+    }
+
+    .github-corner {
+        position: absolute;
+        z-index: 10;
+        top: 0;
+        right: 0;
+        border: 0;
+        transform: scale(1.1);
+    }
+
+    .github-corner svg {
+        color: #0f9d58;
+        fill: #fff;
+        height: 64px;
+        width: 64px;
+    }
+
+    .github-corner:hover .octo-arm {
+        animation: a 0.56s ease-in-out;
+    }
+
+    .github-corner .octo-arm {
+        animation: none;
+    }
+
+    @keyframes a {
+        0%,
+        to {
+            transform: rotate(0);
+        }
+        20%,
+        60% {
+            transform: rotate(-25deg);
+        }
+        40%,
+        80% {
+            transform: rotate(10deg);
+        }
+    }
+</style>
+
+<a href="https://github.com/JACKROMER" class="github-corner tooltipped hide-on-med-and-down" target="_blank"
+   data-tooltip="Fork Me" data-position="left" data-delay="50">
+    <svg viewBox="0 0 250 250" aria-hidden="true">
+        <path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path>
+        <path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2"
+              fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path>
+        <path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z"
+              fill="currentColor" class="octo-body"></path>
+    </svg>
+</a>
+        
+    </nav>
+
+</header>
+
+
+
+
+
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/scienceFiction/7.jpg')">
+    <div class="container">
+        <div class="row">
+            <div class="col s12 m12 l12">
+                <div class="brand">
+                    <div class="description center-align post-title">
+                        STORM介绍，集群搭建以及topology使用
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<main class="post-container content">
+
+    
+    <link rel="stylesheet" href="/libs/tocbot/tocbot.css">
+<style>
+    #articleContent h1::before,
+    #articleContent h2::before,
+    #articleContent h3::before,
+    #articleContent h4::before,
+    #articleContent h5::before,
+    #articleContent h6::before {
+        display: block;
+        content: " ";
+        height: 100px;
+        margin-top: -100px;
+        visibility: hidden;
+    }
+
+    #articleContent :focus {
+        outline: none;
+    }
+
+    .toc-fixed {
+        position: fixed;
+        top: 64px;
+    }
+
+    .toc-widget {
+        padding-left: 20px;
+    }
+
+    .toc-widget .toc-title {
+        margin: 35px 0 15px 0;
+        padding-left: 17px;
+        font-size: 1.5rem;
+        font-weight: bold;
+        line-height: 1.5rem;
+    }
+
+    .toc-widget ol {
+        padding: 0;
+        list-style: none;
+    }
+
+    #toc-content ol {
+        padding-left: 10px;
+    }
+
+    #toc-content ol li {
+        padding-left: 10px;
+    }
+
+    #toc-content .toc-link:hover {
+        color: #42b983;
+        font-weight: 700;
+        text-decoration: underline;
+    }
+
+    #toc-content .toc-link::before {
+        background-color: transparent;
+        max-height: 25px;
+    }
+
+    #toc-content .is-active-link {
+        color: #42b983;
+    }
+
+    #toc-content .is-active-link::before {
+        background-color: #42b983;
+    }
+
+    #floating-toc-btn {
+        position: fixed;
+        right: 20px;
+        bottom: 76px;
+        padding-top: 15px;
+        margin-bottom: 0;
+        z-index: 998;
+    }
+
+    #floating-toc-btn .btn-floating {
+        width: 48px;
+        height: 48px;
+    }
+
+    #floating-toc-btn .btn-floating i {
+        line-height: 48px;
+        font-size: 1.4rem;
+    }
+</style>
+<div class="row">
+    <div id="main-content" class="col s12 m12 l9">
+        <!-- 文章内容详情 -->
+<div id="artDetail">
+    <div class="card">
+        <div class="card-content article-info">
+            <div class="row tag-cate">
+                <div class="col s7">
+                    
+                    <div class="article-tag">
+                        
+                            <a href="/tags/java/" target="_blank">
+                                <span class="chip bg-color">java</span>
+                            </a>
+                        
+                            <a href="/tags/storm/" target="_blank">
+                                <span class="chip bg-color">storm</span>
+                            </a>
+                        
+                            <a href="/tags/topology/" target="_blank">
+                                <span class="chip bg-color">topology</span>
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+                <div class="col s5 right-align">
+                    
+                    <div class="post-cate">
+                        <i class="fa fa-bookmark fa-fw icon-category"></i>
+                        
+                            <a href="/categories/cluster/" class="post-category" target="_blank">
+                                cluster
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+
+            <div class="post-info">
+                <div class="post-date info-break-policy">
+                    <i class="fa fa-calendar-minus-o fa-fw"></i>Publish Date:&nbsp;&nbsp;
+                    2019-08-27
+                </div>
+
+                
+				
+				
+                    <div id="busuanzi_container_page_pv" class="info-break-policy">
+                        <i class="fa fa-eye fa-fw"></i>Read Count:&nbsp;&nbsp;
+                        <span id="busuanzi_value_page_pv"></span>
+                    </div>
+				
+            </div>
+        </div>
+        <hr class="clearfix">
+        <div class="card-content article-card-content">
+            <div id="articleContent">
+                <hr>
+<p>本文主要介绍STORM，以及storm集群的安装和使用</p>
+<h2 id="什么是storm"><a href="#什么是storm" class="headerlink" title="什么是storm"></a><a href="#什么是storm" title="什么是storm"></a>什么是storm</h2><blockquote>
+<p>Apache Storm是自由开源的分布式实时计算系统，擅长处理海量数据，适用于数据实时处理而非批处理。<br>批处理使用的大多是鼎鼎大名的hadoop或者hive，作为一个批处理系统，hadoop以其吞吐量大、自动容错等优点，在海量数据处理上得到了广泛的使用。但是，hadoop不擅长实时计算，因为它天然就是为批处理而生的，这也是业界一致的共识。否则最近几年也不会有s4,storm,puma这些实时计算系统如雨后春笋般冒出来啦。STORM就是为了处理及时的消费者请求而生，在用户给出需求时及时的处理数据并给出响应的结果。</p>
+</blockquote>
+<h2 id="storm处理流程"><a href="#storm处理流程" class="headerlink" title="storm处理流程"></a><a href="#storm处理流程" title="storm处理流程"></a>storm处理流程</h2><p><img src="/images/storm/storm.jpg" alt=""></p>
+<blockquote>
+<p>可以看出storm的数据处理是交给ZK处理分发的，由nimbus管理supervisor，supervis管理worker，worker才是真正做数据处理的进程，worker提交TASK，类似多线程提交任务，整个流程达到消息的实时处理能力。</p>
+</blockquote>
+<h2 id="spout和bolt"><a href="#spout和bolt" class="headerlink" title="spout和bolt"></a><a href="#spout和bolt" title="spout和bolt"></a>spout和bolt</h2><h3 id="spout"><a href="#spout" class="headerlink" title="spout"></a><a href="#spout" title="spout"></a>spout</h3><blockquote>
+<p>spout是数据源，例如spout可以调用 Twitter API 得到一个微博数据流，就是从外部数据源（队列、数据库等）中读取数据，封装成元组，形成STREAM数据流。<br><img src="/images/storm/spout1.png" alt=""></p>
+</blockquote>
+<h3 id="bolt"><a href="#bolt" class="headerlink" title="bolt"></a><a href="#bolt" title="bolt"></a>bolt</h3><blockquote>
+<p>bolt是用来处理数据的，可以对一些数据流（不只一个数据流）进行处理，可能会产生新的STREAM数据流。对一些复杂的数据流变换，<br>比如从一个微博流中计算一个热门话题流，就需要很多步骤，因此就有多个bolt，因此bolt中就有很多处理，比如运行函数，做流式聚合，流式链接，访问数据库等等。<br><img src="/images/storm/tuple.jpg" alt=""><br>不同的bolt可以订阅相同的spout来达到消息共享的目的，比如来了一条数据，bolt1是做数据入库处理，bolt2只是做简单的日志记录，bolt3….<br><img src="/images/storm/spout-bolt.png" alt=""></p>
+</blockquote>
+<h3 id="topology"><a href="#topology" class="headerlink" title="topology"></a><a href="#topology" title="topology"></a>topology</h3><blockquote>
+<p>如上图所示 topology就是spout 和 bolt组成的网络拓扑图，Topology就是最高层的逻辑抽象，可以直接送到 Storm 集群去执行。一个Topology图就是流式转换，每个节点是 spout 或者 bolt，图中的每条边就是 bolt 订阅了流，当一个 spout或者 bolt 产生一个元组到一个流时，它就发送元组到订阅了流的每个 bolt。</p>
+</blockquote>
+<h2 id="自定义topology并提交topology到storm集群"><a href="#自定义topology并提交topology到storm集群" class="headerlink" title="自定义topology并提交topology到storm集群"></a><a href="#自定义topology并提交topology到storm集群" title="自定义topology并提交topology到storm集群"></a>自定义topology并提交topology到storm集群</h2><h3 id="1-首先需要实现storm的spout和bolt接口实现对stream流数据的接收和处理"><a href="#1-首先需要实现storm的spout和bolt接口实现对stream流数据的接收和处理" class="headerlink" title="1.首先需要实现storm的spout和bolt接口实现对stream流数据的接收和处理"></a><a href="#1-首先需要实现storm的spout和bolt接口实现对stream流数据的接收和处理" title="1.首先需要实现storm的spout和bolt接口实现对stream流数据的接收和处理"></a>1.首先需要实现storm的spout和bolt接口实现对stream流数据的接收和处理</h3><pre class="line-numbers language-java"><code class="language-java">    <span class="token keyword">package</span> cn<span class="token punctuation">.</span>xpleaf<span class="token punctuation">.</span>bigdata<span class="token punctuation">.</span>storm<span class="token punctuation">.</span>remote<span class="token punctuation">;</span>
+
+    <span class="token keyword">import</span> cn<span class="token punctuation">.</span>xpleaf<span class="token punctuation">.</span>bigdata<span class="token punctuation">.</span>storm<span class="token punctuation">.</span>utils<span class="token punctuation">.</span>StormUtil<span class="token punctuation">;</span>
+    <span class="token keyword">import</span> org<span class="token punctuation">.</span>apache<span class="token punctuation">.</span>storm<span class="token punctuation">.</span>Config<span class="token punctuation">;</span>
+    <span class="token keyword">import</span> org<span class="token punctuation">.</span>apache<span class="token punctuation">.</span>storm<span class="token punctuation">.</span>LocalCluster<span class="token punctuation">;</span>
+    <span class="token keyword">import</span> org<span class="token punctuation">.</span>apache<span class="token punctuation">.</span>storm<span class="token punctuation">.</span>StormSubmitter<span class="token punctuation">;</span>
+    <span class="token keyword">import</span> org<span class="token punctuation">.</span>apache<span class="token punctuation">.</span>storm<span class="token punctuation">.</span>generated<span class="token punctuation">.</span>StormTopology<span class="token punctuation">;</span>
+    <span class="token keyword">import</span> org<span class="token punctuation">.</span>apache<span class="token punctuation">.</span>storm<span class="token punctuation">.</span>spout<span class="token punctuation">.</span>SpoutOutputCollector<span class="token punctuation">;</span>
+    <span class="token keyword">import</span> org<span class="token punctuation">.</span>apache<span class="token punctuation">.</span>storm<span class="token punctuation">.</span>task<span class="token punctuation">.</span>OutputCollector<span class="token punctuation">;</span>
+    <span class="token keyword">import</span> org<span class="token punctuation">.</span>apache<span class="token punctuation">.</span>storm<span class="token punctuation">.</span>task<span class="token punctuation">.</span>TopologyContext<span class="token punctuation">;</span>
+    <span class="token keyword">import</span> org<span class="token punctuation">.</span>apache<span class="token punctuation">.</span>storm<span class="token punctuation">.</span>topology<span class="token punctuation">.</span>OutputFieldsDeclarer<span class="token punctuation">;</span>
+    <span class="token keyword">import</span> org<span class="token punctuation">.</span>apache<span class="token punctuation">.</span>storm<span class="token punctuation">.</span>topology<span class="token punctuation">.</span>TopologyBuilder<span class="token punctuation">;</span>
+    <span class="token keyword">import</span> org<span class="token punctuation">.</span>apache<span class="token punctuation">.</span>storm<span class="token punctuation">.</span>topology<span class="token punctuation">.</span>base<span class="token punctuation">.</span>BaseRichBolt<span class="token punctuation">;</span>
+    <span class="token keyword">import</span> org<span class="token punctuation">.</span>apache<span class="token punctuation">.</span>storm<span class="token punctuation">.</span>topology<span class="token punctuation">.</span>base<span class="token punctuation">.</span>BaseRichSpout<span class="token punctuation">;</span>
+    <span class="token keyword">import</span> org<span class="token punctuation">.</span>apache<span class="token punctuation">.</span>storm<span class="token punctuation">.</span>tuple<span class="token punctuation">.</span>Fields<span class="token punctuation">;</span>
+    <span class="token keyword">import</span> org<span class="token punctuation">.</span>apache<span class="token punctuation">.</span>storm<span class="token punctuation">.</span>tuple<span class="token punctuation">.</span>Tuple<span class="token punctuation">;</span>
+    <span class="token keyword">import</span> org<span class="token punctuation">.</span>apache<span class="token punctuation">.</span>storm<span class="token punctuation">.</span>tuple<span class="token punctuation">.</span>Values<span class="token punctuation">;</span>
+
+    <span class="token keyword">import</span> java<span class="token punctuation">.</span>util<span class="token punctuation">.</span>Date<span class="token punctuation">;</span>
+    <span class="token keyword">import</span> java<span class="token punctuation">.</span>util<span class="token punctuation">.</span>Map<span class="token punctuation">;</span>
+
+    <span class="token comment" spellcheck="true">/**
+     * 1°、实现数字累加求和的案例：数据源不断产生递增数字，对产生的数字累加求和。
+     * &lt;p>
+     * Storm组件：Spout、Bolt、数据是Tuple，使用main中的Topology将spout和bolt进行关联
+     * MapReduce的组件：Mapper和Reducer、数据是Writable，通过一个main中的job将二者关联
+     * &lt;p>
+     * 适配器模式（Adapter）：BaseRichSpout，其对继承接口中一些没必要的方法进行了重写，但其重写的代码没有实现任何功能。
+     * 我们称这为适配器模式
+     */</span>
+    <span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">StormSumTopology</span> <span class="token punctuation">{</span>
+
+        <span class="token comment" spellcheck="true">/**
+         * 数据源
+         */</span>
+        <span class="token keyword">static</span> <span class="token keyword">class</span> <span class="token class-name">OrderSpout</span> <span class="token keyword">extends</span> <span class="token class-name">BaseRichSpout</span> <span class="token punctuation">{</span>
+
+            <span class="token keyword">private</span> Map conf<span class="token punctuation">;</span>   <span class="token comment" spellcheck="true">// 当前组件配置信息</span>
+            <span class="token keyword">private</span> TopologyContext context<span class="token punctuation">;</span>    <span class="token comment" spellcheck="true">// 当前组件上下文对象</span>
+            <span class="token keyword">private</span> SpoutOutputCollector collector<span class="token punctuation">;</span> <span class="token comment" spellcheck="true">// 发送tuple的组件</span>
+
+            <span class="token annotation punctuation">@Override</span>
+            <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">open</span><span class="token punctuation">(</span>Map conf<span class="token punctuation">,</span> TopologyContext context<span class="token punctuation">,</span> SpoutOutputCollector collector<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+                <span class="token keyword">this</span><span class="token punctuation">.</span>conf <span class="token operator">=</span> conf<span class="token punctuation">;</span>
+                <span class="token keyword">this</span><span class="token punctuation">.</span>context <span class="token operator">=</span> context<span class="token punctuation">;</span>
+                <span class="token keyword">this</span><span class="token punctuation">.</span>collector <span class="token operator">=</span> collector<span class="token punctuation">;</span>
+            <span class="token punctuation">}</span>
+
+            <span class="token comment" spellcheck="true">/**
+             * 接收数据的核心方法
+             */</span>
+            <span class="token annotation punctuation">@Override</span>
+            <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">nextTuple</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+                <span class="token keyword">long</span> num <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
+                <span class="token keyword">while</span> <span class="token punctuation">(</span><span class="token boolean">true</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+                    num<span class="token operator">++</span><span class="token punctuation">;</span>
+                    StormUtil<span class="token punctuation">.</span><span class="token function">sleep</span><span class="token punctuation">(</span><span class="token number">1000</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+                    System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"当前时间"</span> <span class="token operator">+</span> StormUtil<span class="token punctuation">.</span>df_yyyyMMddHHmmss<span class="token punctuation">.</span><span class="token function">format</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">Date</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token operator">+</span> <span class="token string">"产生的订单金额："</span> <span class="token operator">+</span> num<span class="token punctuation">)</span><span class="token punctuation">;</span>
+                    <span class="token keyword">this</span><span class="token punctuation">.</span>collector<span class="token punctuation">.</span><span class="token function">emit</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">Values</span><span class="token punctuation">(</span>num<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+                <span class="token punctuation">}</span>
+            <span class="token punctuation">}</span>
+
+            <span class="token comment" spellcheck="true">/**
+             * 是对发送出去的数据的描述schema
+             */</span>
+            <span class="token annotation punctuation">@Override</span>
+            <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">declareOutputFields</span><span class="token punctuation">(</span>OutputFieldsDeclarer declarer<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+                declarer<span class="token punctuation">.</span><span class="token function">declare</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">Fields</span><span class="token punctuation">(</span><span class="token string">"order_cost"</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token punctuation">}</span>
+        <span class="token punctuation">}</span>
+
+        <span class="token comment" spellcheck="true">/**
+         * 计算和的Bolt节点
+         */</span>
+        <span class="token keyword">static</span> <span class="token keyword">class</span> <span class="token class-name">SumBolt</span> <span class="token keyword">extends</span> <span class="token class-name">BaseRichBolt</span> <span class="token punctuation">{</span>
+
+            <span class="token keyword">private</span> Map conf<span class="token punctuation">;</span>   <span class="token comment" spellcheck="true">// 当前组件配置信息</span>
+            <span class="token keyword">private</span> TopologyContext context<span class="token punctuation">;</span>    <span class="token comment" spellcheck="true">// 当前组件上下文对象</span>
+            <span class="token keyword">private</span> OutputCollector collector<span class="token punctuation">;</span> <span class="token comment" spellcheck="true">// 发送tuple的组件</span>
+
+            <span class="token annotation punctuation">@Override</span>
+            <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">prepare</span><span class="token punctuation">(</span>Map stormConf<span class="token punctuation">,</span> TopologyContext context<span class="token punctuation">,</span> OutputCollector collector<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+                <span class="token keyword">this</span><span class="token punctuation">.</span>conf <span class="token operator">=</span> conf<span class="token punctuation">;</span>
+                <span class="token keyword">this</span><span class="token punctuation">.</span>context <span class="token operator">=</span> context<span class="token punctuation">;</span>
+                <span class="token keyword">this</span><span class="token punctuation">.</span>collector <span class="token operator">=</span> collector<span class="token punctuation">;</span>
+            <span class="token punctuation">}</span>
+
+            <span class="token keyword">private</span> Long sumOrderCost <span class="token operator">=</span> 0L<span class="token punctuation">;</span>
+
+            <span class="token comment" spellcheck="true">/**
+             * 处理数据的核心方法
+             */</span>
+            <span class="token annotation punctuation">@Override</span>
+            <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">execute</span><span class="token punctuation">(</span>Tuple input<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+                Long orderCost <span class="token operator">=</span> input<span class="token punctuation">.</span><span class="token function">getLongByField</span><span class="token punctuation">(</span><span class="token string">"order_cost"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+                sumOrderCost <span class="token operator">+=</span> orderCost<span class="token punctuation">;</span>
+
+                System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"商城网站到目前"</span> <span class="token operator">+</span> StormUtil<span class="token punctuation">.</span>df_yyyyMMddHHmmss<span class="token punctuation">.</span><span class="token function">format</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">Date</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token operator">+</span> <span class="token string">"的商品总交易额"</span> <span class="token operator">+</span> sumOrderCost<span class="token punctuation">)</span><span class="token punctuation">;</span>
+                StormUtil<span class="token punctuation">.</span><span class="token function">sleep</span><span class="token punctuation">(</span><span class="token number">1000</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token punctuation">}</span>
+
+            <span class="token comment" spellcheck="true">/**
+             * 如果当前bolt为最后一个处理单元，该方法可以不用管
+             */</span>
+            <span class="token annotation punctuation">@Override</span>
+            <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">declareOutputFields</span><span class="token punctuation">(</span>OutputFieldsDeclarer declarer<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+
+            <span class="token punctuation">}</span>
+        <span class="token punctuation">}</span>
+
+        <span class="token comment" spellcheck="true">/**
+         * 构建拓扑，相当于在MapReduce中构建Job
+         */</span>
+        <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">main</span><span class="token punctuation">(</span>String<span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span> <span class="token keyword">throws</span> Exception <span class="token punctuation">{</span>
+            TopologyBuilder builder <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">TopologyBuilder</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token comment" spellcheck="true">/**
+             * 设置spout和bolt的dag（有向无环图）
+             */</span>
+            builder<span class="token punctuation">.</span><span class="token function">setSpout</span><span class="token punctuation">(</span><span class="token string">"id_order_spout"</span><span class="token punctuation">,</span> <span class="token keyword">new</span> <span class="token class-name">OrderSpout</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            builder<span class="token punctuation">.</span><span class="token function">setBolt</span><span class="token punctuation">(</span><span class="token string">"id_sum_bolt"</span><span class="token punctuation">,</span> <span class="token keyword">new</span> <span class="token class-name">SumBolt</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">shuffleGrouping</span><span class="token punctuation">(</span><span class="token string">"id_order_spout"</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">// 通过不同的数据流转方式，来指定数据的上游组件</span>
+            <span class="token comment" spellcheck="true">// 使用builder构建topology</span>
+            StormTopology topology <span class="token operator">=</span> builder<span class="token punctuation">.</span><span class="token function">createTopology</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            String topologyName <span class="token operator">=</span> StormSumTopology<span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">.</span><span class="token function">getSimpleName</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>  <span class="token comment" spellcheck="true">// 拓扑的名称</span>
+            Config config <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Config</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>   <span class="token comment" spellcheck="true">// Config()对象继承自HashMap，但本身封装了一些基本的配置</span>
+
+            <span class="token comment" spellcheck="true">// 启动topology，本地启动使用LocalCluster，集群启动使用StormSubmitter</span>
+            <span class="token keyword">if</span> <span class="token punctuation">(</span>args <span class="token operator">==</span> null <span class="token operator">||</span> args<span class="token punctuation">.</span>length <span class="token operator">&lt;</span> <span class="token number">1</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>  <span class="token comment" spellcheck="true">// 没有参数时使用本地模式，有参数时使用集群模式</span>
+                LocalCluster localCluster <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">LocalCluster</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">// 本地开发模式，创建的对象为LocalCluster</span>
+                localCluster<span class="token punctuation">.</span><span class="token function">submitTopology</span><span class="token punctuation">(</span>topologyName<span class="token punctuation">,</span> config<span class="token punctuation">,</span> topology<span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token punctuation">{</span>
+                StormSubmitter<span class="token punctuation">.</span><span class="token function">submitTopology</span><span class="token punctuation">(</span>topologyName<span class="token punctuation">,</span> config<span class="token punctuation">,</span> topology<span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token punctuation">}</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="2-将spout和bolt接口以及其他配置类组成的topology的jar包放入到指定的目录中（最好放在storm的nimbus节点下），注意打包方式确保JAR包下有storm-core相关依赖包"><a href="#2-将spout和bolt接口以及其他配置类组成的topology的jar包放入到指定的目录中（最好放在storm的nimbus节点下），注意打包方式确保JAR包下有storm-core相关依赖包" class="headerlink" title="2.将spout和bolt接口以及其他配置类组成的topology的jar包放入到指定的目录中（最好放在storm的nimbus节点下），注意打包方式确保JAR包下有storm-core相关依赖包."></a><a href="#2-将spout和bolt接口以及其他配置类组成的topology的jar包放入到指定的目录中（最好放在storm的nimbus节点下），注意打包方式确保JAR包下有storm-core相关依赖包" title="2.将spout和bolt接口以及其他配置类组成的topology的jar包放入到指定的目录中（最好放在storm的nimbus节点下），注意打包方式确保JAR包下有storm-core相关依赖包."></a>2.将spout和bolt接口以及其他配置类组成的topology的jar包放入到指定的目录中（最好放在storm的nimbus节点下），注意打包方式确保JAR包下有storm-core相关依赖包.</h3><h3 id="3-执行命令提交topology的JAR到storm的集群"><a href="#3-执行命令提交topology的JAR到storm的集群" class="headerlink" title="3.执行命令提交topology的JAR到storm的集群"></a><a href="#3-执行命令提交topology的JAR到storm的集群" title="3.执行命令提交topology的JAR到storm的集群"></a>3.执行命令提交topology的JAR到storm的集群</h3><pre><code>  #先切换到strom 的bin目录，然后执行以下命令
+  bin/storm kill topology #执行KILL操作时候可能会报没有此topology错误,可以不用理会
+    sleep 5
+  # 类似JAVA -JAR 方式启动JAR包，后面的bootstrap-servers根据业务而定，可要可不要.
+    bin/storm jar topology/topology-1.0.0.jar  com.company.ApplicationLoader --bootstrap-serverIp1=ip1:9092,serverIp2:9092,serverIp3:9092</code></pre><h3 id="4-通过nimbus的UI端口查看topology的运行情况，以及异常情况"><a href="#4-通过nimbus的UI端口查看topology的运行情况，以及异常情况" class="headerlink" title="4.通过nimbus的UI端口查看topology的运行情况，以及异常情况"></a><a href="#4-通过nimbus的UI端口查看topology的运行情况，以及异常情况" title="4.通过nimbus的UI端口查看topology的运行情况，以及异常情况"></a>4.通过nimbus的UI端口查看topology的运行情况，以及异常情况</h3><p><img src="/images/storm/stormui.png" alt=""></p>
+<h2 id="storm-核心逻辑"><a href="#storm-核心逻辑" class="headerlink" title="storm 核心逻辑"></a><a href="#storm-核心逻辑" title="storm 核心逻辑"></a>storm 核心逻辑</h2><blockquote>
+<p>Nimbus：Storm集群主节点，负责资源分配和任务调度。我们提交任务和截止任务都是在Nimbus上操作的。一个Storm集群只有一个Nimbus节点。<br>Supervisor：Storm集群工作节点，接受Nimbus分配任务，管理所有Worker。<br>Worker：工作进程，每个工作进程中都有多个Task。<br>Task：任务，每个Spout和Bolt都是一个任务，每个任务都是一个线程。<br>Topology：计算拓扑，包含了应用程序的逻辑。<br>Stream：消息流，关键抽象，是没有边界的Tuple序列。<br>Spout：消息流的源头，Topology的消息生产者。<br>Bolt：消息处理单元，可以过滤、聚合、查询数据库。<br>Stream grouping：消息分发策略，一共6种，定义每个Bolt接受何种输入。<br>Reliability：可靠性，Storm保证每个Tuple都会被处理。</p>
+</blockquote>
+<h2 id="Storm安装部署"><a href="#Storm安装部署" class="headerlink" title="Storm安装部署"></a><a href="#Storm安装部署" title="Storm安装部署"></a>Storm安装部署</h2><h3 id="zookeeper集群安装"><a href="#zookeeper集群安装" class="headerlink" title="zookeeper集群安装"></a><a href="#zookeeper集群安装" title="zookeeper集群安装"></a>zookeeper集群安装</h3><blockquote>
+<p>略，请自行查看文档安装，这个比较简单</p>
+</blockquote>
+<h3 id="搭建storm集群"><a href="#搭建storm集群" class="headerlink" title="搭建storm集群"></a><a href="#搭建storm集群" title="搭建storm集群"></a>搭建storm集群</h3><p><a href="http://storm.apache.org/index.html" target="_blank" rel="noopener">下载storm包,目前已经更新到2.0版本，下载地址&gt;http://storm.apache.org/index.html</a></p>
+<h3 id="1-解压"><a href="#1-解压" class="headerlink" title="1.解压"></a><a href="#1-解压" title="1.解压"></a>1.解压</h3><pre class="line-numbers language-s"><code class="language-s">    [uplooking@uplooking01 soft]$ tar -zxvf apache-storm-1.0.2.tar.gz -C ../app/
+    [uplooking@uplooking01 app]$ mv apache-storm-1.0.2/ storm<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<h3 id="2-修改配置文件-storm-env-sh"><a href="#2-修改配置文件-storm-env-sh" class="headerlink" title="2.修改配置文件 storm-env.sh"></a><a href="#2-修改配置文件-storm-env-sh" title="2.修改配置文件 storm-env.sh"></a>2.修改配置文件 storm-env.sh</h3><pre class="line-numbers language-s"><code class="language-s">    export JAVA_HOME=/opt/jdk
+    export STORM_CONF_DIR="/home/uplooking/app/storm/conf"<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<h3 id="3-修改storm-yaml"><a href="#3-修改storm-yaml" class="headerlink" title="3. 修改storm.yaml"></a><a href="#3-修改storm-yaml" title="3. 修改storm.yaml"></a>3. 修改storm.yaml</h3><pre class="line-numbers language-s"><code class="language-s">    storm.zookeeper.servers:
+        - "uplooking01"
+        - "uplooking02"
+        - "uplooking03"
+
+    nimbus.seeds: ["uplooking01", "uplooking02"]
+
+    storm.local.dir: "/home/uplooking/data/storm" # 日志目录
+    supervisor.slots.ports:
+        - 6700
+        - 6701
+        - 6702
+        - 6703
+    storm.zookeeper.port: 2181 #zookeeper端口配置
+    ui.port: 8000 #ui 端口设置<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="4-创建storm-local-dir"><a href="#4-创建storm-local-dir" class="headerlink" title="4.创建storm.local.dir"></a><a href="#4-创建storm-local-dir" title="4.创建storm.local.dir"></a>4.创建storm.local.dir</h3><pre class="line-numbers language-s"><code class="language-s">    mkdir -p /home/uplooing/data/storm<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<h3 id="5-配置环境变量"><a href="#5-配置环境变量" class="headerlink" title="5.配置环境变量"></a><a href="#5-配置环境变量" title="5.配置环境变量"></a>5.配置环境变量</h3><pre class="line-numbers language-s"><code class="language-s">    # .bash_profile
+    export STORM_HOME=/home/uplooking/app/storm
+    export PATH=$PATH:$STORM_HOME/bin<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<h3 id="6-将其同步到其它节点"><a href="#6-将其同步到其它节点" class="headerlink" title="6.将其同步到其它节点"></a><a href="#6-将其同步到其它节点" title="6.将其同步到其它节点"></a>6.将其同步到其它节点</h3><pre class="line-numbers language-s"><code class="language-s">    scp .bash_profile uplooking@uplooking02:/home/uplooking
+    scp .bash_profile uplooking@uplooking03:/home/uplooking<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<h3 id="7-复制storm安装目录到其它节点"><a href="#7-复制storm安装目录到其它节点" class="headerlink" title="7.复制storm安装目录到其它节点"></a><a href="#7-复制storm安装目录到其它节点" title="7.复制storm安装目录到其它节点"></a>7.复制storm安装目录到其它节点</h3><pre class="line-numbers language-s"><code class="language-s">    scp -r storm/ uplooking@uplooking02:/home/uplooking/app
+    scp -r storm/ uplooking@uplooking03:/home/uplooking/app<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<h3 id="8-启动storm集群"><a href="#8-启动storm集群" class="headerlink" title="8.启动storm集群"></a><a href="#8-启动storm集群" title="8.启动storm集群"></a>8.启动storm集群</h3><pre class="line-numbers language-s"><code class="language-s">    # uplooking01
+    storm nimbus &
+    storm ui &
+
+    # uplooking02
+    storm nimbus &
+    storm supervisor &
+
+    # uplooking03
+    storm supervisor &<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="9-启动logviewer（可选）"><a href="#9-启动logviewer（可选）" class="headerlink" title="9.启动logviewer（可选）"></a><a href="#9-启动logviewer（可选）" title="9.启动logviewer（可选）"></a>9.启动logviewer（可选）</h3><pre><code>在所有从节点执行"nohup bin/storm logviewer &gt;/dev/null 2&gt;&amp;1 &amp;"启动log后台程序，并放到后台执行。
+(nimbus节点可以不用启动logviewer进程，因为logviewer进程主要是为了方便查看任务的执行日志，这些执行日志都在supervisor节点上)。</code></pre><h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a><a href="#总结" title="总结"></a>总结</h2><blockquote>
+<p>storm作为一款高效的数据流实时处理框架得到了广泛的使用，解决了Hadoop、spark在数据处理方面的性能问题，对JAVA良好的支持使得其在商业上应用更加广泛.<br>此文是自己学习和使用了storm集群的一些理解和体会，如有错误，欢迎指正.</p>
+</blockquote>
+<blockquote>
+<p>一盏灯， 一片昏黄； <strong>一简书</strong>， 一杯淡茶。 守着那一份淡定， 品读属于自己的寂寞。 保持淡定， 才能欣赏到最美丽的风景！ 保持淡定， 人生从此不再寂寞。</p>
+</blockquote>
+<hr>
+<script>
+        document.querySelectorAll('.github-emoji')
+          .forEach(el => {
+            if (!el.dataset.src) { return; }
+            const img = document.createElement('img');
+            img.style = 'display:none !important;';
+            img.src = el.dataset.src;
+            img.addEventListener('error', () => {
+              img.remove();
+              el.style.color = 'inherit';
+              el.style.backgroundImage = 'none';
+              el.style.background = 'none';
+            });
+            img.addEventListener('load', () => {
+              img.remove();
+            });
+            document.body.appendChild(img);
+          });
+      </script>
+            </div>
+            <hr/>
+
+            
+            <style>
+    #reward {
+        margin: 40px 0;
+        text-align: center;
+    }
+
+    #reward .reward-link {
+        font-size: 1.88rem;
+    }
+
+    #reward .btn-floating:hover {
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2), 0 5px 15px rgba(0, 0, 0, 0.2);
+    }
+
+    #rewardModal {
+        width: 320px;
+        height: 350px;
+    }
+
+    #rewardModal .reward-title {
+        margin: 15px auto;
+        padding-bottom: 5px;
+    }
+
+    #rewardModal .modal-content {
+        padding: 10px;
+    }
+
+    #rewardModal .close {
+        position: absolute;
+        right: 15px;
+        top: 15px;
+        color: rgba(0, 0, 0, 0.5);
+        font-size: 1.3rem;
+        line-height: 20px;
+        cursor: pointer;
+    }
+
+    #rewardModal .close:hover {
+        color: #ef5350;
+        transform: scale(1.3);
+        -moz-transform:scale(1.3);
+        -webkit-transform:scale(1.3);
+        -o-transform:scale(1.3);
+    }
+
+    #rewardModal .reward-tabs {
+        margin: 0 auto;
+        width: 210px;
+    }
+
+    .reward-tabs .tabs {
+        height: 38px;
+        margin: 10px auto;
+        padding-left: 0;
+    }
+
+    .reward-content ul {
+        padding-left: 0 !important;
+    }
+
+    .reward-tabs .tabs .tab {
+        height: 38px;
+        line-height: 38px;
+    }
+
+    .reward-tabs .tab a {
+        color: #fff;
+        background-color: #ccc;
+    }
+
+    .reward-tabs .tab a:hover {
+        background-color: #ccc;
+        color: #fff;
+    }
+
+    .reward-tabs .wechat-tab .active {
+        color: #fff !important;
+        background-color: #22AB38 !important;
+    }
+
+    .reward-tabs .alipay-tab .active {
+        color: #fff !important;
+        background-color: #019FE8 !important;
+    }
+
+    .reward-tabs .reward-img {
+        width: 210px;
+        height: 210px;
+    }
+</style>
+
+<div id="reward">
+    <a href="#rewardModal" class="reward-link modal-trigger btn-floating btn-large waves-effect waves-light red">赏</a>
+
+    <!-- Modal Structure -->
+    <div id="rewardModal" class="modal">
+        <div class="modal-content">
+            <a class="close modal-close"><i class="fa fa-close"></i></a>
+            <h4 class="reward-title">你的赏识是我前进的动力</h4>
+            <div class="reward-content">
+                <div class="reward-tabs">
+                    <ul class="tabs row">
+                        <li class="tab col s6 alipay-tab waves-effect waves-light"><a href="#alipay">支付宝</a></li>
+                        <li class="tab col s6 wechat-tab waves-effect waves-light"><a href="#wechat">微 信</a></li>
+                    </ul>
+                    <div id="alipay">
+                        <img src="/medias/reward/alipay.png" class="reward-img" alt="支付宝打赏二维码">
+                    </div>
+                    <div id="wechat">
+                        <img src="/medias/reward/wechat.png" class="reward-img" alt="微信打赏二维码">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function () {
+        $('.tabs').tabs();
+    });
+</script>
+            
+
+            <link rel="stylesheet" type="text/css" href="/libs/share/css/share.min.css">
+
+<div id="article-share">
+    
+    <div class="social-share" data-disabled="qzone, qq, weibo, douban"></div>
+    
+</div>
+
+<script src="/libs/share/js/social-share.min.js"></script>
+
+            
+
+    <div class="reprint" id="reprint-statement">
+        <p class="reprint-tip">
+            <i class="fa fa-exclamation-triangle"></i>&nbsp;&nbsp;
+            <span>Reprint policy</span>
+        </p>
+        
+            <div class="center-align">
+                <a rel="license" href="https://creativecommons.org/licenses/by/4.0/">
+                    <img alt=""
+                         style="border-width:0"
+                         src="https://i.creativecommons.org/l/by/4.0/88x31.png"/>
+                </a>
+            </div>
+            <br/>
+            <span xmlns:dct="http://purl.org/dc/terms/" href="http://purl.org/dc/dcmitype/Text"
+                  property="dct:title" rel="dct:type">
+                    《STORM介绍，集群搭建以及topology使用》
+                </span> by
+            <a xmlns:cc="http://creativecommons.org/ns#" href="/2019/08/27/STORM介绍，集群搭建以及topology使用/" property="cc:attributionName"
+               rel="cc:attributionURL">
+                jackromer
+            </a> is licensed under a
+            <a rel="license" href="https://creativecommons.org/licenses/by/4.0/">
+                Creative Commons Attribution 4.0 International License
+            </a> 
+        
+    </div>
+
+    <script async defer>
+      document.addEventListener("copy", function (e) {
+        let toastHTML = '<span>Copied successfully, please follow the reprint policy of this article</span><button class="btn-flat toast-action" onclick="navToReprintStatement()" style="font-size: smaller">more</a>';
+        M.toast({html: toastHTML})
+      });
+
+      function navToReprintStatement() {
+        $("html, body").animate({scrollTop: $("#reprint-statement").offset().top - 80}, 800);
+      }
+    </script>
+
+
+        </div>
+    </div>
+
+    
+        <link rel="stylesheet" href="/libs/gitalk/gitalk.css">
+<link rel="stylesheet" href="/css/my-gitalk.css">
+
+<div class="card gitalk-card" data-aos="fade-up">
+    <div id="gitalk-container" class="card-content"></div>
+</div>
+
+<script src="/libs/gitalk/gitalk.min.js"></script>
+<script>
+    let gitalk = new Gitalk({
+        clientID: '034ed228151af1a154d9',
+        clientSecret: 'c7be1e2628ceb41e81648bff31633a31b005c2fa',
+        repo: 'jackromer.github.io',
+        owner: 'jackromer',
+        admin: "jackromer",
+        id: '2019-08-27T11-06-58',
+        distractionFreeMode: false  // Facebook-like distraction free mode
+    });
+
+    gitalk.render('gitalk-container');
+</script>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+<article id="prenext-posts" class="prev-next articles">
+    <div class="row article-row">
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge left-badge text-color">
+                <i class="fa fa-chevron-left"></i>&nbsp;Previous</div>
+            <div class="card">
+                <a href="/2019/08/27/THREAD-POOL-多线程并发/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/scienceFiction/13.jpg" class="responsive-img" alt="THREAD-POOL-多线程并发">
+                        
+                        <span class="card-title">THREAD-POOL-多线程并发</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+多线程简介
+多线程适合多种开发语言的开发, 这是一种思想，基于的是操作系统底层的CPU调度.此篇介绍线程、多线程、和线程池的使用和机制。  
+
+进程\线程
+进程
+
+1 进程 是指在系统中正在运行的一个应用程序, 每一个进程都有一个PID，
+                        
+                    </div>
+                    <div class="publish-info">
+                        <span class="publish-date">
+                            <i class="fa fa-clock-o fa-fw icon-date"></i>2019-08-27
+                        </span>
+                        <span class="publish-author">
+                            
+                            <i class="fa fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/thread/" class="post-category" target="_blank">
+                                    thread
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/java/" target="_blank">
+                        <span class="chip bg-color">java</span>
+                    </a>
+                    
+                    <a href="/tags/thread-pool/" target="_blank">
+                        <span class="chip bg-color">thread-pool</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                Next&nbsp;<i class="fa fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/2019/08/27/使用hibernate-jdbc-work高性能处理批量数据/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/scienceFiction/11.jpg" class="responsive-img" alt="使用hibernate.jdbc.work高性能处理批量数据">
+                        
+                        <span class="card-title">使用hibernate.jdbc.work高性能处理批量数据</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+
+本文介绍如何使用Hibernate.jdbc.Work批量处理大量的数据（QCUD）  
+
+简介
+为何使用原生的批量处理数据操作而不用现有的hibernate框架实现呢，因为hibernate对插入和更新的处理方式在大量数据插入式并不能
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="fa fa-clock-o fa-fw icon-date"></i>2019-08-27
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fa fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/hibernate/" class="post-category" target="_blank">
+                                    hibernate
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/java/" target="_blank">
+                        <span class="chip bg-color">java</span>
+                    </a>
+                    
+                    <a href="/tags/hibernate/" target="_blank">
+                        <span class="chip bg-color">hibernate</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+    </div>
+</article>
+</div>
+
+
+
+    </div>
+    <div id="toc-aside" class="expanded col l3 hide-on-med-and-down">
+        <div class="toc-widget">
+            <div class="toc-title"><i class="fa fa-list-alt"></i>&nbsp;&nbsp;目录</div>
+            <div id="toc-content"></div>
+        </div>
+    </div>
+</div>
+
+<!-- TOC 悬浮按钮. -->
+
+<div id="floating-toc-btn" class="hide-on-med-and-down">
+    <a class="btn-floating btn-large bg-color">
+        <i class="fa fa-list"></i>
+    </a>
+</div>
+
+
+<script src="/libs/tocbot/tocbot.min.js"></script>
+<script>
+    $(function () {
+        tocbot.init({
+            tocSelector: '#toc-content',
+            contentSelector: '#articleContent',
+            headingsOffset: -($(window).height() * 0.4 - 45),
+            // headingsOffset: -205,
+            headingSelector: 'h2, h3, h4'
+        });
+
+        // modify the toc link href to support Chinese.
+        let i = 0;
+        let tocHeading = 'toc-heading-';
+        $('#toc-content a').each(function () {
+            $(this).attr('href', '#' + tocHeading + (++i));
+        });
+
+        // modify the heading title id to support Chinese.
+        i = 0;
+        $('#articleContent').children('h2, h3, h4').each(function () {
+            $(this).attr('id', tocHeading + (++i));
+        });
+
+        // Set scroll toc fixed.
+        let tocHeight = parseInt($(window).height() * 0.4 - 64);
+        let $tocWidget = $('.toc-widget');
+        $(window).scroll(function () {
+            let scroll = $(window).scrollTop();
+            /* add post toc fixed. */
+            if (scroll > tocHeight) {
+                $tocWidget.addClass('toc-fixed');
+            } else {
+                $tocWidget.removeClass('toc-fixed');
+            }
+        });
+
+        
+        /* 修复文章卡片 div 的宽度. */
+        let fixPostCardWidth = function (srcId, targetId) {
+            let srcDiv = $('#' + srcId);
+            if (srcDiv.length === 0) {
+                return;
+            }
+
+            let w = srcDiv.width();
+            if (w >= 450) {
+                w = w + 21;
+            } else if (w >= 350 && w < 450) {
+                w = w + 18;
+            } else if (w >= 300 && w < 350) {
+                w = w + 16;
+            } else {
+                w = w + 14;
+            }
+            $('#' + targetId).width(w);
+        };
+
+        // 切换TOC目录展开收缩的相关操作.
+        const expandedClass = 'expanded';
+        let $tocAside = $('#toc-aside');
+        let $mainContent = $('#main-content');
+        $('#floating-toc-btn .btn-floating').click(function () {
+            if ($tocAside.hasClass(expandedClass)) {
+                $tocAside.removeClass(expandedClass).slideUp(500);
+                $mainContent.removeClass('l9');
+            } else {
+                $tocAside.addClass(expandedClass).slideDown(500);
+                $mainContent.addClass('l9');
+            }
+            fixPostCardWidth('artDetail', 'prenext-posts');
+        });
+        
+    });
+</script>
+    
+
+</main>
+
+
+<footer class="page-footer bg-color">
+    <div class="container row center-align">
+        <div class="col s12 m8 l8 copy-right">
+            本站由&copy;<a href="https://github.com/JACKROMER/jackromer.github.io/" target="_blank">jackromer</a>基于
+            <a href="https://hexo.io/" target="_blank">Hexo</a> 的
+            <a href="https://github.com/blinkfox/hexo-theme-matery" target="_blank">hexo-theme-matery</a>主题搭建.
+
+            
+
+            
+			
+                <br>
+                
+                <span id="busuanzi_container_site_pv">
+                    <i class="fa fa-heart-o"></i>
+                    本站总访问量 <span id="busuanzi_value_site_pv" class="white-color"></span>
+                </span>
+                
+                
+                <span id="busuanzi_container_site_uv">
+                    <i class="fa fa-users"></i>
+                    次,&nbsp;访客数 <span id="busuanzi_value_site_uv" class="white-color"></span> 人.
+                </span>
+                
+            
+        </div>
+        <div class="col s12 m4 l4 social-link social-statis">
+    <a href="https://github.com/JACKROMER" class="tooltipped" target="_blank" data-tooltip="访问我的GitHub" data-position="top" data-delay="50">
+        <i class="fa fa-github"></i>
+    </a>
+
+
+
+    <a href="mailto:jackromer@163.com" class="tooltipped" target="_blank" data-tooltip="邮件联系我" data-position="top" data-delay="50">
+        <i class="fa fa-envelope-open"></i>
+    </a>
+
+
+
+    <a href="tencent://AddContact/?fromId=50&fromSubId=1&subcmd=all&uin=943655387" class="tooltipped" data-tooltip="QQ联系我: 943655387" data-position="top" data-delay="50">
+        <i class="fa fa-qq"></i>
+    </a>
+
+
+
+    <a href="/atom.xml" class="tooltipped" target="_blank" data-tooltip="RSS 订阅" data-position="top" data-delay="50">
+        <i class="fa fa-rss"></i>
+    </a>
+</div>
+    </div>
+</footer>
+
+<div class="progress-bar"></div>
+
+
+<!-- 搜索遮罩框 -->
+<div id="searchModal" class="modal">
+    <div class="modal-content">
+        <div class="search-header">
+            <span class="title"><i class="fa fa-search"></i>&nbsp;&nbsp;Search</span>
+            <input type="search" id="searchInput" name="s" placeholder="Please enter a search keyword"
+                   class="search-input">
+        </div>
+        <div id="searchResult"></div>
+    </div>
+</div>
+
+<script src="/js/search.js"></script>
+<script type="text/javascript">
+$(function () {
+    searchFunc("/" + "search.xml", 'searchInput', 'searchResult');
+});
+</script>
+<!-- 回到顶部按钮 -->
+<div id="backTop" class="top-scroll">
+    <a class="btn-floating btn-large waves-effect waves-light" href="#!">
+        <i class="fa fa-angle-up"></i>
+    </a>
+</div>
+
+
+<script src="/libs/materialize/materialize.min.js"></script>
+<script src="/libs/masonry/masonry.pkgd.min.js"></script>
+<script src="/libs/aos/aos.js"></script>
+<script src="/libs/scrollprogress/scrollProgress.min.js"></script>
+<script src="/libs/lightGallery/js/lightgallery-all.min.js"></script>
+<script src="/js/matery.js"></script>
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+
+
+
+    <script src="/libs/others/clicklove.js"></script>
+
+
+    <script async src="/libs/others/busuanzi.pure.mini.js"></script>
+
+
+</body>
+</html>
